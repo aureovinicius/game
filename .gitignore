@@ -1,8 +1,5 @@
-# macOS
+node_modules/
+.wrangler/
+_site/
+*.log
 .DS_Store
-
-# Claude Code (config local)
-.claude/
-
-# Materiais do canal (não versionar)
-youtube/
