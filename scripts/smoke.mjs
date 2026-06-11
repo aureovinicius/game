@@ -102,6 +102,21 @@ ok(decTec / partidasTec >= 3, `técnico decide em média >= 3 vezes (média ${(d
   ok(semLance, 'expulso não recebe mais lances até o fim');
 }
 
+// Expulsão não invalida gols/lances feitos ANTES do cartão vermelho.
+{
+  const attrs = montarAtributos('centroavante', 'base');
+  const eng = criarPartida({ meuTime: teams[0], advTime: teams[5], classeId: 'centroavante', attrs, fase: 'grupos', mataMata: false, mando: 'neutro', semente: 11 });
+  eng.avancar();
+  eng.resolverLance({ id: 'A', tipo: 'finalizar', stat: 'MEN', cd: 1, efeitos: {} }, rolar(modificador(attrs.MEN), 1, { rng: () => 0.5 })); // gol
+  const golsAntes = eng.estado.golsJogador;
+  ok(golsAntes >= 1, 'jogador marca antes da expulsão');
+  eng.resolverLance({ id: 'B', tipo: 'mental', stat: 'MEN', cd: 20, efeitos: {} }, rolar(modificador(attrs.MEN), 20, { rng: () => 0.01 })); // d20=1 -> expulso
+  ok(eng.estado.cartoes.vermelhoJog, 'expulso por revide');
+  ok(eng.estado.golsJogador === golsAntes, 'expulsão preserva o gol feito antes');
+  let g = 0; while (!eng.estado.encerrada && g++ < 60) eng.avancar();
+  ok(eng.estado.golsJogador === golsAntes, 'gols do jogador não mudam após a expulsão');
+}
+
 // Partida suspensa: jogador não atua (sem lances, sem bônus de Elo).
 {
   const attrs = montarAtributos('centroavante', 'base');

@@ -142,7 +142,9 @@ export function criarPartida(cfg) {
     estado.golsMeu++;
     bump(14);
     const po = PESO_OFENSIVO[estado.classeId] ?? 0.5;
-    const foraDeCampo = estado.suspenso || estado.classeId === 'tecnico'; // não atua: gol/assist não são dele
+    // Fora de campo: suspenso (não joga), técnico (não joga), ou JÁ expulso neste
+    // jogo. Só afeta gols/assist NOVOS — o que foi feito antes da expulsão fica.
+    const foraDeCampo = estado.suspenso || estado.cartoes.vermelhoJog || estado.classeId === 'tecnico';
     let fezGol;
     if (foraDeCampo) fezGol = false;
     else if (modo === 'jogador') fezGol = true;
