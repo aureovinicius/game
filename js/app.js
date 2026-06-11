@@ -10,6 +10,7 @@ import { rolar, modificador } from './dice.js';
 import { novasConquistas, conquistaPorId } from './achievements.js';
 import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
 import { carregarNarrativa } from './narrador.js';
+import * as Audio from './audio.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
 import { animarDado } from './ui/dice-anim.js';
 import * as Screens from './ui/screens.js';
@@ -25,6 +26,7 @@ const app = {
     const [dados] = await Promise.all([carregarSelecoes(), carregarNarrativa()]);
     this.dados = dados;
     this.save = carregar();
+    Audio.init();
     this.irHome();
   },
 
@@ -82,6 +84,7 @@ const app = {
     });
 
     this._mountMatch(meu, adv);
+    Audio.ambiente(true);
     // cena de pré-jogo (IA ou offline)
     const usarIA = mestreOnline() && this.iaUsada < MAX_IA_POR_PARTIDA;
     const pre = await gerarCena({
@@ -92,8 +95,9 @@ const app = {
     if (pre.fonte === 'ia') this.iaUsada++;
     this._cenaPre = pre.texto;
     this._logLinha({ texto: pre.texto, tipo: 'cena' });
+    Audio.narrar(pre.texto, { tom: save.tom });
     this._setCtrl(`<button class="btn btn-grande" id="b-avancar">Apitar o início ▶</button>`);
-    document.getElementById('b-avancar').onclick = () => this._avancar();
+    document.getElementById('b-avancar').onclick = () => { Audio.apito(); this._avancar(); };
   },
 
   _mountMatch(meu, adv) {
@@ -141,6 +145,8 @@ const app = {
     for (const ev of eventos) {
       this._logLinha(ev);
       this._refreshHead();
+      if (ev.tipo === 'gol-meu') Audio.gol();
+      else if (ev.tipo === 'gol-adv') Audio.golAdv();
       await new Promise((r) => setTimeout(r, 260));
     }
   },
@@ -167,6 +173,7 @@ const app = {
     if (r.fonte === 'ia') this.iaUsada++;
 
     this._logLinha({ texto: `<span class="lance-tag">⚡ LANCE DECISIVO (${minuto}')</span> ${r.narrativa}`, tipo: 'lance' });
+    Audio.narrar(r.narrativa, { tom: save.tom });
 
     const e = this.eng.estado;
     const vantagem = e.momentum >= 30;
@@ -195,6 +202,7 @@ const app = {
     const save = this.save;
     const mod = modificador(save.attrs[opcao.stat]);
     const resultado = rolar(mod, opcao.cd, { vantagem, desvantagem });
+    Audio.dado();
     await animarDado(resultado, opcao.stat);
     const { eventos, encerraApos } = this.eng.resolverLance(opcao, resultado);
     await this._renderEventos(eventos);
@@ -208,6 +216,8 @@ const app = {
     const save = this.save;
     const adv = this.advAtual;
     this._setCtrl(`<div class="apitando">⏱️ apito final…</div>`);
+    Audio.apito();
+    Audio.ambiente(false);
 
     // cena de pós-jogo
     const e = this.eng.estado;
@@ -219,6 +229,8 @@ const app = {
       contexto: { placar: `${e.golsMeu}–${e.golsAdv}`, ganhou, empate, advTime: adv.name },
       usarIA,
     });
+    Audio.narrar(pos.texto, { tom: save.tom });
+    if (ganhou) Audio.vitoria(); else if (empate) Audio.empate(); else Audio.derrota();
 
     const resumo = aplicarPartida(save, this.eng, adv);
 
@@ -265,6 +277,7 @@ const app = {
       contexto: { campeao: save.carreira.campeao, vice: save.carreira.vice, fase: save.carreira.fase },
       usarIA,
     });
+    Audio.narrar(epi.texto, { tom: save.tom });
     if (!save.cronica.some((c) => c.tipo === 'epilogo')) {
       cronicar(save, { tipo: 'epilogo', titulo: 'Legado', texto: epi.texto });
       salvar(save);
