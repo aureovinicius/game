@@ -148,9 +148,30 @@ async function chamarClaude(env, model, system, user, schema, maxTokens) {
     throw new Error(`claude ${resp.status}: ${t.slice(0, 200)}`);
   }
   const msg = await resp.json();
+  logCusto(model, msg.usage);
   const bloco = (msg.content || []).find((b) => b.type === 'text');
   if (!bloco) throw new Error('sem texto na resposta');
   return JSON.parse(bloco.text);
+}
+
+// Preços por 1M de tokens (USD). Atualize se trocar de modelo/tabela.
+const PRECOS = {
+  'claude-haiku-4-5':  { in: 1.0, out: 5.0 },
+  'claude-sonnet-4-6': { in: 3.0, out: 15.0 },
+  'claude-opus-4-8':   { in: 5.0, out: 25.0 },
+};
+
+// Loga uso e custo estimado por chamada. Veja ao vivo com `npx wrangler tail`.
+// (entrada normal + escrita de cache 1.25x + leitura de cache 0.1x + saída)
+function logCusto(model, usage) {
+  if (!usage) return;
+  const p = PRECOS[model] || PRECOS['claude-haiku-4-5'];
+  const inTok = usage.input_tokens || 0;
+  const outTok = usage.output_tokens || 0;
+  const cacheRead = usage.cache_read_input_tokens || 0;
+  const cacheWrite = usage.cache_creation_input_tokens || 0;
+  const usd = (inTok * p.in + cacheWrite * p.in * 1.25 + cacheRead * p.in * 0.1 + outTok * p.out) / 1e6;
+  console.log(JSON.stringify({ custo: { model, inTok, outTok, cacheRead, cacheWrite, usd: Number(usd.toFixed(6)) } }));
 }
 
 // --- Defesas ----------------------------------------------------------------

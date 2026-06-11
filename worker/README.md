@@ -69,11 +69,25 @@ curl -s -X POST https://SEU-WORKER.workers.dev/cena \
 # -> {"texto":"..."}
 ```
 
-## Custo esperado
+## Custo esperado e como medir o real
 
-Com Haiku + saída estruturada + `max_tokens` baixo: **~US$ 0,05 por partida**,
-**~US$ 0,40–0,70 por campanha**. Acompanhe em
-https://console.anthropic.com/ → *Usage*.
+Com Haiku + saída estruturada + `max_tokens` baixo, a ordem de grandeza é de
+**centavos de dólar por partida** (cada chamada gira em torno de US$ 0,002).
+Para ver o **custo real por chamada** ao vivo enquanto joga:
+
+```bash
+npx wrangler tail
+# cada chamada imprime, ex.:
+# {"custo":{"model":"claude-haiku-4-5","inTok":..,"outTok":..,"usd":0.00xx}}
+```
+
+Some os `usd` da sessão para o custo da campanha. Também dá para conferir o
+agregado em https://console.anthropic.com/ → *Usage*.
+
+> **Nota sobre prompt caching:** o mínimo cacheável do Haiku 4.5 é ~4096 tokens
+> e a "Bíblia do Mundo" é bem menor que isso, então o `cache_control` não chega
+> a acionar (`cacheWrite`/`cacheRead` ficam 0 no log). Não atrapalha — os prompts
+> são minúsculos —, mas não conte com o cache como alavanca de custo aqui.
 
 ## Ajustes
 
