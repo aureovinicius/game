@@ -7,7 +7,7 @@
 // opções). A MECÂNICA (atributo, CD, tipo de lance) vem do motor e nunca é
 // decidida pela IA — barateia, evita exploits e mantém o balanceamento.
 import { MESTRE_PROXY_URL, IDIOMA } from './config.js';
-import { situacao, cena } from './narrador.js';
+import { situacao, cena, textoOpcao } from './narrador.js';
 
 export function mestreOnline() { return !!MESTRE_PROXY_URL; }
 
@@ -54,7 +54,12 @@ export async function gerarLance({ contexto, tom, classe, opcoesPadrao, usarIA }
     meuTla: contexto.meuTla, advTla: contexto.advTla,
   };
   const narrativa = situacao({ zona: contexto.zona || 'meio', tom, ctx });
-  return { narrativa, opcoes: opcoesPadrao, fonte: 'offline' };
+  // varia o texto das opções por tom (mantém a mecânica; fallback no texto fixo)
+  const opcoes = opcoesPadrao.map((o) => {
+    const t = textoOpcao({ acao: o.acao, tom });
+    return t ? { ...o, texto: t } : o;
+  });
+  return { narrativa, opcoes, fonte: 'offline' };
 }
 
 // Gera uma cena narrativa (pré-jogo, pós-jogo, epílogo). Devolve string.

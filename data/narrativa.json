@@ -323,5 +323,192 @@
         "Aposentado, {nome} jura que faria tudo de novo — só que com menos cãibra."
       ]
     }
+  },
+  "opcoes": {
+    "finalizar_primeira": {
+      "realista": ["Bater de primeira", "Finalizar sem dominar"],
+      "epico": ["Bater de primeira, na fé", "Mandar de primeira pra história"],
+      "comico": ["Chutar de primeira e já gritar gol", "Bater de primeira e fechar o olho"]
+    },
+    "girar_zagueiro": {
+      "realista": ["Girar sobre o zagueiro", "Girar e sair pra finalização"],
+      "epico": ["Girar sobre o zagueiro e encarar o gol", "Girar e desafiar o destino"],
+      "comico": ["Girar e deixar o zagueiro plantado", "Girar e sair pro abraço"]
+    },
+    "tocar_companheiro": {
+      "realista": ["Tocar pro companheiro melhor posto", "Rolar pro time finalizar"],
+      "epico": ["Servir o companheiro pra glória", "Rolar pro parceiro decidir"],
+      "comico": ["Tocar e fingir que foi tática", "Passar a batata quente pro colega"]
+    },
+    "cabecear": {
+      "realista": ["Cabecear pro gol", "Subir e testar firme"],
+      "epico": ["Subir mais alto que todos e cabecear", "Testar de cabeça pra eternidade"],
+      "comico": ["Cabecear e rezar", "Subir igual pipoca e testar"]
+    },
+    "chute_fora": {
+      "realista": ["Arriscar o chute de fora", "Bater de longe"],
+      "epico": ["Arriscar um chute de longe pra história", "Soltar a bomba de fora"],
+      "comico": ["Chutar de fora e torcer", "Soltar a perna e ver no que dá"]
+    },
+    "lancar_assistencia": {
+      "realista": ["Lançar nas costas da defesa", "Lançar na medida"],
+      "epico": ["Rasgar a defesa com um lançamento", "Lançar pra rasgar a zaga adversária"],
+      "comico": ["Lançar e gritar 'corre!'", "Mandar o lançamento e cruzar os dedos"]
+    },
+    "ultimo_passe": {
+      "realista": ["Achar o último passe", "Dar o passe decisivo"],
+      "epico": ["Encontrar o passe que decide tudo", "Servir o gol numa bandeja"],
+      "comico": ["Dar o passe e já pedir o crédito da assistência", "Achar o passe e comemorar antes"]
+    },
+    "conduzir": {
+      "realista": ["Conduzir e progredir", "Avançar com a bola dominada"],
+      "epico": ["Conduzir rumo ao ataque, sem medo", "Carregar a bola e a torcida junto"],
+      "comico": ["Conduzir tipo dono do campo", "Sair conduzindo e deixar a marcação pra trás"]
+    },
+    "driblar": {
+      "realista": ["Partir pra cima e driblar", "Encarar o marcador no drible"],
+      "epico": ["Encarar o marcador e driblar com ousadia", "Partir pra cima como nos velhos tempos"],
+      "comico": ["Tentar o drible e pagar de craque", "Driblar e torcer pra não cair"]
+    },
+    "cruzar": {
+      "realista": ["Cruzar na área", "Cruzar rasteiro pro meio"],
+      "epico": ["Erguer o cruzamento na medida da glória", "Cruzar pra área e acender o estádio"],
+      "comico": ["Cruzar e rezar pra alguém pegar", "Jogar na área e gritar 'sobe!'"]
+    },
+    "cortar_finalizar": {
+      "realista": ["Cortar pro meio e finalizar", "Cortar e bater no canto"],
+      "epico": ["Cortar pro meio e mirar a glória", "Cortar e soltar a finalização"],
+      "comico": ["Cortar pro meio igual nos vídeos", "Cortar e mandar ver"]
+    },
+    "dividida": {
+      "realista": ["Dividir firme", "Ir firme na dividida"],
+      "epico": ["Dividir com a alma", "Entrar firme como uma muralha"],
+      "comico": ["Dividir e mostrar quem manda", "Ir pra cima sem dó"]
+    },
+    "bote": {
+      "realista": ["Dar o bote no tempo certo", "Botar o pé e roubar"],
+      "epico": ["Dar o bote no instante exato", "Roubar a bola na hora certa"],
+      "comico": ["Dar o bote tipo gato", "Roubar a bola e sair correndo"]
+    },
+    "falta_spa": {
+      "realista": ["Fazer a falta tática", "Cortar o lance na falta"],
+      "epico": ["Sacrificar-se na falta tática", "Parar o ataque a qualquer custo"],
+      "comico": ["Fazer a falta 'sem querer'", "Derrubar e pedir desculpa depois"]
+    },
+    "sair_jogando": {
+      "realista": ["Sair jogando curto", "Construir de trás"],
+      "epico": ["Sair jogando com personalidade", "Construir do fundo com coragem"],
+      "comico": ["Sair jogando e quase se complicar", "Tentar o toque de craque lá atrás"]
+    },
+    "chutao": {
+      "realista": ["Dar o chutão e aliviar", "Mandar pra frente"],
+      "epico": ["Afastar o perigo com um chutão", "Espantar a ameaça pra longe"],
+      "comico": ["Dar o chutão pro espaço", "Mandar a bola pra bem longe"]
+    },
+    "gk_sair": {
+      "realista": ["Sair de cara e abafar", "Sair no tempo e fechar o ângulo"],
+      "epico": ["Sair de cara e desafiar o atacante", "Avançar e abraçar o perigo"],
+      "comico": ["Sair de cara e fechar o olho", "Voar pra cima e torcer"]
+    },
+    "gk_ficar": {
+      "realista": ["Esperar na linha e ler o lance", "Ficar e confiar no reflexo"],
+      "epico": ["Esperar firme, olhos na bola", "Aguardar o momento e reagir"],
+      "comico": ["Ficar quieto e rezar", "Esperar e fingir frieza"]
+    },
+    "gk_espalmar": {
+      "realista": ["Espalmar pro escanteio", "Mandar pra fora"],
+      "epico": ["Espalmar com tudo pro escanteio", "Defender e jogar pra longe"],
+      "comico": ["Espalmar pra qualquer lugar", "Socar a bola pro alto"]
+    },
+    "segurar_posicao": {
+      "realista": ["Segurar a posição", "Manter o posicionamento"],
+      "epico": ["Manter a posição com disciplina", "Segurar firme o seu lugar"],
+      "comico": ["Ficar quietinho no lugar", "Não inventar e segurar a posição"]
+    },
+    "cavar_penalti": {
+      "realista": ["Cavar o pênalti", "Buscar o contato na área"],
+      "epico": ["Forçar o pênalti decisivo", "Buscar a penalidade que muda tudo"],
+      "comico": ["Cavar o pênalti com um teatro", "Se jogar e pedir pênalti"]
+    },
+    "cavar_falta": {
+      "realista": ["Cavar a falta na ponta", "Buscar a falta"],
+      "epico": ["Forçar a falta em posição perigosa", "Arrancar a falta no sacrifício"],
+      "comico": ["Cavar a falta com drama", "Se jogar e pedir falta"]
+    },
+    "pivo": {
+      "realista": ["Fazer o pivô e segurar", "Segurar de costas pro gol"],
+      "epico": ["Segurar a bola como um gladiador", "Fazer o pivô e esperar o time chegar"],
+      "comico": ["Fazer o pivô e aguentar o tranco", "Segurar a bola feito poste"]
+    },
+    "tabelar": {
+      "realista": ["Tabelar e tentar o passe", "Trocar passes na tabela"],
+      "epico": ["Tabelar com o parceiro rumo ao gol", "Construir na tabela com classe"],
+      "comico": ["Tabelar e fingir que ensaiou", "Tocar e correr pra receber de volta"]
+    },
+    "primeiro_passe": {
+      "realista": ["Primeiro passe pro ataque", "Sair com o passe pra frente"],
+      "epico": ["Lançar o primeiro passe da jogada decisiva", "Iniciar o ataque com precisão"],
+      "comico": ["Tocar pra frente e lavar as mãos", "Dar o passe e cobrar o resto do time"]
+    },
+    "pressionar_saida": {
+      "realista": ["Pressionar a saída de bola", "Marcar a saída adversária"],
+      "epico": ["Sufocar a saída do adversário", "Pressionar sem dar trégua"],
+      "comico": ["Grudar no zagueiro adversário", "Ir pra cima e atazanar a saída deles"]
+    },
+    "tec_ofensivo": {
+      "realista": ["Entrar pra cima, postura ofensiva", "Mandar o time pro ataque"],
+      "epico": ["Lançar o time à ofensiva", "Entrar pra dominar desde o apito"],
+      "comico": ["Mandar geral pra frente e ver no que dá", "Entrar pra cima e esquecer a defesa"]
+    },
+    "tec_cauteloso": {
+      "realista": ["Entrar cauteloso e fechar os espaços", "Começar seguro atrás"],
+      "epico": ["Erguer a muralha desde o início", "Entrar fechado e paciente"],
+      "comico": ["Entrar trancado igual cofre", "Pendurar o ônibus na frente do gol"]
+    },
+    "tec_equilibrio": {
+      "realista": ["Equilíbrio: sentir o jogo primeiro", "Começar equilibrado"],
+      "epico": ["Equilíbrio: ler o adversário antes de atacar", "Entrar firme e paciente"],
+      "comico": ["Entrar no 'deixa a vida me levar'", "Começar morno e ver no que dá"]
+    },
+    "tec_pressing": {
+      "realista": ["Mandar pressionar a saída deles", "Subir a marcação"],
+      "epico": ["Sufocar a saída adversária", "Pressionar sem dar ar ao adversário"],
+      "comico": ["Mandar todo mundo grudar neles", "Pressionar tipo cobrador atrás de devedor"]
+    },
+    "tec_sub_ofensivo": {
+      "realista": ["Sangue novo no ataque", "Trocar por um atacante"],
+      "epico": ["Lançar o reforço ofensivo decisivo", "Sacar o cansado e armar o ataque"],
+      "comico": ["Botar o matador e cruzar os dedos", "Trocar e fingir que era o plano"]
+    },
+    "tec_administrar": {
+      "realista": ["Administrar a vantagem", "Controlar o jogo"],
+      "epico": ["Administrar com sabedoria a vantagem", "Conduzir o jogo com frieza"],
+      "comico": ["Segurar a magrela com unhas e dentes", "Administrar e roer as unhas"]
+    },
+    "tec_trancar": {
+      "realista": ["Trancar e segurar o resultado", "Fechar atrás"],
+      "epico": ["Erguer a muralha final", "Trancar com tudo o que tem"],
+      "comico": ["Pendurar o ônibus de vez", "Trancar e apelar pra fé"]
+    },
+    "tec_conversa": {
+      "realista": ["Bronca e ajuste no vestiário", "Conversar e corrigir"],
+      "epico": ["Inflamar o grupo com a fala certa", "Erguer a moral no discurso"],
+      "comico": ["Soltar a bronca do século", "Fazer o discurso de filme"]
+    },
+    "tec_allin": {
+      "realista": ["All-in: tudo no ataque", "Jogar tudo pra frente"],
+      "epico": ["Apostar tudo no ataque final", "Lançar todas as fichas no ataque"],
+      "comico": ["Mandar até o goleiro pro ataque", "All-in tipo aposta de bar"]
+    },
+    "tec_esquema": {
+      "realista": ["Mudar o esquema", "Trocar a formação"],
+      "epico": ["Surpreender com uma nova formação", "Reinventar o time no tabuleiro"],
+      "comico": ["Mudar tudo e torcer", "Inventar moda no esquema"]
+    },
+    "tec_encarar": {
+      "realista": ["Encarar o árbitro pela marcação", "Reclamar da arbitragem"],
+      "epico": ["Enfrentar o árbitro de cabeça erguida", "Cobrar justiça na beira do campo"],
+      "comico": ["Encarar o juiz e quase tomar vermelho", "Brigar com o árbitro e se arrepender"]
+    }
   }
 }

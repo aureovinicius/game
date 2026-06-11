@@ -55,6 +55,15 @@ export function situacao({ zona = 'meio', tom = 'realista', ctx = {} } = {}) {
   return preencher(tpl, ctx);
 }
 
+// Texto da opção de um lance, variado por tom, ligado pelo slug `acao`.
+// Devolve null quando não há variante no corpus (o chamador mantém o texto fixo).
+export function textoOpcao({ acao, tom = 'realista' } = {}) {
+  const grupo = acao && DB && DB.opcoes && DB.opcoes[acao];
+  if (!grupo) return null;
+  const lista = grupo[tom] || grupo.realista;
+  return pick(lista, `o:${acao}:${tom}`);
+}
+
 // Cena de pré/pós-jogo ou epílogo. Para 'pos', usa `resultado`
 // ('vitoria'|'empate'|'derrota').
 export function cena({ tipo = 'pre', tom = 'realista', resultado = 'vitoria', ctx = {} } = {}) {
