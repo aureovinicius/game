@@ -29,10 +29,10 @@ function ctx() {
   // Limiter + ganho de compensação no fim da cadeia: sobe o volume percebido
   // sem estourar (essencial no celular, onde o alto-falante é fraco).
   _comp = _ctx.createDynamicsCompressor();
-  _comp.threshold.value = -18; _comp.knee.value = 6; _comp.ratio.value = 8;
+  _comp.threshold.value = -24; _comp.knee.value = 6; _comp.ratio.value = 10;
   _comp.attack.value = 0.003; _comp.release.value = 0.25;
   _out = _ctx.createGain();
-  _out.gain.value = 1.9; // makeup
+  _out.gain.value = 3.0; // makeup (SFX + música mais altos; narração é à parte)
   _comp.connect(_out); _out.connect(_ctx.destination);
 
   _master = _ctx.createGain();
@@ -48,7 +48,7 @@ function ctx() {
 
   // barramento da trilha (mais baixo que os SFX)
   _bgmGain = _ctx.createGain();
-  _bgmGain.gain.value = 0.5;
+  _bgmGain.gain.value = 0.9;
   _bgmGain.connect(_master);
 
   return _ctx;

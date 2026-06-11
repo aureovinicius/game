@@ -40,7 +40,7 @@ function jogarUma(classeId, semente) {
   ok(e.minuto === 90, `minuto final = 90 (foi ${e.minuto})`);
   ok(e.golsMeu >= 0 && e.golsAdv >= 0, 'placar não-negativo');
   ok(e.golsJogador <= e.golsMeu, `gols do jogador (${e.golsJogador}) <= gols do time (${e.golsMeu})`);
-  ok(e.lancesUsados >= 4 && e.lancesUsados <= 8, `lances usados 4..8 (foram ${e.lancesUsados})`);
+  ok(e.lancesUsados <= 8 && (e.cartoes.vermelhoJog || e.lancesUsados >= 4), `lances usados 4..8 ou expulso (foram ${e.lancesUsados}, vermelho=${e.cartoes.vermelhoJog})`);
   ok(e.lancesRestantes >= 0, 'lances restantes >= 0');
   ok(e.arbitro.rigor >= -2 && e.arbitro.rigor <= 2, 'rigor do árbitro -2..2');
   ok(eng.notaJogador() >= 3 && eng.notaJogador() <= 10, 'nota 3..10');
@@ -87,6 +87,31 @@ for (let s = 300; s <= 340; s++) {
   decTec += e.lancesUsados; partidasTec++;
 }
 ok(decTec / partidasTec >= 3, `técnico decide em média >= 3 vezes (média ${(decTec / partidasTec).toFixed(1)})`);
+
+// Cartão/expulsão: vermelho encerra a participação no jogo.
+{
+  const attrs = montarAtributos('zagueiro', 'base');
+  const eng = criarPartida({ meuTime: teams[0], advTime: teams[5], classeId: 'zagueiro', attrs, fase: 'R16', mataMata: true, mando: 'neutro', semente: 7 });
+  eng.avancar();
+  const opVerm = { id: 'X', tipo: 'faltaTatica', stat: 'FIS', cd: 1, efeitos: { dogso: 'fora' } };
+  eng.resolverLance(opVerm, rolar(modificador(attrs.FIS), 1, { rng: () => 0.99 })); // d20=20 -> sucesso
+  ok(eng.estado.cartoes.vermelhoJog === true, 'falta DOGSO "fora" gera vermelho');
+  ok(eng.estado.lancesRestantes === 0, 'expulso zera lances restantes');
+  let g = 0, semLance = true;
+  while (!eng.estado.encerrada && g++ < 60) { if (eng.avancar().tipo === 'lance') semLance = false; }
+  ok(semLance, 'expulso não recebe mais lances até o fim');
+}
+
+// Partida suspensa: jogador não atua (sem lances, sem bônus de Elo).
+{
+  const attrs = montarAtributos('centroavante', 'base');
+  const eng = criarPartida({ meuTime: teams[0], advTime: teams[5], classeId: 'centroavante', attrs, fase: 'grupos', mataMata: false, mando: 'neutro', semente: 9, suspenso: true });
+  ok(eng.estado.bonusElo === 0, 'suspenso: bônus de Elo do jogador é 0');
+  let g = 0, semLance = true;
+  while (!eng.estado.encerrada && g++ < 60) { if (eng.avancar().tipo === 'lance') semLance = false; }
+  ok(semLance && eng.estado.lancesUsados === 0, 'suspenso: nenhum lance na partida');
+  ok(eng.estado.golsJogador === 0 && eng.estado.assistJogador === 0, 'suspenso: jogador não marca nem dá assistência');
+}
 
 // conquistas: primeiro gol dispara quando há gol
 const ctx = { classe: 'centroavante', carreira: { gols: 1, assist: 0, jogos: 1, vitorias: 1, golsSofridos: 0, cleanSheets: 0, maiorGoleada: 1, hatTricks: 0, zebras: 0, fase: 'grupos', campeao: false, vice: false }, ultimaPartida: {} };

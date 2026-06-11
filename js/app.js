@@ -75,18 +75,33 @@ const app = {
     save._eloMeuTime = meu.elo;
     this.iaUsada = 0;
 
+    const suspenso = !!save.suspensoProximo;
+    if (suspenso) { save.suspensoProximo = false; salvar(save); }
+
     this.eng = criarPartida({
       meuTime: meu, advTime: adv,
       classeId: save.classeId, attrs: save.attrs,
       fase: save.campanha.fase,
       mataMata: save.campanha.fase !== 'grupos',
       mando: 'neutro',
+      suspenso,
       semente: (save.campanha.semente + save.carreira.jogos * 7919) | 0,
     });
 
     this._mountMatch(meu, adv);
     Audio.bgmMenu(false);
     Audio.ambiente(true);
+
+    if (suspenso) {
+      const texto = `🟥 Suspenso! ${save.nome} cumpre suspensão e assiste da arquibancada — ${meu.tla} joga sem você.`;
+      this._cenaPre = texto;
+      this._logLinha({ texto, tipo: 'cena' });
+      Audio.narrar(texto, { tom: save.tom });
+      this._setCtrl(`<button class="btn btn-grande" id="b-avancar">Assistir o jogo ▶</button>`);
+      document.getElementById('b-avancar').onclick = () => { Audio.apito(); this._avancar(); };
+      return;
+    }
+
     // cena de pré-jogo (IA ou offline)
     const usarIA = mestreOnline() && this.iaUsada < MAX_IA_POR_PARTIDA;
     const pre = await gerarCena({

@@ -40,6 +40,7 @@ export function novoPersonagem({ nome, selecaoId, classeId, origemId, tom }) {
       concluida: false,
     },
     ultimaPartida: null,
+    suspensoProximo: false,
     conquistas: [],
     cronica: [],            // [{ tipo, titulo, texto, minuto? }]
   };
@@ -108,11 +109,15 @@ export function aplicarPartida(save, eng, advTime) {
   save.xp += xp;
   while (save.xp >= proximoNivel(save.nivel)) { save.xp -= proximoNivel(save.nivel); save.nivel++; }
 
+  // Expulsão (vermelho direto, 2 amarelos no jogo, ou técnico) => suspenso no próximo jogo.
+  save.suspensoProximo = !!(e.cartoes && (e.cartoes.vermelhoJog || e.tecnicoExpulso));
+
   save.ultimaPartida = {
     advNome: advTime.name, advTla: advTime.tla, advElo: advTime.elo,
     golsMeu: e.golsMeu, golsAdv: e.golsAdv,
     golsJogador: e.golsJogador, assistJogador: e.assistJogador,
     nota, ganhou, empate, perdeu, fase: e.fase, penaltis: e.resultadoPenaltis, xp,
+    expulso: save.suspensoProximo, suspenso: !!e.suspenso,
   };
 
   return save.ultimaPartida;

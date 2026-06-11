@@ -65,7 +65,8 @@ export function criarPartida(cfg) {
   // cfg: { meuTime, advTime, classeId, attrs, fase, mando ('casa'|'fora'|'neutro'),
   //        mataMata, semente }
   const rng = criarRng(cfg.semente);
-  const bonus = bonusEloJogador(cfg.classeId, cfg.attrs);
+  const suspenso = !!cfg.suspenso; // jogador/técnico cumprindo suspensão: não atua
+  const bonus = suspenso ? 0 : bonusEloJogador(cfg.classeId, cfg.attrs);
   const mando = cfg.mando === 'casa' ? 35 : cfg.mando === 'fora' ? -20 : 0;
   const meuElo = cfg.meuTime.elo + bonus + mando;
   const advElo = cfg.advTime.elo;
@@ -78,11 +79,12 @@ export function criarPartida(cfg) {
   // Quantidade de lances/decisões e quando ocorrem.
   const intensidade = clamp(1 - Math.abs(diff) / 320, 0, 1);
   const variacao = Math.floor(rng() * 3) - 1; // -1..+1
-  const alvoLances = modoTecnico ? 5 : clamp(Math.round(4 + intensidade * 3) + (cfg.mataMata ? 1 : 0) + variacao, 4, 8);
+  const alvoLances = suspenso ? 0 : modoTecnico ? 5 : clamp(Math.round(4 + intensidade * 3) + (cfg.mataMata ? 1 : 0) + variacao, 4, 8);
   // Campo: agenda por pressão. Técnico: gatilhos (início, intervalo, reta) + eventos de gol.
-  const agenda = modoTecnico ? [] : sortearAgenda(rng, alvoLances);
+  // Suspenso: sem agenda — o jogo roda sozinho (o jogador "assiste").
+  const agenda = (suspenso || modoTecnico) ? [] : sortearAgenda(rng, alvoLances);
   const agendaSet = new Set(agenda);
-  const agendaTecSet = modoTecnico ? new Set([1, 45, 76 + Math.floor(rng() * 8)]) : null;
+  const agendaTecSet = modoTecnico ? new Set(suspenso ? [] : [1, 45, 76 + Math.floor(rng() * 8)]) : null;
 
   const estado = {
     meuTime: cfg.meuTime,
@@ -104,6 +106,7 @@ export function criarPartida(cfg) {
     pendingLance: null,
     resultadoPenaltis: null,
     bonusElo: bonus,
+    suspenso,
     // novos
     arbitro: { rigor: Math.floor(rng() * 5) - 2 }, // -2..+2
     cartoes: { amareloJog: 0, vermelhoJog: false, amareloAdv: 0 },
@@ -139,8 +142,9 @@ export function criarPartida(cfg) {
     estado.golsMeu++;
     bump(14);
     const po = PESO_OFENSIVO[estado.classeId] ?? 0.5;
+    const foraDeCampo = estado.suspenso || estado.classeId === 'tecnico'; // não atua: gol/assist não são dele
     let fezGol;
-    if (estado.classeId === 'tecnico') fezGol = false; // técnico não marca
+    if (foraDeCampo) fezGol = false;
     else if (modo === 'jogador') fezGol = true;
     else if (modo === 'time') fezGol = false;
     else fezGol = rng() < po * 0.6;
@@ -151,7 +155,7 @@ export function criarPartida(cfg) {
       texto = `⚽ GOL DE ${estado.meuTime.tla}! Você marca! (${estado.golsMeu}–${estado.golsAdv})`;
     } else {
       let assistTxt = '';
-      if (estado.classeId !== 'tecnico' && modo === 'fluxo' && rng() < 0.5) { estado.assistJogador++; assistTxt = ' Assistência sua!'; }
+      if (!foraDeCampo && modo === 'fluxo' && rng() < 0.5) { estado.assistJogador++; assistTxt = ' Assistência sua!'; }
       texto = `⚽ GOL DE ${estado.meuTime.tla}!${assistTxt} (${estado.golsMeu}–${estado.golsAdv})`;
     }
     reg(estado.minuto, texto, 'gol-meu');
@@ -172,6 +176,7 @@ export function criarPartida(cfg) {
       estado.cartoes.amareloJog++;
       if (estado.cartoes.amareloJog >= 2 && !estado.cartoes.vermelhoJog) {
         estado.cartoes.vermelhoJog = true;
+        estado.lancesRestantes = 0; // expulso: não pega mais lances neste jogo
         estado.multMeu *= 0.78; estado.multAdv *= 1.18; bump(-12);
         eventos.push(efx(estado.minuto, `🟨🟥 Segundo amarelo (${motivo}) — você está EXPULSO! ${estado.meuTime.tla} com um a menos.`));
       } else {
@@ -179,6 +184,7 @@ export function criarPartida(cfg) {
       }
     } else {
       estado.cartoes.vermelhoJog = true;
+      estado.lancesRestantes = 0; // expulso: não pega mais lances neste jogo
       estado.multMeu *= 0.72; estado.multAdv *= 1.22; bump(-16);
       eventos.push(efx(estado.minuto, `🟥 VERMELHO — ${motivo}. Você está EXPULSO! ${estado.meuTime.tla} com um a menos.`));
     }
@@ -226,7 +232,7 @@ export function criarPartida(cfg) {
       estado.minuto++;
 
       if (modoTecnico) {
-        if (estado.lancesUsados < 7) {
+        if (!suspenso && !estado.tecnicoExpulso && estado.lancesUsados < 7) {
           if (estado._gatEvt && estado.minuto >= estado._gatEvt.min) {
             const g = estado._gatEvt.tipo; estado._gatEvt = null;
             estado.pendingLance = { minuto: estado.minuto, zona: g };
@@ -243,7 +249,7 @@ export function criarPartida(cfg) {
             return { tipo: 'lance', minuto: estado.minuto, eventos };
           }
         }
-      } else if (agendaSet.has(estado.minuto) && estado.lancesRestantes > 0) {
+      } else if (agendaSet.has(estado.minuto) && estado.lancesRestantes > 0 && !estado.cartoes.vermelhoJog) {
         const disc = estado.lancesUsados > 0 && rng() < 0.08;
         estado.pendingLance = { minuto: estado.minuto, zona: disc ? 'disciplina' : zonaDoLance() };
         return { tipo: 'lance', minuto: estado.minuto, eventos };
@@ -259,7 +265,7 @@ export function criarPartida(cfg) {
       else if (r < pMeu + pAdv) golAdv(eventos);
 
       // técnico: um gol (seu ou sofrido) agenda uma decisão de reação logo em seguida
-      if (modoTecnico && !estado._gatEvt && estado.lancesUsados < 7 && estado.minuto < 88) {
+      if (modoTecnico && !suspenso && !estado.tecnicoExpulso && !estado._gatEvt && estado.lancesUsados < 7 && estado.minuto < 88) {
         if (estado.golsMeu > antesMeu) estado._gatEvt = { min: estado.minuto + 1, tipo: 'fez' };
         else if (estado.golsAdv > antesAdv) estado._gatEvt = { min: estado.minuto + 1, tipo: 'sofreu' };
       }
@@ -376,7 +382,7 @@ export function criarPartida(cfg) {
       case 'provocar': {
         if (estado.classeId === 'tecnico') {
           if (sucesso) { eventos.push(efx(minuto, '🗣️ Você pressiona o árbitro da beira e impõe respeito.')); bump(4); }
-          else { estado.tecnicoExpulso = true; bump(-6); eventos.push(efx(minuto, '🟥 Expulso da área técnica! Você vai pra arquibancada e a leitura do jogo piora.')); }
+          else { estado.tecnicoExpulso = true; estado.lancesRestantes = 0; bump(-6); eventos.push(efx(minuto, '🟥 Expulso da área técnica! Você vai pra arquibancada — sem mais decisões hoje.')); }
           break;
         }
         if (sucesso) {
