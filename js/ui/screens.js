@@ -15,7 +15,9 @@ export function setScreen(html) {
 
 function escudo(time, cls = 'crest') {
   if (!time) return '';
-  return `<img class="${cls}" src="${time.crest}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+  if (time.crest) return `<img class="${cls}" src="${time.crest}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+  const fs = cls.includes('grande') ? '30px' : '18px';
+  return `<span class="${cls}" style="display:inline-flex;align-items:center;justify-content:center;font-size:${fs}">⚽</span>`;
 }
 function modTxt(v) { const m = modificador(v); return (m >= 0 ? '+' : '') + m; }
 
@@ -32,7 +34,7 @@ export function renderHome(app) {
         <button class="btn ${temSave ? '' : 'btn-grande'}" id="b-nova">＋ Nova carreira</button>
         ${temSave ? `<button class="btn btn-ghost" id="b-apagar">🗑 Apagar carreira</button>` : ''}
       </div>
-      <p class="rodape">2026 · 48 seleções · Mestre narrado por IA</p>
+      <p class="rodape">5 Copas, de 1934 a 2026 · jogável offline</p>
     </section>`);
   if (temSave) document.getElementById('b-continuar').onclick = () => app.irHub();
   document.getElementById('b-nova').onclick = () => app.novaCarreiraTela();

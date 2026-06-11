@@ -49,8 +49,22 @@ const I18N = {
   },
 };
 
+// Cultura das seleções históricas (TLAs que não estão na base de 2026).
+const CULTURA_HIST = {
+  ITA: 'it', RFA: 'de', URS: 'slav', YUG: 'slav', TCH: 'slav', HUN: 'slav',
+  ROU: 'slav', BUL: 'slav', SVN: 'slav', POL: 'slav', RUS: 'slav',
+  URU: 'es', PER: 'es', SLV: 'es', CRC: 'es', DEN: 'nord', IRL: 'en',
+  SCO: 'en', ISR: 'ar', CHN: 'ko', SEN: 'fr', CMR: 'fr', NGA: 'en',
+};
+function culturaDe(tla) { return CULTURA[tla] || CULTURA_HIST[tla] || 'en'; }
+function hashId(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (Math.imul(h, 31) + s.charCodeAt(i)) | 0; return h >>> 0; }
+
 // Pools de nomes por cultura (prenome + sobrenome).
 const P = {
+  it: {
+    first: ['Marco', 'Alessandro', 'Andrea', 'Giuseppe', 'Francesco', 'Lorenzo', 'Matteo', 'Roberto', 'Paolo', 'Giovanni', 'Stefano', 'Daniele', 'Federico', 'Antonio', 'Riccardo', 'Luca', 'Davide', 'Simone', 'Gianluca', 'Fabio'],
+    last: ['Rossi', 'Russo', 'Ferrari', 'Esposito', 'Bianchi', 'Romano', 'Colombo', 'Ricci', 'Marino', 'Greco', 'Bruno', 'Gallo', 'Conti', 'De Luca', 'Mancini', 'Costa', 'Giordano', 'Rizzo', 'Lombardi', 'Moretti'],
+  },
   pt: {
     first: ['João', 'Pedro', 'Lucas', 'Gabriel', 'Matheus', 'Rafael', 'Bruno', 'Diego', 'Thiago', 'Felipe', 'Rodrigo', 'André', 'Vinícius', 'Caio', 'Gustavo', 'Leonardo', 'Carlos', 'Paulo', 'Ricardo', 'Marcelo'],
     last: ['Silva', 'Santos', 'Oliveira', 'Souza', 'Pereira', 'Costa', 'Almeida', 'Ferreira', 'Rodrigues', 'Gomes', 'Martins', 'Araújo', 'Ribeiro', 'Carvalho', 'Barbosa', 'Cardoso', 'Nascimento', 'Moreira', 'Lima', 'Fernandes'],
@@ -106,9 +120,9 @@ const P = {
 };
 
 function gerarNomes(team) {
-  const cult = CULTURA[team.tla] || 'en';
-  const pool = P[cult] || P.en;
-  const rng = rngDe(team.id || 1);
+  const pool = P[culturaDe(team.tla)] || P.en;
+  const seed = typeof team.id === 'number' ? team.id : hashId(String(team.id));
+  const rng = rngDe(seed || 1);
   const usados = new Set();
   const nomes = [];
   let tentativas = 0;
@@ -124,6 +138,13 @@ function gerarNomes(team) {
 
 const nomes = {};
 for (const t of teams) nomes[t.id] = gerarNomes(t);
+
+// nomes também para as seleções históricas (1934/1954/1970/2002)
+const copas = JSON.parse(readFileSync(resolve(dataDir, 'copas-historicas.json'), 'utf8')).eras;
+for (const era of copas) {
+  if (!era.teams) continue;
+  for (const t of era.teams) nomes[t.id] = gerarNomes(t);
+}
 
 writeFileSync(resolve(dataDir, 'nomes.json'), JSON.stringify(nomes) + '\n');
 writeFileSync(resolve(dataDir, 'selecoes-i18n.json'), JSON.stringify(I18N, null, 2) + '\n');

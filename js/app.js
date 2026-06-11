@@ -142,7 +142,7 @@ const app = {
     this._refreshHead();
   },
 
-  _crest(t) { return `<img class="crest" src="${t.crest}" alt="" onerror="this.style.display='none'">`; },
+  _crest(t) { return t.crest ? `<img class="crest" src="${t.crest}" alt="" onerror="this.style.display='none'">` : `<span class="crest" style="display:inline-flex;align-items:center;justify-content:center;font-size:18px">⚽</span>`; },
 
   _refreshHead() {
     const e = this.eng.estado;

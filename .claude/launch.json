@@ -4,8 +4,8 @@
     {
       "name": "cronicas",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8007"],
-      "port": 8007
+      "runtimeArgs": ["-m", "http.server", "8008"],
+      "port": 8008
     }
   ]
 }
