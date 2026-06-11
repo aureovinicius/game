@@ -4,7 +4,7 @@
 // (a chave ANTHROPIC fica no Worker, nunca no navegador). Deixe '' para jogar
 // 100% offline com os eventos pré-escritos (custo zero).
 //   ex.: 'https://cronicas-mestre.SEU-SUBDOMINIO.workers.dev'
-export const MESTRE_PROXY_URL = '';
+export const MESTRE_PROXY_URL = 'https://cronicas-mestre.aureovinicius-a0d.workers.dev';
 
 // Quantos "Lances Decisivos" (intervenções de RPG) o jogador tem por partida.
 export const LANCES_POR_PARTIDA = 3;
