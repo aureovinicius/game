@@ -7,6 +7,7 @@
 // opções). A MECÂNICA (atributo, CD, tipo de lance) vem do motor e nunca é
 // decidida pela IA — barateia, evita exploits e mantém o balanceamento.
 import { MESTRE_PROXY_URL, IDIOMA } from './config.js';
+import { situacao, cena } from './narrador.js';
 
 export function mestreOnline() { return !!MESTRE_PROXY_URL; }
 
@@ -47,7 +48,13 @@ export async function gerarLance({ contexto, tom, classe, opcoesPadrao, usarIA }
       }
     } catch { /* cai no offline */ }
   }
-  return { narrativa: lanceOffline(contexto, classe), opcoes: opcoesPadrao, fonte: 'offline' };
+  const ctx = {
+    minuto: contexto.minuto, placar: contexto.placar,
+    meuTime: contexto.meuTime, advTime: contexto.advTime,
+    meuTla: contexto.meuTla, advTla: contexto.advTla,
+  };
+  const narrativa = situacao({ zona: contexto.zona || 'meio', tom, ctx });
+  return { narrativa, opcoes: opcoesPadrao, fonte: 'offline' };
 }
 
 // Gera uma cena narrativa (pré-jogo, pós-jogo, epílogo). Devolve string.
@@ -58,47 +65,11 @@ export async function gerarCena({ tipo, contexto, tom, personagem, usarIA }) {
       if (data && data.texto) return { texto: String(data.texto).slice(0, 700), fonte: 'ia' };
     } catch { /* offline */ }
   }
-  return { texto: cenaOffline(tipo, contexto, personagem, tom), fonte: 'offline' };
-}
-
-// --- Biblioteca offline -----------------------------------------------------
-
-function pick(arr, seed) {
-  const i = Math.abs(Math.floor((seed ?? Math.random() * 1e6))) % arr.length;
-  return arr[i];
-}
-
-function lanceOffline(ctx, classe) {
-  const min = ctx.minuto;
-  const placar = ctx.placar;
-  const baseGoleiro = [
-    `Aos ${min}', o atacante adversário escapa na cara do gol. O estádio prende a respiração (${placar}).`,
-    `Escanteio perigoso aos ${min}'. A bola sobe na pequena área e sobra para o ataque rival.`,
-  ];
-  const baseLinha = [
-    `Aos ${min}', a bola chega limpa nos seus pés na entrada da área. Dois marcadores fecham o espaço (${placar}).`,
-    `Contra-ataque aos ${min}'! Você avança com a defesa adversária desorganizada.`,
-    `Falta frontal perigosa aos ${min}'. Todo o banco se levanta — a chance é sua (${placar}).`,
-  ];
-  const base = classe === 'goleiro' ? baseGoleiro : baseLinha;
-  return pick(base, min);
-}
-
-function cenaOffline(tipo, ctx, personagem, tom) {
-  const nome = personagem?.nome || 'você';
-  if (tipo === 'pre') {
-    const opts = [
-      `O vestiário cheira a liniment e nervosismo. ${nome} aperta a chuteira e encara o gramado pelo túnel. ${ctx.advTime} espera do outro lado. É a hora.`,
-      `O hino ecoa pelo estádio lotado. ${nome} fecha os olhos por um instante — todo o caminho até aqui pesa nos ombros, e levanta junto. Contra ${ctx.advTime}, vale a história.`,
-    ];
-    return pick(opts);
-  }
-  if (tipo === 'pos') {
-    const venceu = ctx.ganhou;
-    if (venceu) return `Apito final: ${ctx.placar}. ${nome} respira fundo no centro do gramado, a torcida cantando seu nome. Mais um capítulo escrito na própria lenda.`;
-    if (ctx.empate) return `Apito final: ${ctx.placar}. Um empate amargo. ${nome} caminha cabisbaixo, mas a Copa ainda guarda páginas em branco.`;
-    return `Apito final: ${ctx.placar}. A derrota dói. ${nome} ergue a cabeça da grama — quem constrói uma história sabe que reveses fazem parte dela.`;
-  }
-  // epílogo
-  return `Quando ${nome} pendurou as chuteiras, restou a crônica: uma Copa vivida intensamente, com gols, suor e decisões que ninguém mais tomaria igual. A taça pode não ter vindo — mas a lenda, essa, ficou.`;
+  const resultado = contexto.ganhou ? 'vitoria' : contexto.empate ? 'empate' : 'derrota';
+  const ctx = {
+    nome: personagem?.nome || 'você',
+    meuTime: contexto.meuTime, advTime: contexto.advTime,
+    placar: contexto.placar, fase: contexto.fase,
+  };
+  return { texto: cena({ tipo, tom, resultado, ctx }), fonte: 'offline' };
 }

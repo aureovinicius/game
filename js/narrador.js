@@ -1,0 +1,76 @@
+// Narrador offline — consome o corpus (data/narrativa.json) e devolve texto
+// pronto, preenchendo os slots ({minuto}, {advTime}, ...) com o estado da
+// partida. É o que dá variedade ao jogo SEM chamar a IA: molde + encaixe.
+//
+// Uso:
+//   await carregarNarrativa();                 // uma vez, no início do app
+//   situacao({ zona, tom, ctx });              // texto da situação do lance
+//   cena({ tipo, tom, resultado, ctx });       // pré/pós/epílogo
+//
+// Em Node (testes) dá pra injetar o corpus com setNarrativa(obj).
+
+let DB = null;
+
+export async function carregarNarrativa() {
+  if (DB) return DB;
+  const resp = await fetch('data/narrativa.json', { cache: 'force-cache' });
+  if (!resp.ok) throw new Error('Falha ao carregar narrativa');
+  DB = await resp.json();
+  return DB;
+}
+
+export function setNarrativa(obj) { DB = obj; }
+export function narrativaCarregada() { return !!DB; }
+
+function pick(arr) {
+  if (!arr || !arr.length) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Preenche {slots} a partir do ctx; slots ausentes viram '' e a frase é limpa.
+function preencher(tpl, ctx) {
+  if (!tpl) return '';
+  return tpl
+    .replace(/\{(\w+)\}/g, (_, k) => (ctx && ctx[k] != null ? String(ctx[k]) : ''))
+    .replace(/\s+([.,!?'])/g, '$1')   // tira espaço antes de pontuação
+    .replace(/\(\s*\)/g, '')          // remove parênteses vazios ("()")
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+// Situação do Lance Decisivo, por zona (def/meio/atk/disciplina) e tom.
+export function situacao({ zona = 'meio', tom = 'realista', ctx = {} } = {}) {
+  const grupo = DB && DB.situacoes && DB.situacoes[zona];
+  const lista = grupo ? (grupo[tom] || grupo.realista) : null;
+  const tpl = pick(lista);
+  if (!tpl) return fallbackSituacao(ctx);
+  return preencher(tpl, ctx);
+}
+
+// Cena de pré/pós-jogo ou epílogo. Para 'pos', usa `resultado`
+// ('vitoria'|'empate'|'derrota').
+export function cena({ tipo = 'pre', tom = 'realista', resultado = 'vitoria', ctx = {} } = {}) {
+  const raiz = DB && DB.cenas && DB.cenas[tipo];
+  let lista = null;
+  if (tipo === 'pos') {
+    const porResultado = raiz && raiz[resultado];
+    lista = porResultado ? (porResultado[tom] || porResultado.realista) : null;
+  } else {
+    lista = raiz ? (raiz[tom] || raiz.realista) : null;
+  }
+  const tpl = pick(lista);
+  if (!tpl) return fallbackCena(tipo, ctx);
+  return preencher(tpl, ctx);
+}
+
+// Fallbacks mínimos caso o corpus não tenha carregado (rede off no 1º acesso).
+function fallbackSituacao(ctx) {
+  const m = ctx.minuto || '';
+  return `Aos ${m}', a jogada se desenha e a decisão é sua.`.replace(" Aos '", " A jogada");
+}
+function fallbackCena(tipo, ctx) {
+  const nome = ctx.nome || 'você';
+  if (tipo === 'pre') return `${nome} entra em campo. É hora de jogar.`;
+  if (tipo === 'epilogo') return `A história de ${nome} nesta Copa fica para sempre.`;
+  return `Fim de jogo: ${ctx.placar || ''}.`.trim();
+}

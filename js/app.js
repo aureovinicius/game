@@ -9,6 +9,7 @@ import { criarPartida } from './engine.js';
 import { rolar, modificador } from './dice.js';
 import { novasConquistas, conquistaPorId } from './achievements.js';
 import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
+import { carregarNarrativa } from './narrador.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
 import { animarDado } from './ui/dice-anim.js';
 import * as Screens from './ui/screens.js';
@@ -21,7 +22,8 @@ const app = {
   iaUsada: 0,
 
   async iniciar() {
-    this.dados = await carregarSelecoes();
+    const [dados] = await Promise.all([carregarSelecoes(), carregarNarrativa()]);
+    this.dados = dados;
     this.save = carregar();
     this.irHome();
   },
