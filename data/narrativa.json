@@ -509,6 +509,86 @@
       "realista": ["Encarar o árbitro pela marcação", "Reclamar da arbitragem"],
       "epico": ["Enfrentar o árbitro de cabeça erguida", "Cobrar justiça na beira do campo"],
       "comico": ["Encarar o juiz e quase tomar vermelho", "Brigar com o árbitro e se arrepender"]
+    },
+    "gk_driblar": {
+      "realista": ["Driblar o atacante na área", "Tentar passar pelo atacante"],
+      "epico": ["Encarar o atacante e driblar na própria área", "Desafiar o destino driblando na área"],
+      "comico": ["Driblar na área e quase ter um treco", "Driblar o atacante e apostar o coração"]
+    },
+    "lancar_contra": {
+      "realista": ["Lançar rápido pro contra-ataque", "Lançar pra frente na saída"],
+      "epico": ["Disparar o contra-ataque com um lançamento", "Lançar e armar o golpe rápido"],
+      "comico": ["Lançar e gritar 'corre, corre!'", "Chutar pra frente e torcer pelo contra"]
+    },
+    "segurar": {
+      "realista": ["Segurar e reorganizar", "Acalmar o jogo"],
+      "epico": ["Segurar firme e reorganizar as linhas", "Respirar e retomar o controle"],
+      "comico": ["Segurar e respirar fundo", "Dar uma acalmada na zona"]
+    },
+    "falta_dogso": {
+      "realista": ["Segurar o atacante (último homem)", "Derrubar pra evitar o gol"],
+      "epico": ["Sacrificar-se: a falta do último homem", "Parar o gol custe o que custar"],
+      "comico": ["Agarrar o atacante e aceitar o vermelho", "Derrubar e já ir andando pro chuveiro"]
+    },
+    "recuar_posse": {
+      "realista": ["Tocar no goleiro e recomeçar", "Recuar e manter a posse"],
+      "epico": ["Recuar com calma e reconstruir", "Voltar a bola e recomeçar a trama"],
+      "comico": ["Devolver pro goleiro e respirar", "Recuar e fingir que é tática"]
+    },
+    "apoiar_subir": {
+      "realista": ["Apoiar subindo (deixa espaço)", "Avançar pela lateral"],
+      "epico": ["Subir ao ataque e arriscar o flanco", "Lançar-se ao apoio, sem medo do contra"],
+      "comico": ["Subir e esquecer que tem que voltar", "Apoiar e rezar pra não levar contra"]
+    },
+    "tocar_manter": {
+      "realista": ["Tocar de lado e manter", "Tocar curto e segurar a bola"],
+      "epico": ["Manter a posse com paciência", "Tocar com sabedoria e controlar"],
+      "comico": ["Tocar de lado e enrolar", "Ficar no toque toque pra ninguém reclamar"]
+    },
+    "falta_cobranca": {
+      "realista": ["Cobrar a falta no ângulo", "Bater a falta no gol"],
+      "epico": ["Cobrar a falta mirando o ângulo da glória", "Soltar a falta rumo ao ângulo"],
+      "comico": ["Cobrar no ângulo e já comemorar", "Bater a falta e apelar pra mira"]
+    },
+    "ajudar_marcacao": {
+      "realista": ["Voltar e ajudar na marcação", "Recompor a defesa"],
+      "epico": ["Voltar e dobrar a marcação com raça", "Descer pra blindar a defesa"],
+      "comico": ["Voltar correndo igual quem perdeu o busão", "Descer pra ajudar e reclamar baixinho"]
+    },
+    "tec_manter": {
+      "realista": ["Manter e ajustar na orientação", "Não mexer ainda"],
+      "epico": ["Confiar no plano e ajustar de longe", "Manter a calma e orientar do banco"],
+      "comico": ["Não mexer e fingir confiança", "Deixar como tá pra ver como fica"]
+    },
+    "tec_baixar_ritmo": {
+      "realista": ["Segurar a posse e baixar o ritmo", "Cadenciar o jogo"],
+      "epico": ["Cadenciar o jogo com maestria", "Baixar o ritmo e controlar o tempo"],
+      "comico": ["Amarrar o jogo de vez", "Mandar fazer cera com elegância"]
+    },
+    "tec_reforcar": {
+      "realista": ["Reforçar o meio e segurar", "Botar um volante"],
+      "epico": ["Blindar o meio-campo", "Reforçar o miolo e segurar firme"],
+      "comico": ["Botar mais um cabeção no meio", "Lotar o meio de marcador"]
+    },
+    "tec_segurar": {
+      "realista": ["Segurar a cabeça e orientar da beira", "Manter a calma no banco"],
+      "epico": ["Manter a frieza na tempestade", "Conter-se e comandar com a cabeça fria"],
+      "comico": ["Respirar fundo e contar até dez", "Segurar a língua (tarefa difícil)"]
+    },
+    "segurar_cabeca": {
+      "realista": ["Segurar a cabeça e seguir o jogo", "Ignorar e focar na bola"],
+      "epico": ["Engolir a raiva e seguir firme", "Dominar o próprio sangue e jogar"],
+      "comico": ["Contar até dez e seguir", "Fingir que não ouviu e tocar a bola"]
+    },
+    "provocar": {
+      "realista": ["Provocar o marcador pra tirá-lo do sério", "Cutucar o adversário"],
+      "epico": ["Provocar o rival e quebrar o sangue-frio dele", "Acender o pavio do adversário"],
+      "comico": ["Provocar o marcador com uma risadinha", "Cutucar a onça com vara curta"]
+    },
+    "reclamar": {
+      "realista": ["Ir reclamar com o árbitro", "Reclamar da marcação"],
+      "epico": ["Confrontar o árbitro pela injustiça", "Cobrar o árbitro de cabeça erguida"],
+      "comico": ["Ir tirar satisfação e quase tomar amarelo", "Reclamar e fingir indignação"]
     }
   }
 }
