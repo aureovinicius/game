@@ -71,9 +71,10 @@ curl -s -X POST https://SEU-WORKER.workers.dev/cena \
 
 ## Custo esperado e como medir o real
 
-Com Haiku + saída estruturada + `max_tokens` baixo, a ordem de grandeza é de
-**centavos de dólar por partida** (cada chamada gira em torno de US$ 0,002).
-Para ver o **custo real por chamada** ao vivo enquanto joga:
+Custo real medido em produção (Haiku 4.5): **~US$ 0,0013 por chamada**
+(`/cena` ≈ US$ 0,0012, `/lance` ≈ US$ 0,0014). Isso dá **menos de 1 centavo por
+partida** e **~US$ 0,05–0,07 por campanha completa** — cerca de 15 campanhas por
+US$ 1. Para ver o custo por chamada ao vivo enquanto joga:
 
 ```bash
 npx wrangler tail

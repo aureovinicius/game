@@ -54,7 +54,9 @@ A IA fica atrás de um Cloudflare Worker para a chave nunca ir ao navegador.
 - **Prompt caching** no bloco fixo de regras/tom.
 - **Cap por partida** (`MAX_IA_POR_PARTIDA`) + **fallback offline**.
 
-Estimativa: **~US$ 0,05 por partida** / **~US$ 0,40–0,70 por campanha** com Haiku.
+Custo real medido (Haiku 4.5): **~US$ 0,0013 por chamada** → **menos de 1 centavo
+por partida** e **~US$ 0,05–0,07 por campanha completa**. Veja o custo ao vivo com
+`npx wrangler tail` (cada chamada loga os tokens e o USD).
 
 ## Estrutura
 
