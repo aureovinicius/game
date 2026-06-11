@@ -11,8 +11,15 @@ const NOME_FASE = {
 };
 export function nomeFase(f) { return NOME_FASE[f] || f; }
 
-export function novoPersonagem({ nome, selecaoId, classeId, origemId, tom }) {
+export function novoPersonagem({ nome, selecaoId, classeId, origemId, tom, eraId = '2026', formato }) {
   const attrs = montarAtributos(classeId, origemId);
+  // Formato da era define a campanha: nº de jogos de grupo e as fases de mata-mata.
+  const fmt = formato || { grupos: { n: 12, tamanho: 4, jogos: 3 }, mataMata: ['R32', 'R16', 'quartas', 'semi', 'final'] };
+  const temGrupos = !!fmt.grupos;
+  const jogosGrupo = temGrupos ? fmt.grupos.jogos : 0;
+  const matamata = (fmt.mataMata || []).slice();
+  const fases = (temGrupos ? ['grupos'] : []).concat(matamata, ['fim']);
+  const faseInicial = temGrupos ? 'grupos' : matamata[0];
   return {
     versao: SAVE_VERSION,
     criadoEm: new Date().toISOString(),
@@ -27,11 +34,16 @@ export function novoPersonagem({ nome, selecaoId, classeId, origemId, tom }) {
     carreira: {
       gols: 0, assist: 0, jogos: 0, vitorias: 0, empates: 0, derrotas: 0,
       golsSofridos: 0, cleanSheets: 0, maiorGoleada: 0, hatTricks: 0, zebras: 0,
-      fase: 'grupos', campeao: false, vice: false, melhorNota: 0,
+      fase: faseInicial, campeao: false, vice: false, melhorNota: 0,
     },
     campanha: {
-      fase: 'grupos',
-      jogoIndex: 0,          // 0..2 na fase de grupos
+      eraId,
+      temGrupos,
+      jogosGrupo,
+      matamata,
+      fases,
+      fase: faseInicial,
+      jogoIndex: 0,          // 0..(jogosGrupo-1) na fase de grupos
       pontosGrupo: 0,
       jaEnfrentados: [],
       proximoAdvId: null,
@@ -74,10 +86,10 @@ export function definirProximoAdversario(dados, save) {
     camp.proximoAdvId = adv ? adv.id : null;
     return adv;
   }
-  // mata-mata
-  const faseIdx = FASES.indexOf(camp.fase);
+  // mata-mata: profundidade = posição da fase dentro do mata-mata da era
+  const roundDepth = Math.max(0, (camp.matamata || []).indexOf(camp.fase));
   const rng = () => Math.random();
-  const adv = adversarioMataMata(dados, save.selecaoId, faseIdx, rng, camp.jaEnfrentados);
+  const adv = adversarioMataMata(dados, save.selecaoId, roundDepth, rng, camp.jaEnfrentados);
   camp.proximoAdvId = adv ? adv.id : null;
   return adv;
 }
@@ -135,16 +147,17 @@ export function avancarCampanha(save, ultima, resolverGrupoFn) {
     camp.pontosGrupo += ultima.ganhou ? 3 : ultima.empate ? 1 : 0;
     camp.jaEnfrentados.push(save.campanha.proximoAdvId);
     camp.jogoIndex++;
-    if (camp.jogoIndex < 3) {
-      return { fase: 'grupos', avancou: true, descricao: `Próximo jogo da fase de grupos (${camp.jogoIndex + 1}/3).` };
+    if (camp.jogoIndex < camp.jogosGrupo) {
+      return { fase: 'grupos', avancou: true, descricao: `Próximo jogo da fase de grupos (${camp.jogoIndex + 1}/${camp.jogosGrupo}).` };
     }
     // fim da fase de grupos: resolve classificação
     const res = resolverGrupoFn(save);
     if (res.classificou) {
-      camp.fase = 'R32';
+      const prox = camp.matamata[0];
+      camp.fase = prox;
       camp.jaEnfrentados = [];
-      save.carreira.fase = 'R32';
-      return { fase: 'R32', avancou: true, classificou: true, descricao: res.descricao };
+      save.carreira.fase = prox;
+      return { fase: prox, avancou: true, classificou: true, descricao: res.descricao };
     } else {
       camp.eliminado = true;
       camp.concluida = true;
@@ -170,10 +183,11 @@ export function avancarCampanha(save, ultima, resolverGrupoFn) {
     camp.concluida = true;
     return { fase: 'fim', avancou: true, campeao: true, descricao: 'CAMPEÃO DO MUNDO!' };
   }
-  const idx = FASES.indexOf(camp.fase);
-  camp.fase = FASES[idx + 1];
-  save.carreira.fase = camp.fase;
-  return { fase: camp.fase, avancou: true, descricao: `Classificado para ${nomeFase(camp.fase)}.` };
+  const idx = camp.matamata.indexOf(camp.fase);
+  const prox = camp.matamata[idx + 1] || 'fim';
+  camp.fase = prox;
+  save.carreira.fase = prox;
+  return { fase: prox, avancou: true, descricao: `Classificado para ${nomeFase(prox)}.` };
 }
 
 // Simula o resto do grupo por Elo para decidir se o jogador classifica (top 2).

@@ -58,3 +58,32 @@ export function adversarioMataMata(dados, selecaoId, faseIdx, rng = Math.random,
 export function expectativaElo(eloA, eloB) {
   return 1 / (1 + Math.pow(10, -(eloA - eloB) / 400));
 }
+
+// --- Eras / níveis de dificuldade (copas históricas) -----------------------
+let _eras = null;
+
+export async function carregarEras() {
+  if (_eras) return _eras;
+  const resp = await fetch('data/copas-historicas.json', { cache: 'force-cache' });
+  if (!resp.ok) throw new Error('Falha ao carregar copas históricas');
+  _eras = (await resp.json()).eras || [];
+  return _eras;
+}
+export function listaEras() { return _eras || []; }
+export function eraPorId(id) { return (_eras || []).find((e) => e.id === id) || null; }
+
+// Indexa os dados (seleções + formato) de uma era. Para 2026, usa o dataset
+// completo de teams-2026.json; para as históricas, os participantes reais.
+export async function dadosDaEra(eraId) {
+  const eras = await carregarEras();
+  const era = eras.find((e) => e.id === eraId) || eras.find((e) => e.id === '2026') || eras[0];
+  if (!era.teams) {
+    const base = await carregarSelecoes();
+    return { ...base, formato: era.formato, era };
+  }
+  const teams = era.teams;
+  const porId = new Map(teams.map((t) => [t.id, t]));
+  const porGrupo = {};
+  for (const t of teams) { (porGrupo[t.group || '—'] ||= []).push(t); }
+  return { teams, porId, porGrupo, formato: era.formato, era };
+}

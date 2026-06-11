@@ -40,15 +40,27 @@ export function renderHome(app) {
 }
 
 // --- CRIAÇÃO ----------------------------------------------------------------
-export function renderCreate(app, dados) {
-  // estado de rascunho na própria função
-  const draft = { nome: '', selecaoId: null, classeId: 'centroavante', origemId: 'base', tom: 'epico' };
+const NIVEL_NOME = { iniciante: 'Iniciante', facil: 'Fácil', intermediario: 'Intermediário', dificil: 'Difícil', pro: 'Pro' };
 
-  const gruposOrdenados = Object.keys(dados.porGrupo).sort();
-  const optsSelecoes = gruposOrdenados.map((g) => {
-    const times = dados.porGrupo[g].slice().sort((a, b) => a.name.localeCompare(b.name));
+function opcoesSelecoes(d) {
+  const semGrupos = !d.formato || !d.formato.grupos;
+  if (semGrupos) {
+    return d.teams.slice().sort((a, b) => b.elo - a.elo)
+      .map((t) => `<option value="${t.id}">${t.name} (Elo ${t.elo})</option>`).join('');
+  }
+  return Object.keys(d.porGrupo).sort().map((g) => {
+    const times = d.porGrupo[g].slice().sort((a, b) => a.name.localeCompare(b.name));
     return `<optgroup label="Grupo ${g}">${times.map((t) => `<option value="${t.id}">${t.name} (Elo ${t.elo})</option>`).join('')}</optgroup>`;
   }).join('');
+}
+
+export function renderCreate(app, eras, dados) {
+  // estado de rascunho na própria função
+  let dadosAtual = dados;
+  const draft = { nome: '', selecaoId: null, classeId: 'centroavante', origemId: 'base', tom: 'epico', eraId: (dados.era && dados.era.id) || '2026' };
+
+  const optsEras = eras.map((e) => `<option value="${e.id}" ${e.id === draft.eraId ? 'selected' : ''}>${e.nome} · ${NIVEL_NOME[e.nivel] || e.nivel}</option>`).join('');
+  const optsSelecoes = opcoesSelecoes(dados);
 
   const cardClasses = CLASSES.map((c) => `
     <button type="button" class="card-opt" data-tipo="classe" data-id="${c.id}">
@@ -76,6 +88,11 @@ export function renderCreate(app, dados) {
       <label class="campo"><span>Seu nome</span>
         <input id="in-nome" type="text" maxlength="28" placeholder="ex.: Tião da Vila" autocomplete="off">
       </label>
+
+      <label class="campo"><span>Nível (Copa)</span>
+        <select id="in-era">${optsEras}</select>
+      </label>
+      <p class="dica" id="dica-era"></p>
 
       <label class="campo"><span>Sua seleção</span>
         <select id="in-selecao"><option value="">— escolha —</option>${optsSelecoes}</select>
@@ -114,7 +131,20 @@ export function renderCreate(app, dados) {
 
   document.getElementById('b-voltar').onclick = () => app.irHome();
   document.getElementById('in-nome').oninput = (e) => { draft.nome = e.target.value; validar(); };
-  document.getElementById('in-selecao').onchange = (e) => { draft.selecaoId = e.target.value ? +e.target.value : null; validar(); };
+  document.getElementById('in-selecao').onchange = (e) => {
+    const v = e.target.value;
+    const t = v ? dadosAtual.teams.find((x) => String(x.id) === v) : null;
+    draft.selecaoId = t ? t.id : null;
+    validar();
+  };
+  document.getElementById('in-era').onchange = async (e) => {
+    draft.eraId = e.target.value;
+    draft.selecaoId = null;
+    dadosAtual = await app.carregarEra(draft.eraId);
+    document.getElementById('in-selecao').innerHTML = `<option value="">— escolha —</option>${opcoesSelecoes(dadosAtual)}`;
+    document.getElementById('dica-era').textContent = (dadosAtual.era && dadosAtual.era.desc) || '';
+    validar();
+  };
 
   document.querySelectorAll('.card-opt').forEach((btn) => {
     btn.onclick = () => {
@@ -134,6 +164,7 @@ export function renderCreate(app, dados) {
   marcar('classe', draft.classeId); marcar('origem', draft.origemId); marcar('tom', draft.tom);
   document.getElementById('dica-classe').textContent = CLASSES.find((c) => c.id === draft.classeId).exito;
   document.getElementById('dica-origem').textContent = ORIGENS.find((o) => o.id === draft.origemId).desc;
+  document.getElementById('dica-era').textContent = (dados.era && dados.era.desc) || '';
   pintarAttrs();
 
   document.getElementById('b-comecar').onclick = () => app.criarPersonagem(draft);
@@ -156,7 +187,7 @@ export function renderHub(app, dados) {
         <span class="vs">×</span>
         <div class="time">${escudo(adv)}<span>${adv ? adv.tla : '?'}</span></div>
       </div>
-      <p class="prox-info">${nomeFase(camp.fase)}${camp.fase === 'grupos' ? ` · jogo ${camp.jogoIndex + 1} de 3` : ''} · adversário Elo ${adv ? adv.elo : '?'}</p>
+      <p class="prox-info">${nomeFase(camp.fase)}${camp.fase === 'grupos' ? ` · jogo ${camp.jogoIndex + 1} de ${camp.jogosGrupo}` : ''} · adversário Elo ${adv ? adv.elo : '?'}</p>
       <button class="btn btn-grande" id="b-jogar">Entrar em campo 🏟️</button>`;
   } else {
     proximoHtml = `<button class="btn btn-grande" id="b-legado">Ver seu legado 🏅</button>`;

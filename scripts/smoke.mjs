@@ -7,6 +7,7 @@ import { montarAtributos } from '../js/rules.js';
 import { criarPartida, bonusEloJogador } from '../js/engine.js';
 import { rolar, modificador, criarRng } from '../js/dice.js';
 import { novasConquistas } from '../js/achievements.js';
+import { novoPersonagem, definirProximoAdversario, avancarCampanha } from '../js/state.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const data = JSON.parse(readFileSync(resolve(__dirname, '..', 'data', 'teams-2026.json'), 'utf8'));
@@ -132,6 +133,27 @@ ok(decTec / partidasTec >= 3, `técnico decide em média >= 3 vezes (média ${(d
 const ctx = { classe: 'centroavante', carreira: { gols: 1, assist: 0, jogos: 1, vitorias: 1, golsSofridos: 0, cleanSheets: 0, maiorGoleada: 1, hatTricks: 0, zebras: 0, fase: 'grupos', campeao: false, vice: false }, ultimaPartida: {} };
 const novas = novasConquistas(ctx, []);
 ok(novas.includes('primeiro_gol'), 'conquista "primeiro_gol" dispara com 1 gol');
+
+// Formato das eras: vencendo tudo, o campeão joga exatamente nJogosCampeao.
+{
+  const copas = JSON.parse(readFileSync(resolve(__dirname, '..', 'data', 'copas-historicas.json'), 'utf8')).eras;
+  for (const era of copas) {
+    const eteams = era.teams || teams; // 2026 usa o dataset moderno
+    const porId = new Map(eteams.map((t) => [t.id, t]));
+    const porGrupo = {};
+    for (const t of eteams) (porGrupo[t.group || '—'] ||= []).push(t);
+    const dados = { teams: eteams, porId, porGrupo, formato: era.formato, era };
+    const save = novoPersonagem({ nome: 'Teste', selecaoId: eteams[0].id, classeId: 'meia', origemId: 'base', tom: 'realista', eraId: era.id, formato: era.formato });
+    let jogos = 0, guard = 0;
+    while (!save.campanha.concluida && guard++ < 40) {
+      definirProximoAdversario(dados, save);
+      jogos++;
+      avancarCampanha(save, { ganhou: true, empate: false, perdeu: false }, () => ({ classificou: true, posicao: 1, descricao: 'classificado' }));
+    }
+    ok(save.carreira.campeao === true, `${era.id}: vira campeão vencendo tudo`);
+    ok(jogos === era.nJogosCampeao, `${era.id}: ${jogos} jogos até o título (esperado ${era.nJogosCampeao})`);
+  }
+}
 
 console.log(falhas === 0 ? '\n✅ Todos os invariantes passaram.' : `\n❌ ${falhas} falha(s).`);
 process.exit(falhas ? 1 : 0);

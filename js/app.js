@@ -1,6 +1,6 @@
 // Controlador principal de "Crônicas da Copa". Liga dados, estado, motor,
 // Mestre (IA) e telas, e conduz o fluxo de partida.
-import { carregarSelecoes } from './data.js';
+import { carregarEras, listaEras, dadosDaEra } from './data.js';
 import {
   novoPersonagem, carregar, salvar, apagar, aplicarPartida, avancarCampanha,
   resolverGrupo, definirProximoAdversario, cronicar, nomeFase,
@@ -23,16 +23,22 @@ const app = {
   iaUsada: 0,
 
   async iniciar() {
-    const [dados] = await Promise.all([carregarSelecoes(), carregarNarrativa(), carregarNomes()]);
-    this.dados = dados;
+    await Promise.all([carregarEras(), carregarNarrativa(), carregarNomes()]);
     this.save = carregar();
+    if (this.save) this.dados = await dadosDaEra((this.save.campanha && this.save.campanha.eraId) || '2026');
     Audio.init();
     this.irHome();
   },
 
+  // Troca o conjunto de dados para a era escolhida (usado na criação).
+  async carregarEra(eraId) { this.dados = await dadosDaEra(eraId); return this.dados; },
+
   // --- navegação simples ----------------------------------------------------
   irHome() { Audio.bgmMenu(true); Screens.renderHome(this); },
-  novaCarreiraTela() { Screens.renderCreate(this, this.dados); },
+  async novaCarreiraTela() {
+    this.dados = await dadosDaEra('2026');
+    Screens.renderCreate(this, listaEras(), this.dados);
+  },
   irCronica() { Screens.renderCronica(this); },
   irFicha() { Screens.renderFicha(this, this.dados); },
   irConquistas() { Screens.renderConquistas(this); },
@@ -53,12 +59,14 @@ const app = {
     else this.irHome();
   },
 
-  criarPersonagem(draft) {
-    this.save = novoPersonagem(draft);
+  async criarPersonagem(draft) {
+    this.dados = await dadosDaEra(draft.eraId || '2026');
+    const era = this.dados.era;
+    this.save = novoPersonagem({ ...draft, eraId: era.id, formato: era.formato });
     const meu = this.dados.porId.get(this.save.selecaoId);
     cronicar(this.save, {
       tipo: 'inicio', titulo: 'O começo',
-      texto: `${this.save.nome} veste a camisa de ${meu.name} e parte para a Copa do Mundo de 2026. Que história será essa?`,
+      texto: `${this.save.nome} veste a camisa de ${meu.name} e parte para a ${era.nome}. Que história será essa?`,
     });
     definirProximoAdversario(this.dados, this.save);
     salvar(this.save);
