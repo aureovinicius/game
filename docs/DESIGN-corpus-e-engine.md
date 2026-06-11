@@ -143,9 +143,26 @@ Consequência mecânica: **jogar com um a menos** (após vermelho do protagonist
 
 ---
 
-## 4. Lances do Técnico (modelo próprio)
+## 4. Modo Técnico — manager com tempero de beira-campo
 
-O técnico não disputa bola: seus lances são **decisões de banco** que alteram parâmetros do time (`lamMeu`, `lamAdv`, `momentum`, `fadiga`), resolvidas por `d20 + (CAR/VIS/MEN)`. Disparam em **gatilhos**: intervalo, após sofrer/fazer gol, últimos 15', expulsão, jogador desgastado.
+O técnico não disputa bola. É um modo **"meio a meio, pendendo para manager"**: o **núcleo** são decisões macro de gestão (postura, ritmo, substituições, moral) em pontos de inflexão; o **tempero** são poucos *beats* interativos de beira-campo. Por partida, ~**4–5 decisões macro + 1–2 beats**. Tudo altera parâmetros do time (`lamMeu`, `lamAdv`, `momentum`, `fadiga`), resolvido por `d20 + (CAR/VIS/MEN)`.
+
+### 4.1 O loop na prática
+
+Você **assiste à simulação** (gols, chances, cartões narrados, como quem está no banco) e é convocado a decidir nos **gatilhos**:
+- **Escalação/pré-jogo:** postura inicial (ofensivo / equilíbrio / cauteloso) — inclina `lamMeu/lamAdv`.
+- **Ao sofrer gol / ao fazer gol:** reagir já ou administrar?
+- **Intervalo:** a leitura mais importante do jogo (não consome janela de substituição).
+- **Reta final (~75–85'):** empurrar tudo ou trancar.
+- **Forçados:** lesão, expulsão, jogador "apagando" de cansaço.
+
+### 4.2 Resolver = leitura + execução
+
+Duas camadas, e é isso que torna o modo cerebral em vez de passivo:
+1. **Encaixe (leitura):** o jogo mostra o estado (placar, controle/`momentum`, **mapa de desgaste**). Escolher a alavanca **certa pro estado** baixa a CD e amplia o efeito; **errar a leitura** (ex.: pressing alto quando já está sendo dominado) sobe a CD e pode backfirar.
+2. **Execução (d20):** `d20 + atributo` vs CD. **CAR** = o vestiário comprou a ideia; **VIS** = leu o jogo certo; **MEN** = frieza na decisão grande.
+
+### 4.3 Alavancas macro
 
 | Lance | Stat | Efeito no sucesso | Risco na falha |
 |---|---|---|---|
@@ -155,7 +172,20 @@ O técnico não disputa bola: seus lances são **decisões de banco** que altera
 | **Mudar o esquema** | VIS | Ajuste fino conforme o placar/fase | Time se perde por uns minutos |
 | **Conversa / bronca no vestiário** (intervalo) | CAR | `momentum+` e bônus de MEN coletivo no 2º tempo | Não pega → sem efeito ou pior |
 
-O sucesso do técnico se traduz na narração via os mesmos moldes (cena de banco/beira-campo) e nos números do motor. A campanha do técnico foca em **gestão e leitura**, não em gols próprios — uma experiência de jogo distinta das classes de linha.
+### 4.4 Substituições — recurso central (Lei 3 do IFAB)
+
+5 substituições em até **3 janelas** por partida; o **intervalo é livre** (não consome janela); várias trocas na mesma parada contam como 1 janela; na **prorrogação** do mata-mata, sobra de substituições/janelas pode ser usada (+1 janela extra onde as regras permitem). Gerir **quem e quando** é o coração do modo: repor desgaste, mudar o balanço (atacante↔volante), responder a uma expulsão.
+
+### 4.5 Beats de beira-campo (o tempero, ~1–2 por jogo)
+
+Lances "mentais" no estilo dos jogadores de linha, em momentos quentes:
+- **Encarar o árbitro** numa marcação errada (CAR/MEN) — **risco de cartão pro banco**: pela Lei 12, o dirigente que reclama por palavra/ato leva amarelo, e o que sai da área técnica para confrontar o árbitro leva vermelho (vai para a arquibancada). Jogar sem o comandante na beira piora a leitura nas decisões seguintes.
+- **Acalmar um craque emburrado** no banco / motivar quem errou (CAR).
+- **Segurar a bronca** para não estourar o vestiário (MEN).
+
+### 4.6 Identidade da campanha
+
+Os stats do técnico não são gols/assistências: são **resultados, viradas, jogos sem sofrer gol, invencibilidade, títulos** e a **confiança da diretoria/torcida** (puxada por CAR). O legado/epílogo conta a *campanha* — "o treinador que tirou o time do buraco" —, não a glória pessoal.
 
 ---
 
@@ -297,6 +327,7 @@ Cada partida sorteia um árbitro com `rigor` (-2 a +2), que ajusta a CD dos test
 ## Fontes
 
 - **IFAB — Laws of the Game, Lei 12 (Fouls and Misconduct):** https://www.theifab.com/laws/latest/fouls-and-misconduct/
+- **IFAB — Laws of the Game, Lei 3 (The Players — substituições):** https://www.theifab.com/laws/latest/the-players/
 - **DOGSO × SPA (critérios e sanções):** https://www.refereepov.com/blogs/blog/what-is-dogso · https://360tft.co.uk/blog/what-is-dogso-football/
 - **Cartão amarelo no Brasil (simulação, reclamação, conduta) — ESPN "Regra 18":** http://www.espn.com.br/blogs/salviospinola/634570_sete-situacoes-sao-advertidas-com-cartao-amarelo-regra-18-destrincha-a-regra-12
 - **Posições e funções (volante, lateral, ala, zagueiro):** https://www.nike.com.br/guia-de-produtos-nike/posicoes-do-futebol · https://pt.wikipedia.org/wiki/Posi%C3%A7%C3%B5es_no_futebol
