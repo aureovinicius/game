@@ -27,6 +27,18 @@ export const CLASSES = [
     exito: 'Jogos sem sofrer gol e liderança na zaga.',
   },
   {
+    id: 'lateral', nome: 'Lateral', arquetipo: 'O Corredor', emoji: '🏃',
+    principal: 'FIS', secundario: 'TEC',
+    base: { TEC: 12, FIS: 14, VIS: 12, MEN: 11, CAR: 11, SOR: 12 },
+    exito: 'Dupla função: fecha o lado e apoia o ataque com cruzamentos.',
+  },
+  {
+    id: 'volante', nome: 'Volante', arquetipo: 'O Cabeça-de-área', emoji: '🛡️',
+    principal: 'VIS', secundario: 'FIS',
+    base: { TEC: 11, FIS: 13, VIS: 14, MEN: 13, CAR: 11, SOR: 10 },
+    exito: 'Desarme, recomposição e o primeiro passe da construção.',
+  },
+  {
     id: 'meia', nome: 'Meia', arquetipo: 'O Maestro', emoji: '🎩',
     principal: 'VIS', secundario: 'TEC',
     base: { TEC: 14, FIS: 11, VIS: 14, MEN: 11, CAR: 12, SOR: 10 },

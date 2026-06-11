@@ -1,24 +1,39 @@
 // Motor de partida — simulação textual estilo Brasfoot, dirigível passo a passo.
 //
-// A UI chama `avancar()` em loop: o motor simula minutos e devolve os lances
-// narrados até bater num "Lance Decisivo" (pausa para a intervenção do jogador)
-// ou no fim do jogo. O jogador resolve o Lance com o d20 e chama
-// `resolverLance(...)`, e o loop continua.
+// A UI chama `avancar()` em loop: o motor simula minutos e devolve os eventos
+// narrados (incluindo flavor não-interativo) até bater num Lance Decisivo
+// (pausa para a intervenção do jogador) ou no fim do jogo. O jogador resolve o
+// Lance com o d20 e chama `resolverLance(...)`, e o loop continua.
 //
-// As probabilidades de gol vêm do Elo das seleções (curva logística), com
-// bônus do protagonista e do "momento" (momentum) do jogo.
+// Novidades desta versão (ver docs/DESIGN-corpus-e-engine.md):
+//   - Diretor de partida: de 4 a 8 lances, em quantidade/zona guiadas pela
+//     PRESSÃO (placar, momentum, Elo, minuto). Sob pressão → lances defensivos;
+//     pressionando → lances ofensivos.
+//   - Tipos de lance ricos com `efeitos` (trade-offs): progredir, construir,
+//     desarmar, criar, faltaTatica, simular, provocar, mental, etc.
+//   - Sistema de cartões fiel ao IFAB (Lei 12): SPA→amarelo, DOGSO→vermelho,
+//     DOGSO na área com tentativa de bola→amarelo+pênalti, sem tentativa→
+//     vermelho+pênalti; simulação/provocação/reclamação→amarelo.
+//   - Árbitro com `rigor` (-2..+2) que ajusta a dificuldade dos lances de "se
+//     dar bem" (simular/provocar/reclamar).
+//   - Eventos intermediários (trave, finalização perigosa, cartões de outros).
 import { criarRng } from './dice.js';
-import { LANCES_POR_PARTIDA } from './config.js';
+import { conjuntosDeLance } from './mecanicas.js';
 
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
 // Quanto o protagonista "puxa" o time, por classe (afeta ataque/defesa e a
 // chance de o gol sair no pé dele).
-const PESO_OFENSIVO = { goleiro: 0.1, zagueiro: 0.3, meia: 0.7, ponta: 0.85, centroavante: 1.0 };
-const PESO_DEFENSIVO = { goleiro: 1.0, zagueiro: 0.9, meia: 0.4, ponta: 0.2, centroavante: 0.15 };
+const PESO_OFENSIVO = { goleiro: 0.1, zagueiro: 0.3, lateral: 0.4, volante: 0.5, meia: 0.7, ponta: 0.85, centroavante: 1.0 };
+const PESO_DEFENSIVO = { goleiro: 1.0, zagueiro: 0.9, lateral: 0.7, volante: 0.7, meia: 0.4, ponta: 0.2, centroavante: 0.15 };
 
 // Bônus de Elo que o protagonista dá ao time, a partir dos atributos.
 export function bonusEloJogador(classeId, attrs) {
+  if (classeId === 'tecnico') {
+    // técnico não joga: o "bônus" vem de liderança/leitura (CAR/VIS/MEN).
+    const lid = (attrs.CAR + attrs.VIS + attrs.MEN) / 3 - 12;
+    return Math.round(lid * 6);
+  }
   const ofe = (attrs.TEC + attrs.MEN + attrs.VIS) / 3 - 12;
   const def = (attrs.FIS + attrs.MEN + attrs.VIS) / 3 - 12;
   const po = PESO_OFENSIVO[classeId] ?? 0.5;
@@ -30,13 +45,20 @@ function expectativa(eloA, eloB) {
   return 1 / (1 + Math.pow(10, -(eloA - eloB) / 400));
 }
 
-function sortearAgenda(rng) {
-  // 3 janelas: começo, meio, fim — com folga aleatória.
-  return [
-    18 + Math.floor(rng() * 12),  // 18–29
-    50 + Math.floor(rng() * 12),  // 50–61
-    74 + Math.floor(rng() * 14),  // 74–87
-  ].slice(0, LANCES_POR_PARTIDA);
+// Sorteia N minutos de lance espalhados por [10, 88], crescentes e únicos.
+function sortearAgenda(rng, n) {
+  const min = 10, max = 88;
+  const passo = (max - min) / n;
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const base = min + passo * (i + 0.5);
+    const jit = (rng() - 0.5) * passo * 0.8;
+    out.push(Math.round(clamp(base + jit, min, max)));
+  }
+  for (let i = 1; i < out.length; i++) {
+    if (out[i] <= out[i - 1]) out[i] = Math.min(max, out[i - 1] + 1);
+  }
+  return out;
 }
 
 export function criarPartida(cfg) {
@@ -52,7 +74,12 @@ export function criarPartida(cfg) {
   const lamMeuBase = clamp(1.35 + diff / 300, 0.35, 3.2);
   const lamAdvBase = clamp(1.35 - diff / 300, 0.35, 3.2);
 
-  const agenda = sortearAgenda(rng);
+  // Quantidade de lances (4–8): jogos equilibrados e mata-matas rendem mais.
+  const intensidade = clamp(1 - Math.abs(diff) / 320, 0, 1);
+  const variacao = Math.floor(rng() * 3) - 1; // -1..+1
+  const alvoLances = clamp(Math.round(4 + intensidade * 3) + (cfg.mataMata ? 1 : 0) + variacao, 4, 8);
+  const agenda = sortearAgenda(rng, alvoLances);
+  const agendaSet = new Set(agenda);
 
   const estado = {
     meuTime: cfg.meuTime,
@@ -66,29 +93,41 @@ export function criarPartida(cfg) {
     golsJogador: 0,
     assistJogador: 0,
     momentum: 0,        // -100..100 (+ a seu favor)
-    lancesRestantes: LANCES_POR_PARTIDA,
+    alvoLances,
+    lancesRestantes: alvoLances,
     lancesUsados: 0,
     log: [],
     encerrada: false,
     pendingLance: null,
     resultadoPenaltis: null,
     bonusElo: bonus,
+    // novos
+    arbitro: { rigor: Math.floor(rng() * 5) - 2 }, // -2..+2
+    cartoes: { amareloJog: 0, vermelhoJog: false, amareloAdv: 0 },
+    multMeu: 1,
+    multAdv: 1,
+    exposto: 0,         // "deixou espaço"; aumenta a chance adversária e decai
+    advUmAMenos: false, // adversário já expulso (evita 2 vermelhos no mesmo time)
   };
 
   function fatorMomentum(sinal) {
-    // momentum a favor aumenta sua chance e reduz a do adversário
     return clamp(1 + (sinal * estado.momentum) / 250, 0.6, 1.5);
   }
+  const bump = (n) => { estado.momentum = clamp(estado.momentum + n, -100, 100); };
 
   function reg(minuto, texto, tipo = 'info') {
     estado.log.push({ minuto, texto, tipo });
   }
+  function efx(minuto, texto) {
+    reg(minuto, texto, 'rpg');
+    return { tipo: 'rpg', texto, minuto };
+  }
 
-  // modo: 'jogador' (o protagonista marca), 'time' (companheiro marca; usado
-  // quando o jogador já levou a assistência), 'fluxo' (sorteia pelo peso da classe).
+  // modo: 'jogador' (o protagonista marca), 'time' (companheiro marca),
+  // 'fluxo' (sorteia pelo peso da classe).
   function golMeu(eventos, modo) {
     estado.golsMeu++;
-    estado.momentum = clamp(estado.momentum + 14, -100, 100);
+    bump(14);
     const po = PESO_OFENSIVO[estado.classeId] ?? 0.5;
     let fezGol;
     if (modo === 'jogador') fezGol = true;
@@ -100,8 +139,6 @@ export function criarPartida(cfg) {
       estado.golsJogador++;
       texto = `⚽ GOL DE ${estado.meuTime.tla}! Você marca! (${estado.golsMeu}–${estado.golsAdv})`;
     } else {
-      // no fluxo normal, chance de você dar a assistência (no modo 'time' a
-      // assistência já foi contada antes de chamar golMeu)
       let assistTxt = '';
       if (modo === 'fluxo' && rng() < 0.5) { estado.assistJogador++; assistTxt = ' Assistência sua!'; }
       texto = `⚽ GOL DE ${estado.meuTime.tla}!${assistTxt} (${estado.golsMeu}–${estado.golsAdv})`;
@@ -112,10 +149,62 @@ export function criarPartida(cfg) {
 
   function golAdv(eventos) {
     estado.golsAdv++;
-    estado.momentum = clamp(estado.momentum - 12, -100, 100);
+    bump(-12);
     const texto = `💔 Gol do ${estado.advTime.tla}. (${estado.golsMeu}–${estado.golsAdv})`;
     reg(estado.minuto, texto, 'gol-adv');
     eventos.push({ tipo: 'gol-adv', texto, minuto: estado.minuto });
+  }
+
+  // --- Cartões (IFAB, Lei 12) ------------------------------------------------
+  function cartaoJogador(eventos, cor, motivo) {
+    if (cor === 'amarelo') {
+      estado.cartoes.amareloJog++;
+      if (estado.cartoes.amareloJog >= 2 && !estado.cartoes.vermelhoJog) {
+        estado.cartoes.vermelhoJog = true;
+        estado.multMeu *= 0.78; estado.multAdv *= 1.18; bump(-12);
+        eventos.push(efx(estado.minuto, `🟨🟥 Segundo amarelo (${motivo}) — você está EXPULSO! ${estado.meuTime.tla} com um a menos.`));
+      } else {
+        eventos.push(efx(estado.minuto, `🟨 Amarelo — ${motivo}.`));
+      }
+    } else {
+      estado.cartoes.vermelhoJog = true;
+      estado.multMeu *= 0.72; estado.multAdv *= 1.22; bump(-16);
+      eventos.push(efx(estado.minuto, `🟥 VERMELHO — ${motivo}. Você está EXPULSO! ${estado.meuTime.tla} com um a menos.`));
+    }
+  }
+  function penaltiAdversario(eventos) {
+    eventos.push(efx(estado.minuto, '⚠️ Pênalti para o adversário.'));
+    if (rng() < 0.78) golAdv(eventos);
+    else eventos.push(efx(estado.minuto, '🧤 Mas o goleiro defende o pênalti!'));
+  }
+  function penaltiMeu(eventos) {
+    eventos.push(efx(estado.minuto, '⚽ Pênalti a favor!'));
+    if (rng() < 0.78) golMeu(eventos, 'jogador');
+    else eventos.push(efx(estado.minuto, '😣 Você perde o pênalti.'));
+  }
+
+  // Eventos intermediários (sem decisão), para dar ritmo de jogo.
+  function flavor(eventos) {
+    const r = rng();
+    if (r < 0.25) eventos.push(efx(estado.minuto, `🎯 Finalização perigosa do ${estado.advTime.tla}, mas o goleiro espalma.`));
+    else if (r < 0.45) eventos.push(efx(estado.minuto, `🪵 Na trave! ${estado.meuTime.tla} quase abre o placar.`));
+    else if (r < 0.60) eventos.push(efx(estado.minuto, `💨 ${estado.meuTime.tla} chega com perigo pela ponta.`));
+    else if (r < 0.82 || estado.advUmAMenos) eventos.push(efx(estado.minuto, `🟨 Amarelo para um jogador do ${estado.advTime.tla}.`));
+    else {
+      eventos.push(efx(estado.minuto, `🟥 Vermelho para o ${estado.advTime.tla}! Ficam com um a menos.`));
+      estado.advUmAMenos = true;
+      estado.multMeu *= 1.12; estado.multAdv *= 0.9; bump(8);
+    }
+  }
+
+  // Zona do lance, derivada da pressão atual.
+  function zonaDoLance() {
+    const m = estado.momentum;
+    const perdendo = estado.golsMeu < estado.golsAdv;
+    const segurandoFim = estado.golsMeu > estado.golsAdv && estado.minuto >= 70;
+    if (segurandoFim || m <= -25) return 'def';
+    if (perdendo || m >= 25) return 'atk';
+    return 'meio';
   }
 
   // Avança a simulação até o próximo Lance Decisivo ou o fim do jogo.
@@ -124,17 +213,22 @@ export function criarPartida(cfg) {
     const eventos = [];
     while (estado.minuto < 90) {
       estado.minuto++;
-      if (agenda.includes(estado.minuto) && estado.lancesRestantes > 0) {
-        estado.pendingLance = { minuto: estado.minuto };
+      if (agendaSet.has(estado.minuto) && estado.lancesRestantes > 0) {
+        const disc = estado.lancesUsados > 0 && rng() < 0.08;
+        estado.pendingLance = { minuto: estado.minuto, zona: disc ? 'disciplina' : zonaDoLance() };
         return { tipo: 'lance', minuto: estado.minuto, eventos };
       }
-      const pMeu = (lamMeuBase / 90) * fatorMomentum(+1);
-      const pAdv = (lamAdvBase / 90) * fatorMomentum(-1);
+      if (rng() < 0.05) flavor(eventos);
+
+      const pMeu = (lamMeuBase / 90) * fatorMomentum(+1) * estado.multMeu;
+      const pAdv = (lamAdvBase / 90) * fatorMomentum(-1) * estado.multAdv * (1 + 0.12 * estado.exposto);
       const r = rng();
       if (r < pMeu) golMeu(eventos, 'fluxo');
       else if (r < pMeu + pAdv) golAdv(eventos);
-      // o momentum decai naturalmente para 0
+
       estado.momentum *= 0.985;
+      estado.exposto *= 0.7;
+      if (estado.exposto < 0.05) estado.exposto = 0;
     }
     return finalizar(eventos);
   }
@@ -142,7 +236,6 @@ export function criarPartida(cfg) {
   function finalizar(eventos = []) {
     estado.minuto = 90;
     estado.encerrada = true;
-    // mata-mata empatado: pênaltis (peso por MEN do jogador + leve Elo)
     if (estado.mataMata && estado.golsMeu === estado.golsAdv) {
       const chance = clamp(0.5 + (diff / 1200) + ((cfg.attrs.MEN - 12) * 0.03), 0.2, 0.8);
       const venci = rng() < chance;
@@ -154,93 +247,129 @@ export function criarPartida(cfg) {
     return { tipo: 'fim', estado, eventos };
   }
 
+  function normTipo(t) {
+    if (t === 'passar') return 'criar';
+    if (t === 'driblar') return 'progredir';
+    if (t === 'defender') return 'defesa';
+    return t;
+  }
+
   // Resolve um Lance Decisivo já rolado no d20.
-  // opcao: { id, texto, stat, cd, tipo }  (tipo: 'finalizar'|'passar'|'driblar'|'defender'|'seguro')
-  // resultado: objeto vindo de dice.rolar(...)
+  // opcao: { id, texto, stat, cd, tipo, efeitos }   resultado: de dice.rolar(...)
   function resolverLance(opcao, resultado) {
     estado.pendingLance = null;
     estado.lancesRestantes = Math.max(0, estado.lancesRestantes - 1);
     estado.lancesUsados++;
     const eventos = [];
     const minuto = estado.minuto;
+    const ef = opcao.efeitos || {};
+    const sucesso = resultado.sucesso, crit = resultado.critico, critFail = resultado.falhaCritica;
+    const tipo = normTipo(opcao.tipo);
 
-    const sucesso = resultado.sucesso;
-    const crit = resultado.critico;
-    const critFail = resultado.falhaCritica;
+    if (ef.exporContra) estado.exposto = Math.max(estado.exposto, ef.exporContra);
 
-    if (opcao.tipo === 'defender' || estado.classeId === 'goleiro') {
-      // lances defensivos: sucesso evita/perigo; falha pode sair gol adversário
-      if (critFail) { golAdv(eventos); eventos.push(efx(minuto, '💥 Falha crítica na saída — o adversário aproveita.')); estado.momentum -= 10; }
-      else if (!sucesso) { eventos.push(efx(minuto, '😬 Quase! A defesa segura no susto.')); estado.momentum -= 4; }
-      else if (crit) { eventos.push(efx(minuto, '🧤 DEFESAÇA! Você salva o que era gol certo e levanta a torcida.')); estado.momentum = clamp(estado.momentum + 16, -100, 100); }
-      else { eventos.push(efx(minuto, '✋ Boa intervenção — perigo afastado.')); estado.momentum = clamp(estado.momentum + 8, -100, 100); }
-    } else if (opcao.tipo === 'seguro') {
-      // jogada segura: pouco risco, pouco ganho
-      if (sucesso) { estado.momentum = clamp(estado.momentum + 6, -100, 100); eventos.push(efx(minuto, '👍 Jogada de craque sem riscos — seu time mantém o controle.')); }
-      else { eventos.push(efx(minuto, '➖ A jogada segura não rende muito, mas não custa nada.')); }
-    } else if (opcao.tipo === 'passar') {
-      if (critFail) { eventos.push(efx(minuto, '💥 Passe errado feio — contra-ataque!')); if (rng() < 0.5) golAdv(eventos); }
-      else if (!sucesso) { eventos.push(efx(minuto, '↩️ O passe não encontra ninguém. Recomeça.')); estado.momentum -= 3; }
-      else {
-        // assistência! grande chance de virar gol do time
-        estado.assistJogador++;
-        if (crit || rng() < 0.8) { golMeu(eventos, 'time'); /* gol após sua assistência: quem marca é o companheiro */ }
-        else eventos.push(efx(minuto, '🅰️ Que passe! O finalizador, porém, manda por cima.'));
-        if (crit) eventos.push(efx(minuto, '✨ Assistência de placa!'));
+    switch (tipo) {
+      case 'defesa': {
+        if (critFail) { eventos.push(efx(minuto, '💥 Falha crítica na saída — o adversário aproveita.')); golAdv(eventos); bump(-10); }
+        else if (!sucesso) { eventos.push(efx(minuto, '😬 Quase! A defesa segura no susto.')); bump(-4); }
+        else if (crit) { eventos.push(efx(minuto, '🧤 DEFESAÇA! Você salva o que era gol certo e levanta a torcida.')); bump(16); }
+        else { eventos.push(efx(minuto, '✋ Boa intervenção — perigo afastado.')); bump(8); }
+        break;
       }
-    } else {
-      // ofensivo: finalizar / driblar
-      if (critFail) { eventos.push(efx(minuto, '💥 Falha crítica! Você perde a bola e o adversário sai em velocidade.')); if (rng() < 0.45) golAdv(eventos); estado.momentum -= 8; }
-      else if (!sucesso) { eventos.push(efx(minuto, '🧤 O goleiro defende! Faltou capricho.')); estado.momentum -= 3; }
-      else if (crit) { golMeu(eventos, 'jogador'); eventos.push(efx(minuto, '✨ GOLAÇO! Um lance para a história da Copa.')); estado.momentum = clamp(estado.momentum + 20, -100, 100); }
-      else { golMeu(eventos, 'jogador'); }
+      case 'seguro': {
+        if (sucesso) { bump(ef.momentum || 6); eventos.push(efx(minuto, '👍 Jogada de craque sem riscos — controle mantido.')); }
+        else { eventos.push(efx(minuto, '➖ A jogada segura não rende muito, mas não custa nada.')); }
+        if (ef.entregaPosse) bump(-3);
+        break;
+      }
+      case 'construir': {
+        if (critFail || (!sucesso && ef.riscoConcede === 'falha')) { eventos.push(efx(minuto, '💥 Erro na saída de bola, presente para o adversário!')); golAdv(eventos); bump(-8); }
+        else if (!sucesso) { eventos.push(efx(minuto, '↩️ A saída trava; recomeça de trás.')); bump(-3); }
+        else { eventos.push(efx(minuto, '🎯 Saiu jogando com categoria — posse mantida.')); bump(ef.momentum || 6); }
+        break;
+      }
+      case 'desarmar': {
+        if (critFail) { eventos.push(efx(minuto, '💥 Passou batido — contra-ataque!')); if (rng() < 0.5) golAdv(eventos); bump(-6); }
+        else if (!sucesso) { eventos.push(efx(minuto, '😬 Chegou atrasado e cometeu a falta.')); bump(-2); if (ef.riscoConcede === 'falha' && rng() < 0.25) cartaoJogador(eventos, 'amarelo', 'falta temerária'); }
+        else { eventos.push(efx(minuto, '🦶 Desarme limpo — bola recuperada.')); bump(ef.momentum || 6); }
+        break;
+      }
+      case 'criar': {
+        if (critFail) { eventos.push(efx(minuto, '💥 Passe errado feio — contra-ataque!')); if (rng() < 0.5) golAdv(eventos); }
+        else if (!sucesso) { eventos.push(efx(minuto, '↩️ O passe não encontra ninguém. Recomeça.')); bump(-3); }
+        else {
+          estado.assistJogador++;
+          if (crit || rng() < 0.8) { golMeu(eventos, 'time'); if (crit) eventos.push(efx(minuto, '✨ Assistência de placa!')); }
+          else eventos.push(efx(minuto, '🅰️ Que passe! O finalizador, porém, manda por cima.'));
+        }
+        break;
+      }
+      case 'progredir': {
+        if (critFail) { eventos.push(efx(minuto, '💥 Perde a bola e o adversário sai em velocidade.')); if (rng() < (ef.riscoConcede === 'falha' ? 0.6 : 0.4)) golAdv(eventos); bump(-8); }
+        else if (!sucesso) { eventos.push(efx(minuto, '⛔ A marcação corta o drible.')); bump(-3); if (ef.riscoConcede === 'falha' && rng() < 0.4) golAdv(eventos); }
+        else { eventos.push(efx(minuto, '🔥 Avança com perigo e ganha a frente!')); bump(ef.momentum || 8); }
+        break;
+      }
+      case 'finalizar':
+      case 'bolaParada': {
+        if (critFail) { eventos.push(efx(minuto, '💥 Finalização desastrada — contra-ataque!')); if (rng() < 0.45) golAdv(eventos); bump(-8); }
+        else if (!sucesso) { eventos.push(efx(minuto, '🧤 O goleiro defende! Faltou capricho.')); bump(-3); }
+        else if (crit) { golMeu(eventos, 'jogador'); eventos.push(efx(minuto, '✨ GOLAÇO! Um lance para a história da Copa.')); bump(20); }
+        else { golMeu(eventos, 'jogador'); }
+        break;
+      }
+      case 'faltaTatica': {
+        if (sucesso) {
+          const d = ef.dogso || 'spa';
+          if (d === 'spa') { eventos.push(efx(minuto, '🛑 Falta tática — ataque cortado a tempo.')); cartaoJogador(eventos, 'amarelo', 'parar um ataque promissor'); }
+          else if (d === 'fora') { eventos.push(efx(minuto, '🛑 Última esperança: você derruba o atacante.')); cartaoJogador(eventos, 'vermelho', 'impedir uma chance clara de gol'); }
+          else if (d === 'area_bola') { cartaoJogador(eventos, 'amarelo', 'pênalti tentando jogar a bola'); penaltiAdversario(eventos); }
+          else { cartaoJogador(eventos, 'vermelho', 'derrubar na área sem disputar a bola'); penaltiAdversario(eventos); }
+        } else { eventos.push(efx(minuto, '😖 Não chegou na falta — o adversário fica livre.')); golAdv(eventos); }
+        break;
+      }
+      case 'simular': {
+        if (sucesso) {
+          if (ef.ganhaFalta === 'penalti') penaltiMeu(eventos);
+          else { eventos.push(efx(minuto, '🎭 Cavou a falta — bola parada perigosa a favor.')); bump(4); }
+        } else { eventos.push(efx(minuto, '🎭 O árbitro não comprou: ')); cartaoJogador(eventos, 'amarelo', 'simulação'); bump(-4); }
+        break;
+      }
+      case 'provocar': {
+        if (sucesso) {
+          eventos.push(efx(minuto, '😤 O marcador cai na provocação e se complica.'));
+          estado.cartoes.amareloAdv++;
+          if (estado.cartoes.amareloAdv >= 2 && !estado.advUmAMenos) { eventos.push(efx(minuto, `🟥 Expulso o adversário! ${estado.advTime.tla} com um a menos.`)); estado.advUmAMenos = true; estado.multMeu *= 1.18; estado.multAdv *= 0.82; }
+          else eventos.push(efx(minuto, `🟨 Amarelo para o ${estado.advTime.tla}.`));
+          bump(6);
+        } else { cartaoJogador(eventos, 'amarelo', 'conduta provocativa'); }
+        break;
+      }
+      case 'mental': {
+        if (sucesso) { eventos.push(efx(minuto, '🧘 Você segura a cabeça e mantém o foco.')); bump(6); }
+        else { cartaoJogador(eventos, ef.cartaoRisco === 'amarelo' ? 'amarelo' : 'vermelho', ef.cartaoRisco === 'amarelo' ? 'reclamação' : 'revide'); }
+        break;
+      }
+      default: {
+        // tipo desconhecido: trata como jogada segura, para nunca travar.
+        if (sucesso) bump(4);
+        break;
+      }
     }
 
     return { eventos, encerraApos: estado.minuto >= 90 };
   }
 
-  function efx(minuto, texto) {
-    reg(minuto, texto, 'rpg');
-    return { tipo: 'rpg', texto, minuto };
-  }
-
-  // Gera as opções de um Lance Decisivo de fallback (offline), conforme a classe.
+  // Opções do Lance pendente, conforme classe + zona, com o rigor do árbitro
+  // aplicado aos lances de "se dar bem" (simular/provocar/reclamar).
   function opcoesPadrao() {
-    const c = estado.classeId;
-    if (c === 'goleiro') {
-      return [
-        { id: 'A', texto: 'Sair do gol e abafar', stat: 'MEN', cd: 15, tipo: 'defender' },
-        { id: 'B', texto: 'Ficar na linha e esperar', stat: 'VIS', cd: 11, tipo: 'defender' },
-        { id: 'C', texto: 'Espalmar para escanteio', stat: 'FIS', cd: 13, tipo: 'defender' },
-      ];
-    }
-    if (c === 'zagueiro') {
-      return [
-        { id: 'A', texto: 'Dividir firme', stat: 'FIS', cd: 14, tipo: 'defender' },
-        { id: 'B', texto: 'Dar o bote no tempo certo', stat: 'VIS', cd: 13, tipo: 'defender' },
-        { id: 'C', texto: 'Subir para o ataque na bola parada', stat: 'MEN', cd: 16, tipo: 'finalizar' },
-      ];
-    }
-    if (c === 'meia') {
-      return [
-        { id: 'A', texto: 'Lançar na medida (assistência)', stat: 'VIS', cd: 14, tipo: 'passar' },
-        { id: 'B', texto: 'Arriscar de fora da área', stat: 'TEC', cd: 16, tipo: 'finalizar' },
-        { id: 'C', texto: 'Tocar e manter a posse', stat: 'TEC', cd: 10, tipo: 'seguro' },
-      ];
-    }
-    if (c === 'ponta') {
-      return [
-        { id: 'A', texto: 'Partir para cima e driblar', stat: 'TEC', cd: 15, tipo: 'driblar' },
-        { id: 'B', texto: 'Cruzar rasteiro (assistência)', stat: 'VIS', cd: 13, tipo: 'passar' },
-        { id: 'C', texto: 'Cortar para o meio e finalizar', stat: 'TEC', cd: 16, tipo: 'finalizar' },
-      ];
-    }
-    // centroavante
-    return [
-      { id: 'A', texto: 'Finalizar de primeira', stat: 'MEN', cd: 16, tipo: 'finalizar' },
-      { id: 'B', texto: 'Girar sobre o zagueiro', stat: 'TEC', cd: 15, tipo: 'driblar' },
-      { id: 'C', texto: 'Tocar para o companheiro melhor posto', stat: 'VIS', cd: 11, tipo: 'passar' },
-    ];
+    const zona = (estado.pendingLance && estado.pendingLance.zona) || zonaDoLance();
+    const conjuntos = conjuntosDeLance(estado.classeId, zona);
+    const set = conjuntos[Math.floor(rng() * conjuntos.length)] || conjuntos[0];
+    return set.map((o) => {
+      const ajuste = (o.tipo === 'simular' || o.tipo === 'provocar' || (o.tipo === 'mental' && (o.efeitos || {}).cartaoRisco)) ? estado.arbitro.rigor : 0;
+      return { ...o, cd: o.cd + ajuste, efeitos: o.efeitos || {} };
+    });
   }
 
   // Nota do jogador na partida (6.0 base + contribuições).
@@ -253,6 +382,8 @@ export function criarPartida(cfg) {
       if (estado.golsAdv === 0) nota += 1.0;
       nota -= estado.golsAdv * 0.3;
     }
+    nota -= estado.cartoes.amareloJog * 0.2;
+    if (estado.cartoes.vermelhoJog) nota -= 0.8;
     return clamp(Math.round(nota * 10) / 10, 3.0, 10.0);
   }
 
@@ -269,6 +400,7 @@ export function criarPartida(cfg) {
         placar: `${estado.golsMeu}–${estado.golsAdv}`,
         minuto: estado.minuto, momentum: Math.round(estado.momentum),
         fase: estado.fase, classe: estado.classeId,
+        zona: estado.pendingLance ? estado.pendingLance.zona : null,
       };
     },
   };

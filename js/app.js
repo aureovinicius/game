@@ -104,7 +104,7 @@ const app = {
             <small id="mh-min">0'</small></div>
           <div class="mh-time">${this._crest(adv)}<span>${adv.tla}</span></div>
         </header>
-        <div class="match-meta"><span id="mh-lances">🎲 ${LANCES_POR_PARTIDA} lances</span><span id="mh-mom"></span></div>
+        <div class="match-meta"><span id="mh-lances">🎲 ${this.eng.estado.lancesRestantes} lances</span><span id="mh-mom"></span></div>
         <div class="match-log" id="match-log"></div>
         <div class="match-ctrl" id="match-ctrl"></div>
       </section>`;

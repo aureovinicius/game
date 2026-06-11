@@ -40,13 +40,15 @@ function jogarUma(classeId, semente) {
   ok(e.minuto === 90, `minuto final = 90 (foi ${e.minuto})`);
   ok(e.golsMeu >= 0 && e.golsAdv >= 0, 'placar não-negativo');
   ok(e.golsJogador <= e.golsMeu, `gols do jogador (${e.golsJogador}) <= gols do time (${e.golsMeu})`);
-  ok(e.lancesRestantes >= 0 && e.lancesRestantes <= 3, 'lances restantes 0..3');
+  ok(e.lancesUsados >= 4 && e.lancesUsados <= 8, `lances usados 4..8 (foram ${e.lancesUsados})`);
+  ok(e.lancesRestantes >= 0, 'lances restantes >= 0');
+  ok(e.arbitro.rigor >= -2 && e.arbitro.rigor <= 2, 'rigor do árbitro -2..2');
   ok(eng.notaJogador() >= 3 && eng.notaJogador() <= 10, 'nota 3..10');
   return { meu, adv, e, nota: eng.notaJogador(), bonus: bonusEloJogador(classeId, attrs) };
 }
 
 console.log('Smoke test — Crônicas da Copa');
-const classes = ['goleiro', 'zagueiro', 'meia', 'ponta', 'centroavante'];
+const classes = ['goleiro', 'zagueiro', 'lateral', 'volante', 'meia', 'ponta', 'centroavante'];
 let golsCA = 0, golsGK = 0;
 for (let s = 1; s <= 200; s++) {
   const classe = classes[s % classes.length];
