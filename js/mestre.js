@@ -53,6 +53,7 @@ export async function gerarLance({ contexto, tom, classe, opcoesPadrao, usarIA }
   const ctx = {
     minuto: contexto.minuto, placar: contexto.placar,
     meuTime: contexto.meuTime, advTime: contexto.advTime,
+    meuTimeId: contexto.meuTimeId, advTimeId: contexto.advTimeId,
     meuTla: contexto.meuTla, advTla: contexto.advTla,
   };
   const narrativa = situacao({ zona: contexto.zona || 'meio', tom, ctx });

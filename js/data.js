@@ -1,14 +1,23 @@
 // Carrega e indexa as 48 seleções da Copa 2026 (data/teams-2026.json).
-// Usa Elo como "força" no motor de partida.
+// Usa Elo como "força" no motor de partida. Localiza os nomes das seleções
+// conforme o idioma (data/selecoes-i18n.json), pronto para outros idiomas.
+import { IDIOMA } from './config.js';
 
 let _cache = null;
 
 export async function carregarSelecoes() {
   if (_cache) return _cache;
-  const resp = await fetch('data/teams-2026.json', { cache: 'force-cache' });
+  const [resp, respI18n] = await Promise.all([
+    fetch('data/teams-2026.json', { cache: 'force-cache' }),
+    fetch('data/selecoes-i18n.json', { cache: 'force-cache' }).catch(() => null),
+  ]);
   if (!resp.ok) throw new Error('Falha ao carregar seleções');
   const json = await resp.json();
   const teams = json.teams || [];
+  // localização dos nomes (ex.: "England" -> "Inglaterra")
+  let loc = null;
+  try { loc = respI18n && respI18n.ok ? (await respI18n.json())[IDIOMA] : null; } catch { loc = null; }
+  if (loc) for (const t of teams) { if (loc[t.tla]) { t.nameEn = t.name; t.name = loc[t.tla]; } }
   const porId = new Map(teams.map((t) => [t.id, t]));
   const porGrupo = {};
   for (const t of teams) {

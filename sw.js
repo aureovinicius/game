@@ -1,7 +1,7 @@
 // Service worker — cache do app shell para jogar offline.
 // Estratégia: cache-first para os arquivos do jogo; rede para o resto
 // (ex.: chamadas ao Worker do Mestre nunca são cacheadas).
-const CACHE = 'cronicas-copa-v11';
+const CACHE = 'cronicas-copa-v12';
 const ASSETS = [
   './',
   'index.html',
@@ -9,6 +9,8 @@ const ASSETS = [
   'manifest.webmanifest',
   'data/teams-2026.json',
   'data/narrativa.json',
+  'data/nomes.json',
+  'data/selecoes-i18n.json',
   'js/app.js',
   'js/audio.js',
   'js/config.js',

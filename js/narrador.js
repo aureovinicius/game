@@ -22,6 +22,21 @@ export async function carregarNarrativa() {
 export function setNarrativa(obj) { DB = obj; }
 export function narrativaCarregada() { return !!DB; }
 
+// Nomes dos jogadores por seleção (data/nomes.json), citados nos lances.
+let NOMES = null;
+export async function carregarNomes() {
+  if (NOMES) return NOMES;
+  const r = await fetch('data/nomes.json', { cache: 'force-cache' });
+  if (r.ok) NOMES = await r.json();
+  return NOMES;
+}
+export function setNomes(obj) { NOMES = obj; }
+function nomeDoTime(id) {
+  const lista = NOMES && (NOMES[id] || NOMES[String(id)]);
+  if (!lista || !lista.length) return null;
+  return lista[Math.floor(Math.random() * lista.length)];
+}
+
 // Sorteio com anti-repetição: evita devolver o mesmo molde da mesma célula
 // duas vezes seguidas (memória por chave), pra a variedade do corpus render.
 const _recente = new Map();
@@ -52,7 +67,11 @@ export function situacao({ zona = 'meio', tom = 'realista', ctx = {} } = {}) {
   const lista = grupo ? (grupo[tom] || grupo.realista) : null;
   const tpl = pick(lista, `s:${zona}:${tom}`);
   if (!tpl) return fallbackSituacao(ctx);
-  return preencher(tpl, ctx);
+  // nomes citados no lance: companheiro (seu time) e adversário
+  const ctx2 = { ...ctx };
+  if (ctx2.companheiro == null) ctx2.companheiro = nomeDoTime(ctx2.meuTimeId) || 'um companheiro';
+  if (ctx2.advJogador == null) ctx2.advJogador = nomeDoTime(ctx2.advTimeId) || 'um adversário';
+  return preencher(tpl, ctx2);
 }
 
 // Texto da opção de um lance, variado por tom, ligado pelo slug `acao`.

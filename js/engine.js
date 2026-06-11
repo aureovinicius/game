@@ -517,6 +517,7 @@ export function criarPartida(cfg) {
     get contexto() {
       return {
         meuTime: estado.meuTime.name, advTime: estado.advTime.name,
+        meuTimeId: estado.meuTime.id, advTimeId: estado.advTime.id,
         placar: `${estado.golsMeu}–${estado.golsAdv}`,
         minuto: estado.minuto, momentum: Math.round(estado.momentum),
         fase: estado.fase, classe: estado.classeId,

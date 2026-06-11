@@ -9,7 +9,9 @@
         "Aos {minuto}', o atacante adversário recebe nas costas da marcação e fica de frente pro gol.",
         "Cruzamento perigoso do {advTime} aos {minuto}' busca a cabeça do atacante na sua área.",
         "Aos {minuto}', o craque adversário encara você no mano a mano.",
-        "Lançamento por cima da defesa aos {minuto}': o atacante do {advTime} desce nas suas costas."
+        "Lançamento por cima da defesa aos {minuto}': o atacante do {advTime} desce nas suas costas.",
+        "Aos {minuto}', {advJogador} arranca em velocidade e cai pra cima de você.",
+        "Aos {minuto}', {advJogador} recebe entre a marcação e arma o perigo."
       ],
       "epico": [
         "Aos {minuto}', o {advTime} se atira ao ataque e o estádio prende o ar — a defesa, e você, contra a tempestade ({placar}).",
@@ -18,7 +20,9 @@
         "O atacante adversário fica de frente pra você aos {minuto}' — é você contra ele, e mais ninguém.",
         "Aos {minuto}', toda a pressão do {advTime} desaba sobre os seus ombros.",
         "A bola cruza a sua área aos {minuto}' e o gol parece a um passo — a menos que você impeça.",
-        "Aos {minuto}', a muralha é você: o {advTime} vem, e atrás de você, só o gol."
+        "Aos {minuto}', a muralha é você: o {advTime} vem, e atrás de você, só o gol.",
+        "Aos {minuto}', {advJogador} avança como uma sombra — o perigo é iminente.",
+        "Aos {minuto}', {advJogador} encara você no mano a mano, e o estádio prende o ar."
       ],
       "comico": [
         "Aos {minuto}', o {advTime} vem com tudo e a bola fica saltando na sua área que nem pipoca na panela.",
@@ -27,7 +31,9 @@
         "Aos {minuto}', a zaga se enrola toda e a bola fica de bobeira esperando alguém tomar vergonha.",
         "Aos {minuto}', o craque do {advTime} vem pra cima de você fazendo embaixadinha. Aí complica.",
         "Cruzamento na sua área aos {minuto}' e você reza pra bola não sobrar pro atacante adversário.",
-        "Aos {minuto}', o atacante do {advTime} corre sozinho e a torcida já tampa os olhos."
+        "Aos {minuto}', o atacante do {advTime} corre sozinho e a torcida já tampa os olhos.",
+        "Aos {minuto}', {advJogador} vem driblando e te encara com um sorrisinho.",
+        "Aos {minuto}', {advJogador} escapa sozinho e você pensa: 'logo agora?'"
       ]
     },
     "meio": {
@@ -67,7 +73,9 @@
         "Aos {minuto}', o cruzamento da direita desce na pequena área e você aparece pra finalizar.",
         "O goleiro adversário dá rebote aos {minuto}' e a bola fica viva na sua frente.",
         "Aos {minuto}', você recebe na linha de fundo com ângulo pra decidir.",
-        "Falta perigosa na entrada da área aos {minuto}': a barreira se forma e a chance é sua."
+        "Falta perigosa na entrada da área aos {minuto}': a barreira se forma e a chance é sua.",
+        "Aos {minuto}', {companheiro} cruza da direita e a bola sobra pra você na área.",
+        "Aos {minuto}', {companheiro} ajeita de cabeça e te deixa de frente pro gol."
       ],
       "epico": [
         "Aos {minuto}', a bola sobra viva na área e o estádio inteiro segura o ar — {meuTime} a um lance da glória ({placar}).",
@@ -76,7 +84,9 @@
         "O tempo pesa aos {minuto}': uma finalização separa você da lenda.",
         "Aos {minuto}', o goleiro adversário está só, e o mundo inteiro parece olhar pra você.",
         "O cruzamento desce aos {minuto}' e, por um instante, o estádio prende a respiração junto com você.",
-        "Aos {minuto}', a chance que você esperou a Copa inteira finalmente aparece."
+        "Aos {minuto}', a chance que você esperou a Copa inteira finalmente aparece.",
+        "Aos {minuto}', {companheiro} rasga a defesa e te serve — o gol está aberto.",
+        "Aos {minuto}', {companheiro} cruza na medida e a glória passa pelos seus pés."
       ],
       "comico": [
         "Aos {minuto}', a zaga adversária afasta meia-boca e a chance, gorda, cai no seu pé.",
@@ -85,7 +95,9 @@
         "Cruzamento aos {minuto}' e você sozinho na pequena área: é o gol ou a vergonha eterna.",
         "Aos {minuto}', o goleiro adversário escorrega e te entrega o gol numa bandeja — não vacila.",
         "Sobra o rebote aos {minuto}' e você se vê com mais gol do que zagueiro na frente. Resolve.",
-        "Aos {minuto}', a defesa adversária se enrola e a bola te procura igual cachorro caramelo."
+        "Aos {minuto}', a defesa adversária se enrola e a bola te procura igual cachorro caramelo.",
+        "Aos {minuto}', {companheiro} cruza e já grita teu nome — agora não tem desculpa.",
+        "Aos {minuto}', {companheiro} te acha sozinho na área e pisca: é só empurrar."
       ]
     },
     "disciplina": {
