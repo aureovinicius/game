@@ -22,9 +22,17 @@ export async function carregarNarrativa() {
 export function setNarrativa(obj) { DB = obj; }
 export function narrativaCarregada() { return !!DB; }
 
-function pick(arr) {
+// Sorteio com anti-repetição: evita devolver o mesmo molde da mesma célula
+// duas vezes seguidas (memória por chave), pra a variedade do corpus render.
+const _recente = new Map();
+function pick(arr, chave) {
   if (!arr || !arr.length) return null;
-  return arr[Math.floor(Math.random() * arr.length)];
+  if (arr.length === 1) return arr[0];
+  const ultimo = chave ? _recente.get(chave) : null;
+  let cand = arr[Math.floor(Math.random() * arr.length)];
+  for (let i = 0; i < 4 && cand === ultimo; i++) cand = arr[Math.floor(Math.random() * arr.length)];
+  if (chave) _recente.set(chave, cand);
+  return cand;
 }
 
 // Preenche {slots} a partir do ctx; slots ausentes viram '' e a frase é limpa.
@@ -42,7 +50,7 @@ function preencher(tpl, ctx) {
 export function situacao({ zona = 'meio', tom = 'realista', ctx = {} } = {}) {
   const grupo = DB && DB.situacoes && DB.situacoes[zona];
   const lista = grupo ? (grupo[tom] || grupo.realista) : null;
-  const tpl = pick(lista);
+  const tpl = pick(lista, `s:${zona}:${tom}`);
   if (!tpl) return fallbackSituacao(ctx);
   return preencher(tpl, ctx);
 }
@@ -58,7 +66,7 @@ export function cena({ tipo = 'pre', tom = 'realista', resultado = 'vitoria', ct
   } else {
     lista = raiz ? (raiz[tom] || raiz.realista) : null;
   }
-  const tpl = pick(lista);
+  const tpl = pick(lista, `c:${tipo}:${tom}:${tipo === 'pos' ? resultado : ''}`);
   if (!tpl) return fallbackCena(tipo, ctx);
   return preencher(tpl, ctx);
 }

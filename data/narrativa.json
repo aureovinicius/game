@@ -1,24 +1,33 @@
 {
-  "_doc": "Corpus de narração offline (molde + encaixe). Slots: {minuto} {meuTime} {advTime} {meuTla} {advTla} {placar} {fase} {nome}. Regras: tom respeitado; função do adversário nomeada (não só nacionalidade); sem termos inventados; sem acréscimos fora de hora; gíria/cultura só brasileira. Curado a partir da BIBLIA_DO_MUNDO. Crescer adicionando itens às listas.",
+  "_doc": "Corpus de narração offline (molde + encaixe). Slots: {minuto} {meuTime} {advTime} {meuTla} {advTla} {placar} {fase} {nome}. Regras: tom respeitado; função do adversário nomeada (não só nacionalidade); sem termos inventados (piruetar/gancho/espigão); sem acréscimos fora de hora; sem medidas numéricas; gíria/cultura só brasileira. Curado a partir da BIBLIA_DO_MUNDO. Crescer adicionando itens às listas.",
   "situacoes": {
     "def": {
       "realista": [
         "Aos {minuto}', o {advTime} chega com perigo e a bola sobra na sua área. Tem que resolver ({placar}).",
         "Contra-ataque do {advTime} aos {minuto}': a defesa fica mal posicionada e o lance é seu.",
         "Escanteio do {advTime} aos {minuto}'. A bola sobe na pequena área, no meio dos corpos.",
-        "Aos {minuto}', o atacante adversário recebe nas costas da marcação e fica de frente pro gol."
+        "Aos {minuto}', o atacante adversário recebe nas costas da marcação e fica de frente pro gol.",
+        "Cruzamento perigoso do {advTime} aos {minuto}' busca a cabeça do atacante na sua área.",
+        "Aos {minuto}', o craque adversário encara você no mano a mano.",
+        "Lançamento por cima da defesa aos {minuto}': o atacante do {advTime} desce nas suas costas."
       ],
       "epico": [
         "Aos {minuto}', o {advTime} se atira ao ataque e o estádio prende o ar — a defesa, e você, contra a tempestade ({placar}).",
         "O perigo ronda a sua área aos {minuto}'. É a hora de segurar o que já parecia perdido.",
         "Aos {minuto}', a bola viva na sua área parece em câmera lenta: tudo depende do que você fizer agora.",
-        "O atacante adversário fica de frente pra você aos {minuto}' — é você contra ele, e mais ninguém."
+        "O atacante adversário fica de frente pra você aos {minuto}' — é você contra ele, e mais ninguém.",
+        "Aos {minuto}', toda a pressão do {advTime} desaba sobre os seus ombros.",
+        "A bola cruza a sua área aos {minuto}' e o gol parece a um passo — a menos que você impeça.",
+        "Aos {minuto}', a muralha é você: o {advTime} vem, e atrás de você, só o gol."
       ],
       "comico": [
         "Aos {minuto}', o {advTime} vem com tudo e a bola fica saltando na sua área que nem pipoca na panela.",
         "O atacante adversário escapa sozinho aos {minuto}' — e tinha que sobrar logo pra você resolver, né.",
         "Escanteio do {advTime} aos {minuto}': um monte de zagueirão se empurrando na pequena área.",
-        "Aos {minuto}', a zaga se enrola toda e a bola fica de bobeira esperando alguém tomar vergonha."
+        "Aos {minuto}', a zaga se enrola toda e a bola fica de bobeira esperando alguém tomar vergonha.",
+        "Aos {minuto}', o craque do {advTime} vem pra cima de você fazendo embaixadinha. Aí complica.",
+        "Cruzamento na sua área aos {minuto}' e você reza pra bola não sobrar pro atacante adversário.",
+        "Aos {minuto}', o atacante do {advTime} corre sozinho e a torcida já tampa os olhos."
       ]
     },
     "meio": {
@@ -26,140 +35,197 @@
         "Aos {minuto}', você recebe no meio com algum espaço pra construir ({placar}).",
         "A bola chega limpa nos seus pés na intermediária aos {minuto}'.",
         "Aos {minuto}', o jogo se abre no meio-campo e a decisão é sua.",
-        "Você ganha as costas da marcação aos {minuto}' e o time inteiro espera a sua escolha."
+        "Você ganha as costas da marcação aos {minuto}' e o time espera a sua escolha.",
+        "Aos {minuto}', você rouba a bola no meio e sai com o campo na frente.",
+        "Recebe de costas pro gol aos {minuto}', com o marcador colado.",
+        "Aos {minuto}', a bola dividida sobra no meião e o lance é seu."
       ],
       "epico": [
         "Aos {minuto}', o jogo passa pelos seus pés — o {meuTime} respira no seu ritmo ({placar}).",
         "A bola é sua no meio aos {minuto}', e com ela o rumo da partida.",
         "Aos {minuto}', o estádio silencia esperando o que você vai inventar.",
-        "O tempo parece parar aos {minuto}' quando a bola chega na sua medida."
+        "O tempo parece parar aos {minuto}' quando a bola chega na sua medida.",
+        "Aos {minuto}', você carrega nos pés o peso e a esperança de toda uma torcida.",
+        "A bola sobra pra você no meio aos {minuto}': a deixa que separa o comum do inesquecível.",
+        "Aos {minuto}', o campo se abre como um tabuleiro e a próxima peça é sua."
       ],
       "comico": [
         "Aos {minuto}', a bola chega no seu pé e o banco inteiro grita coisa diferente — resolve você mesmo.",
         "Você recebe no meio aos {minuto}' com o marcador colado feito carrapato.",
-        "Aos {minuto}', sobra pra você no meião e o técnico já tá roendo as unhas.",
-        "A bola chega mansa nos seus pés aos {minuto}', tipo convite pra fazer bonito ou pagar mico."
+        "Aos {minuto}', sobra pra você no meião e o técnico já está roendo as unhas.",
+        "A bola chega mansa nos seus pés aos {minuto}', tipo convite pra fazer bonito ou pagar mico.",
+        "Aos {minuto}', você rouba a bola e o adversário fica reclamando sozinho — bola é sua.",
+        "Recebe de costas aos {minuto}' com o zagueiro adversário grudado tipo sombra em dia de sol.",
+        "Aos {minuto}', a bola dividida pinga no seu pé e geral espera pra ver no que vai dar."
       ]
     },
     "atk": {
       "realista": [
         "Aos {minuto}', a jogada chega na entrada da área do {advTime} e a chance é sua ({placar}).",
-        "Aos {minuto}', a bola sobra na área depois que a zaga adversária afasta mal.",
-        "Você fica de frente pro gol aos {minuto}', com o goleiro adversário adiantado.",
-        "Aos {minuto}', o cruzamento desce na pequena área e você aparece pra finalizar."
+        "Aos {minuto}', a bola sobra na área depois que a zaga adversária afasta mal o cruzamento.",
+        "Você fica de frente pro goleiro adversário aos {minuto}', com a defesa subindo atrasada.",
+        "Aos {minuto}', o cruzamento da direita desce na pequena área e você aparece pra finalizar.",
+        "O goleiro adversário dá rebote aos {minuto}' e a bola fica viva na sua frente.",
+        "Aos {minuto}', você recebe na linha de fundo com ângulo pra decidir.",
+        "Falta perigosa na entrada da área aos {minuto}': a barreira se forma e a chance é sua."
       ],
       "epico": [
         "Aos {minuto}', a bola sobra viva na área e o estádio inteiro segura o ar — {meuTime} a um lance da glória ({placar}).",
         "É o momento que decide Copa, aos {minuto}', e cai no seu pé.",
         "Aos {minuto}', o gol do {advTime} se abre na sua frente como um convite à história.",
-        "O tempo pesa aos {minuto}': uma finalização separa você da lenda."
+        "O tempo pesa aos {minuto}': uma finalização separa você da lenda.",
+        "Aos {minuto}', o goleiro adversário está só, e o mundo inteiro parece olhar pra você.",
+        "O cruzamento desce aos {minuto}' e, por um instante, o estádio prende a respiração junto com você.",
+        "Aos {minuto}', a chance que você esperou a Copa inteira finalmente aparece."
       ],
       "comico": [
-        "Aos {minuto}', a zaga do {advTime} afasta meia-boca e a chance, gorda, cai no seu pé.",
+        "Aos {minuto}', a zaga adversária afasta meia-boca e a chance, gorda, cai no seu pé.",
         "Você fica de cara pro gol aos {minuto}' — agora não dá pra mandar pra fora, pelo amor.",
         "Aos {minuto}', a bola sobra na área e o goleiro adversário já faz cara de sofrimento.",
-        "Cruzamento aos {minuto}' e você sozinho na pequena área: é o gol ou a vergonha eterna."
+        "Cruzamento aos {minuto}' e você sozinho na pequena área: é o gol ou a vergonha eterna.",
+        "Aos {minuto}', o goleiro adversário escorrega e te entrega o gol numa bandeja — não vacila.",
+        "Sobra o rebote aos {minuto}' e você se vê com mais gol do que zagueiro na frente. Resolve.",
+        "Aos {minuto}', a defesa adversária se enrola e a bola te procura igual cachorro caramelo."
       ]
     },
     "disciplina": {
       "realista": [
         "Aos {minuto}', o marcador te derruba com força e ainda fica por cima reclamando. O árbitro manda seguir.",
         "Aos {minuto}', uma marcação errada do árbitro esquenta os ânimos perto da linha.",
-        "O zagueiro adversário te provoca aos {minuto}' depois da dividida."
+        "O zagueiro adversário te provoca aos {minuto}' depois da dividida.",
+        "Aos {minuto}', o adversário faz cera e ainda solta uma alfinetada pra te tirar do ritmo."
       ],
       "epico": [
         "Aos {minuto}', a falta dura acende o pavio — o jogo todo para, os olhares se cruzam.",
         "A injustiça da marcação queima por dentro aos {minuto}': a cabeça pesa tanto quanto as pernas.",
-        "Aos {minuto}', o adversário cutuca onde dói, testando o seu sangue-frio."
+        "Aos {minuto}', o adversário cutuca onde dói, testando o seu sangue-frio.",
+        "Aos {minuto}', a provocação ecoa e o sangue ferve — a verdadeira batalha é contra si mesmo."
       ],
       "comico": [
         "Aos {minuto}', o zagueiro te derruba e ainda sorri, o cara de pau.",
         "O árbitro engole o apito na sua cara aos {minuto}' e você fica espumando.",
-        "Aos {minuto}', o marcador solta uma piadinha no seu ouvido só pra te tirar do sério."
+        "Aos {minuto}', o marcador solta uma piadinha no seu ouvido só pra te tirar do sério.",
+        "Aos {minuto}', o adversário cai sozinho e ainda pede cartão — a cara de pau não tem limite."
       ]
     },
     "inicio": {
       "realista": [
         "Antes do apito contra o {advTime}, você define como o time entra em campo.",
-        "Túnel, prancheta na mão: como o time deve encarar o {advTime}?"
+        "Túnel, prancheta na mão: como o time deve encarar o {advTime}?",
+        "A escalação está definida; falta o ajuste fino antes de encarar o {advTime}.",
+        "O time perfila no túnel. Sua última instrução antes de a bola rolar contra o {advTime}."
       ],
       "epico": [
         "O estádio ferve. Da beira, você decide o tom da batalha contra o {advTime}.",
-        "Tudo começa agora contra o {advTime} — a primeira ordem é sua."
+        "Tudo começa agora contra o {advTime} — a primeira ordem é sua.",
+        "Onze jogadores olham pra você antes de enfrentar o {advTime}: a primeira palavra é sua.",
+        "O apito se aproxima e o plano contra o {advTime} mora na sua cabeça."
       ],
       "comico": [
-        "O apito tá quase. Você encara a prancheta tipo quem escolhe o lanche: vai de quê contra o {advTime}?",
-        "O {advTime} do outro lado. Hora de fingir que o plano vai dar certo."
+        "O apito está quase. Você encara a prancheta tipo quem escolhe o lanche: vai de quê contra o {advTime}?",
+        "O {advTime} do outro lado. Hora de fingir que o plano vai dar certo.",
+        "Você ajeita o paletó, encara o {advTime} e torce pra prancheta não te desmentir.",
+        "Hora de parecer que você sabe exatamente o que está fazendo contra o {advTime}."
       ]
     },
     "sofreu": {
       "realista": [
         "Aos {minuto}', {placar}: tomou o gol. Reage agora ou guarda pro intervalo?",
-        "O {advTime} abriu o placar aos {minuto}'. Decisão de banco."
+        "O {advTime} abriu o placar aos {minuto}'. Decisão de banco.",
+        "Aos {minuto}', o {advTime} fez e o jogo virou. O que ajusta?",
+        "Gol sofrido aos {minuto}' ({placar}): a partida pede uma resposta sua."
       ],
       "epico": [
         "Aos {minuto}', o gol do {advTime} cai como um soco. Da beira, você precisa responder.",
-        "O placar dói aos {minuto}' ({placar}). É hora de o comandante agir."
+        "O placar dói aos {minuto}' ({placar}). É hora de o comandante agir.",
+        "Aos {minuto}', o silêncio da torcida cobra de você uma reação contra o {advTime}.",
+        "O gol do {advTime} aos {minuto}' testa a sua coragem: recuar ou ir à luta?"
       ],
       "comico": [
         "Aos {minuto}', {placar}. Tomou gol e a torcida já xinga o seu nome. E aí, gênio?",
-        "O {advTime} fez aos {minuto}'. Você respira fundo e finge que está tudo sob controle."
+        "O {advTime} fez aos {minuto}'. Você respira fundo e finge que está tudo sob controle.",
+        "Aos {minuto}', {placar}. O gol entrou e o seu cabelo embranqueceu mais um pouco.",
+        "Tomou do {advTime} aos {minuto}'. Hora de mexer antes que a diretoria mexa em você."
       ]
     },
     "fez": {
       "realista": [
         "Aos {minuto}', {placar}: seu time marcou. Administra ou vai pra cima?",
-        "Saiu o gol aos {minuto}'. Como o time deve seguir daqui?"
+        "Saiu o gol aos {minuto}'. Como o time deve seguir daqui?",
+        "Aos {minuto}', a vantagem chega ({placar}). Qual o próximo passo?",
+        "Gol do {meuTime} aos {minuto}': segura o ritmo ou aperta o {advTime}?"
       ],
       "epico": [
         "Aos {minuto}', o gol incendeia a torcida ({placar}). Você decide o próximo passo da saga.",
-        "A vantagem chega aos {minuto}'. Segurar a história ou ampliá-la?"
+        "A vantagem chega aos {minuto}'. Segurar a história ou ampliá-la?",
+        "Aos {minuto}', a torcida canta e o {advTime} cambaleia: hora de decidir o golpe seguinte.",
+        "O gol aos {minuto}' abre uma fenda no {advTime} — e você escolhe se cava mais fundo."
       ],
       "comico": [
         "Aos {minuto}', {placar}! Você comemora e já pensa: seguro essa magrela ou peço mais?",
-        "Saiu o gol aos {minuto}'. Não dá pra relaxar — time brasileiro adora um susto."
+        "Saiu o gol aos {minuto}'. Não dá pra relaxar — time brasileiro adora um susto.",
+        "Aos {minuto}', {placar}. Você comemora discreto pra não dar azar, e já planeja o resto.",
+        "Gol aos {minuto}'! Agora é segurar o coração (e a vantagem) contra o {advTime}."
       ]
     },
     "intervalo": {
       "realista": [
         "Intervalo, {placar} contra o {advTime}. Hora do ajuste no vestiário.",
-        "Primeiro tempo encerrado ({placar}). O que muda pra etapa final?"
+        "Primeiro tempo encerrado ({placar}). O que muda pra etapa final?",
+        "No vestiário, {placar}: você desenha o segundo tempo contra o {advTime}.",
+        "Intervalo contra o {advTime} ({placar}). É a hora de corrigir a rota."
       ],
       "epico": [
         "No vestiário, {placar} contra o {advTime}: suas palavras agora valem o jogo.",
-        "Intervalo: o discurso certo pode virar a história contra o {advTime}."
+        "Intervalo: o discurso certo pode virar a história contra o {advTime}.",
+        "Aos pés do grupo, {placar} contra o {advTime}, você tem 15 minutos pra mudar o destino.",
+        "O vestiário se cala e olha pra você: o segundo tempo contra o {advTime} nasce dessa fala."
       ],
       "comico": [
         "Intervalo, {placar}. Você entra no vestiário ensaiando a bronca no espelho.",
-        "Meio tempo contra o {advTime} ({placar}). Hora do show de motivação (ou do desespero)."
+        "Meio tempo contra o {advTime} ({placar}). Hora do show de motivação (ou do desespero).",
+        "Intervalo: {placar}. Você junta o time e tenta lembrar do discurso que viu em filme.",
+        "No vestiário contra o {advTime}, {placar}, você decide entre o sermão e o abraço."
       ]
     },
     "reta": {
       "realista": [
         "Aos {minuto}', {placar}: reta final contra o {advTime}. Última cartada.",
-        "Faltam minutos contra o {advTime} ({placar}). Decisão decisiva."
+        "Faltam minutos contra o {advTime} ({placar}). Decisão decisiva.",
+        "Aos {minuto}', o jogo entra na reta final ({placar}). O que você arrisca?",
+        "Reta final aos {minuto}' contra o {advTime}: cada escolha agora pesa o dobro."
       ],
       "epico": [
         "Aos {minuto}', tudo se decide contra o {advTime} ({placar}). A última ordem é sua.",
-        "O relógio aperta aos {minuto}': é agora ou nunca contra o {advTime}."
+        "O relógio aperta aos {minuto}': é agora ou nunca contra o {advTime}.",
+        "Aos {minuto}', o estádio inteiro prende o ar — a sua última jogada de mestre contra o {advTime}.",
+        "Reta final aos {minuto}': a história contra o {advTime} cabe na sua próxima decisão."
       ],
       "comico": [
         "Aos {minuto}', {placar}. Reta final e seu coração já está na boca — faz alguma coisa!",
-        "Últimos minutos contra o {advTime}. Você aposta tudo ou reza? (ou os dois)"
+        "Últimos minutos contra o {advTime}. Você aposta tudo ou reza? (ou os dois)",
+        "Aos {minuto}', {placar}. Você olha o relógio, olha o banco, e olha pro alto pedindo ajuda.",
+        "Reta final contra o {advTime} aos {minuto}': é a hora da decisão que vira manchete amanhã."
       ]
     },
     "disc": {
       "realista": [
         "Aos {minuto}', uma marcação contra o seu time tira o banco do sério.",
-        "O quarto árbitro te olha torto aos {minuto}' — os ânimos esquentam na beira."
+        "O quarto árbitro te olha torto aos {minuto}' — os ânimos esquentam na beira.",
+        "Aos {minuto}', um lance polêmico na área faz você saltar da área técnica.",
+        "Reclamação geral aos {minuto}': o banco ferve e você precisa se posicionar."
       ],
       "epico": [
         "Aos {minuto}', a injustiça queima na beira do campo — o comandante precisa se conter.",
-        "Aos {minuto}', o jogo ferve até no banco; sua reação pode custar caro."
+        "Aos {minuto}', o jogo ferve até no banco; sua reação pode custar caro.",
+        "Aos {minuto}', o erro de arbitragem rasga o plano — e testa o seu autocontrole.",
+        "A tensão transborda pra beira aos {minuto}': o líder se mede também na contenção."
       ],
       "comico": [
         "Aos {minuto}', o bandeirinha erra feio e você quase engole a prancheta.",
-        "Aos {minuto}', dá vontade de invadir o campo — mas a arquibancada não te chama, né."
+        "Aos {minuto}', dá vontade de invadir o campo — mas a arquibancada não te chama, né.",
+        "Aos {minuto}', o árbitro marca um lance bizarro e você faz a dança da indignação na beira.",
+        "Aos {minuto}', o quarto árbitro te dá uma bronca e você vira criança de castigo."
       ]
     }
   },
@@ -167,73 +233,94 @@
     "pre": {
       "realista": [
         "Vestiário concentrado. {nome} amarra a chuteira e revê os lances que treinou. Do outro lado, {advTime}. Hora de entrar.",
-        "{nome} encara o gramado pelo túnel. {advTime} pela frente, e um plano claro na cabeça."
+        "{nome} encara o gramado pelo túnel. {advTime} pela frente, e um plano claro na cabeça.",
+        "O vestiário concentra o silêncio antes da batalha. {nome} respira fundo: {advTime} pela frente.",
+        "{nome} bate a chuteira no degrau, ergue a cabeça e caminha pro gramado. Contra o {advTime}, sem desculpas."
       ],
       "epico": [
         "O hino ecoa pelo estádio lotado e {nome} fecha os olhos: todo o caminho até aqui pesa nos ombros — e levanta junto. Contra {advTime}, vale a história.",
-        "No túnel, o rugido da torcida faz o chão tremer sob as chuteiras de {nome}. {advTime} do outro lado. É agora."
+        "No túnel, o rugido da torcida faz o chão tremer sob as chuteiras de {nome}. {advTime} do outro lado. É agora.",
+        "As arquibancadas cantam e {nome} sente o estádio inteiro empurrar. Diante do {advTime}, é hora de honrar a camisa.",
+        "{nome} ergue os olhos para o estádio fervendo. O {advTime} espera — e a história também."
       ],
       "comico": [
         "No túnel, {nome} ajeita a chuteira que insiste em desamarrar na pior hora. O {advTime} do lado, sério feito quem saiu de um velório. 'Hoje tem', ele pensa.",
-        "{nome} dá uma encarada no pessoal do {advTime}, solta uma risada nervosa e benze a canela. Que comece a zoeira."
+        "{nome} dá uma encarada no pessoal do {advTime}, solta uma risada nervosa e benze a canela. Que comece a zoeira.",
+        "{nome} faz o sinal da cruz, ajeita a meia e encara o {advTime} tentando disfarçar o frio na barriga.",
+        "O técnico fala, fala, e {nome} só pensa no {advTime} e em como quer que isso comece logo."
       ]
     },
     "pos": {
       "vitoria": {
         "realista": [
           "Apito final: {placar}. {nome} cumprimenta os adversários e respira fundo — trabalho feito contra o {advTime}.",
-          "Apito final: {placar}. Vitória madura sobre o {advTime}. {nome} sai de campo aplaudido."
+          "Apito final: {placar}. Vitória madura sobre o {advTime}. {nome} sai de campo aplaudido.",
+          "Apito final: {placar}. Trabalho sólido diante do {advTime}; {nome} deixa o gramado com a sensação de dever cumprido."
         ],
         "epico": [
           "Apito final: {placar}. {nome} cai de joelhos no gramado enquanto a torcida canta seu nome. Mais um capítulo na própria lenda, às custas do {advTime}.",
-          "Apito final: {placar}. O {advTime} caiu. {nome} ergue o punho ao céu — a história anota mais uma página dele."
+          "Apito final: {placar}. O {advTime} caiu. {nome} ergue o punho ao céu — a história anota mais uma página dele.",
+          "Apito final: {placar}. O {advTime} sucumbe e {nome} ergue os braços enquanto a torcida transforma o nome dele em canto."
         ],
         "comico": [
           "Apito final: {placar}. {nome} puxa o samba no meio do gramado enquanto o {advTime} olha sem entender. Zero modéstia.",
-          "Apito final: {placar}. {nome} já ensaia a dancinha pra coletiva. O {advTime} que se vire com a derrota."
+          "Apito final: {placar}. {nome} já ensaia a dancinha pra coletiva. O {advTime} que se vire com a derrota.",
+          "Apito final: {placar}. {nome} sai dando autógrafo imaginário enquanto o {advTime}, cabisbaixo, nem olha."
         ]
       },
       "empate": {
         "realista": [
           "Apito final: {placar}. Empate com o {advTime}. {nome} sai de cabeça erguida — a Copa continua.",
-          "Apito final: {placar}. Ponto dividido com o {advTime}; {nome} sabe que dá pra mais."
+          "Apito final: {placar}. Ponto dividido com o {advTime}; {nome} sabe que dá pra mais.",
+          "Apito final: {placar}. Divisão de pontos com o {advTime}; {nome} guarda o que faltou pra próxima."
         ],
         "epico": [
           "Apito final: {placar}. O empate com o {advTime} sabe a pouco, mas {nome} sabe: a saga ainda tem páginas em branco.",
-          "Apito final: {placar}. Nem glória, nem queda. {nome} encara o {advTime} já mirando o próximo round."
+          "Apito final: {placar}. Nem glória, nem queda. {nome} encara o {advTime} já mirando o próximo round.",
+          "Apito final: {placar}. O empate com o {advTime} não encerra nada — apenas adia o desfecho da saga de {nome}."
         ],
         "comico": [
           "Apito final: {placar}. Empatou com o {advTime}. {nome} encara o placar tipo quem esqueceu a senha do banco.",
-          "Apito final: {placar}. {nome} dá de ombros pro {advTime}: 'fica pra próxima, então'."
+          "Apito final: {placar}. {nome} dá de ombros pro {advTime}: 'fica pra próxima, então'.",
+          "Apito final: {placar}. {nome} aperta a mão do {advTime} pensando 'quase' e segue resmungando sozinho."
         ]
       },
       "derrota": {
         "realista": [
           "Apito final: {placar}. A derrota pro {advTime} dói. {nome} ergue a cabeça da grama — faz parte.",
-          "Apito final: {placar}. {nome} parabeniza o {advTime} e guarda a lição."
+          "Apito final: {placar}. {nome} parabeniza o {advTime} e guarda a lição.",
+          "Apito final: {placar}. Derrota para o {advTime}; {nome} recolhe a lição e segue em frente."
         ],
         "epico": [
           "Apito final: {placar}. {nome} encara o gramado em silêncio. O {advTime} venceu hoje, mas lendas também se forjam na queda.",
-          "Apito final: {placar}. A dor é funda contra o {advTime}, mas o fogo de {nome} não apaga aqui."
+          "Apito final: {placar}. A dor é funda contra o {advTime}, mas o fogo de {nome} não se apaga aqui.",
+          "Apito final: {placar}. O {advTime} vence, mas o olhar de {nome} promete que essa história ainda não acabou."
         ],
         "comico": [
           "Apito final: {placar}. {nome} olha pro céu pedindo explicação. O {advTime} comemora e ele já ensaia a desculpa.",
-          "Apito final: {placar}. Perdeu pro {advTime}. {nome} jura que o gramado tava torto."
+          "Apito final: {placar}. Perdeu pro {advTime}. {nome} jura que o gramado estava torto.",
+          "Apito final: {placar}. {nome} jura que o juiz estava de óculos errado e que o {advTime} teve sorte."
         ]
       }
     },
     "epilogo": {
       "realista": [
         "Quando {nome} pendurou as chuteiras, ficou a crônica de uma Copa intensa — gols, suor e decisões que ninguém mais tomaria igual.",
-        "No fim, {nome} deixou números e respeito: uma carreira de Copa construída lance a lance."
+        "No fim, {nome} deixou números e respeito: uma carreira de Copa construída lance a lance.",
+        "O tempo passou e o nome de {nome} virou referência: uma Copa jogada com inteligência e entrega.",
+        "Quando a poeira baixou, ficou o respeito: {nome} fez história sem precisar de holofote."
       ],
       "epico": [
         "A taça nem sempre veio, mas a lenda de {nome} ficou: uma Copa vivida como se cada lance fosse o último.",
-        "Quando {nome} saiu de cena, o que restou foi mito — e o eco da torcida que nunca esquece."
+        "Quando {nome} saiu de cena, o que restou foi mito — e o eco da torcida que nunca esquece.",
+        "As gerações seguintes ainda contam dos lances de {nome} — a lenda não envelhece, só cresce.",
+        "O estádio se cala, mas o eco de {nome} segue vivo em cada torcedor que esteve lá."
       ],
       "comico": [
         "{nome} pendurou as chuteiras e virou causo de bar: as histórias daquela Copa só crescem a cada contação.",
-        "No fim, {nome} ganhou apelido, música da torcida e uma coleção de zoeiras eternas. Tá valendo."
+        "No fim, {nome} ganhou apelido, música da torcida e uma coleção de zoeiras eternas. Tá valendo.",
+        "Hoje {nome} é figurinha de álbum, meme de torcida e desculpa de churrasco. Imortal, do jeito dele.",
+        "Aposentado, {nome} jura que faria tudo de novo — só que com menos cãibra."
       ]
     }
   }
