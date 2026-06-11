@@ -153,6 +153,34 @@ export function empate() {
   nota(440, t, 0.32, 0.14); nota(415.3, t + 0.24, 0.45, 0.14);
 }
 
+// Apito curto e seco — para quando o árbitro mostra um cartão.
+export function apitoCurto() {
+  const c = ctx(); if (!c) return; const t = c.currentTime;
+  const o = c.createOscillator(), g = c.createGain(), lfo = c.createOscillator(), lg = c.createGain();
+  o.type = 'square'; o.frequency.value = 2150;
+  lfo.frequency.value = 18; lg.gain.value = 50; lfo.connect(lg); lg.connect(o.frequency);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.13, t + 0.015);
+  g.gain.setValueAtTime(0.13, t + 0.1);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+  o.connect(g); g.connect(_master);
+  lfo.start(t); o.start(t); o.stop(t + 0.16); lfo.stop(t + 0.16);
+}
+
+// Veredito do d20: crítico, sucesso, falha ou falha crítica.
+export function dadoVeredito(resultado) {
+  const c = ctx(); if (!c || !resultado) return; const t = c.currentTime;
+  if (resultado.critico) {
+    [783.99, 1046.5, 1318.5].forEach((f, i) => nota(f, t + i * 0.07, 0.18, 0.18)); // brilho ascendente
+  } else if (resultado.falhaCritica) {
+    tom(160, t, 0.45, { tipo: 'sawtooth', gain: 0.18, glideTo: 80 }); // baque grave descendente
+  } else if (resultado.sucesso) {
+    nota(659.25, t, 0.14, 0.17); nota(987.77, t + 0.1, 0.22, 0.17); // E5 -> B5 (sobe)
+  } else {
+    nota(440, t, 0.16, 0.14); nota(329.63, t + 0.11, 0.26, 0.14); // A4 -> E4 (desce)
+  }
+}
+
 // --- Ambiente de torcida (loop) --------------------------------------------
 let _amb = null;
 export function ambiente(ligar) {

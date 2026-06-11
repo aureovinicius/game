@@ -153,6 +153,7 @@ const app = {
       this._refreshHead();
       if (ev.tipo === 'gol-meu') Audio.gol();
       else if (ev.tipo === 'gol-adv') Audio.golAdv();
+      if (typeof ev.texto === 'string' && /🟨|🟥/.test(ev.texto)) Audio.apitoCurto();
       await new Promise((r) => setTimeout(r, 260));
     }
   },

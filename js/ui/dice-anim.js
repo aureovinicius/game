@@ -3,6 +3,7 @@
 // quando o jogador toca em "continuar".
 import { ANIMACAO_DADO } from '../config.js';
 import { grauResultado } from '../dice.js';
+import { dadoVeredito } from '../audio.js';
 
 let overlayEl = null;
 
@@ -78,6 +79,7 @@ export async function animarDado(resultado, label = '') {
   }[grau];
   veredito.textContent = txt;
   veredito.classList.add(grau);
+  dadoVeredito(resultado);
   if (navigator.vibrate) navigator.vibrate(resultado.sucesso ? [20] : [60]);
 
   btn.hidden = false;
