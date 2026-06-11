@@ -6,6 +6,11 @@
 //   ex.: 'https://cronicas-mestre.SEU-SUBDOMINIO.workers.dev'
 export const MESTRE_PROXY_URL = 'https://cronicas-mestre.aureovinicius-a0d.workers.dev';
 
+// Modo IA: quando true, o Mestre narra via Worker (Claude). Desligado por
+// padrão — o jogo usa SEMPRE o corpus offline. A URL acima e a infra do Worker
+// ficam prontas para um "Modo IA" que construiremos no futuro (ligará esta chave).
+export const MODO_IA = false;
+
 // Quantos "Lances Decisivos" (intervenções de RPG) o jogador tem por partida.
 export const LANCES_POR_PARTIDA = 3;
 

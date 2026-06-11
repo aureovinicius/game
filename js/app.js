@@ -31,13 +31,14 @@ const app = {
   },
 
   // --- navegação simples ----------------------------------------------------
-  irHome() { Screens.renderHome(this); },
+  irHome() { Audio.bgmMenu(true); Screens.renderHome(this); },
   novaCarreiraTela() { Screens.renderCreate(this, this.dados); },
   irCronica() { Screens.renderCronica(this); },
   irFicha() { Screens.renderFicha(this, this.dados); },
   irConquistas() { Screens.renderConquistas(this); },
 
   irHub() {
+    Audio.bgmMenu(true);
     const camp = this.save.campanha;
     if (!camp.concluida && !camp.proximoAdvId) definirProximoAdversario(this.dados, this.save);
     this.advAtual = this.dados.porId.get(camp.proximoAdvId);
@@ -84,6 +85,7 @@ const app = {
     });
 
     this._mountMatch(meu, adv);
+    Audio.bgmMenu(false);
     Audio.ambiente(true);
     // cena de pré-jogo (IA ou offline)
     const usarIA = mestreOnline() && this.iaUsada < MAX_IA_POR_PARTIDA;
@@ -110,7 +112,7 @@ const app = {
             <small id="mh-min">0'</small></div>
           <div class="mh-time">${this._crest(adv)}<span>${adv.tla}</span></div>
         </header>
-        <div class="match-meta"><span id="mh-lances">🎲 ${this.eng.estado.lancesRestantes} lances</span><span id="mh-mom"></span></div>
+        <div class="match-meta"><span id="mh-lances"></span><span id="mh-mom"></span></div>
         <div class="match-log" id="match-log"></div>
         <div class="match-ctrl" id="match-ctrl"></div>
       </section>`;
@@ -123,7 +125,11 @@ const app = {
     const e = this.eng.estado;
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
     set('mh-gm', e.golsMeu); set('mh-ga', e.golsAdv); set('mh-min', `${e.minuto}'`);
-    set('mh-lances', `🎲 ${e.lancesRestantes} lance${e.lancesRestantes === 1 ? '' : 's'}`);
+    if (e.classeId === 'tecnico') {
+      set('mh-lances', `🧠 ${e.lancesRestantes} decis${e.lancesRestantes === 1 ? 'ão' : 'ões'} · 🔁 ${e.janelasRestantes}`);
+    } else {
+      set('mh-lances', `🎲 ${e.lancesRestantes} lance${e.lancesRestantes === 1 ? '' : 's'}`);
+    }
     const mom = e.momentum;
     const txt = mom > 25 ? '🔥 pressão a seu favor' : mom < -25 ? '⚠️ sob pressão' : '⚖️ equilíbrio';
     set('mh-mom', txt);
@@ -172,7 +178,9 @@ const app = {
     });
     if (r.fonte === 'ia') this.iaUsada++;
 
-    this._logLinha({ texto: `<span class="lance-tag">⚡ LANCE DECISIVO (${minuto}')</span> ${r.narrativa}`, tipo: 'lance' });
+    const ehTec = save.classeId === 'tecnico';
+    const tag = ehTec ? `🎙️ DECISÃO DE BANCO (${minuto}')` : `⚡ LANCE DECISIVO (${minuto}')`;
+    this._logLinha({ texto: `<span class="lance-tag">${tag}</span> ${r.narrativa}`, tipo: 'lance' });
     Audio.narrar(r.narrativa, { tom: save.tom });
 
     const e = this.eng.estado;
@@ -188,7 +196,7 @@ const app = {
         <span class="op-meta">${o.stat} ${sinal}${mod} · CD ${o.cd}</span>
       </button>`;
     }).join('');
-    this._setCtrl(`<p class="lance-instr">Escolha seu lance${dica}:</p>${botoes}`);
+    this._setCtrl(`<p class="lance-instr">${ehTec ? 'Sua decisão de banco' : 'Escolha seu lance'}${dica}:</p>${botoes}`);
 
     document.querySelectorAll('.btn-opcao').forEach((btn) => {
       btn.onclick = async () => {
@@ -218,6 +226,7 @@ const app = {
     this._setCtrl(`<div class="apitando">⏱️ apito final…</div>`);
     Audio.apito();
     Audio.ambiente(false);
+    Audio.bgmMenu(true);
 
     // cena de pós-jogo
     const e = this.eng.estado;
@@ -270,6 +279,7 @@ const app = {
   },
 
   async irLegado() {
+    Audio.bgmMenu(true);
     const save = this.save;
     const usarIA = mestreOnline();
     const epi = await gerarCena({

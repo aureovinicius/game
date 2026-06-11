@@ -6,10 +6,12 @@
 // Princípio de custo/robustez: a IA gera só o SABOR (texto da situação e das
 // opções). A MECÂNICA (atributo, CD, tipo de lance) vem do motor e nunca é
 // decidida pela IA — barateia, evita exploits e mantém o balanceamento.
-import { MESTRE_PROXY_URL, IDIOMA } from './config.js';
+import { MESTRE_PROXY_URL, IDIOMA, MODO_IA } from './config.js';
 import { situacao, cena, textoOpcao } from './narrador.js';
 
-export function mestreOnline() { return !!MESTRE_PROXY_URL; }
+// Só usa o Worker (IA) quando o Modo IA está ligado E há URL configurada.
+// Por padrão (Modo IA desligado), o jogo narra sempre pelo corpus offline.
+export function mestreOnline() { return MODO_IA && !!MESTRE_PROXY_URL; }
 
 async function chamarWorker(rota, payload, timeoutMs = 12000) {
   if (!MESTRE_PROXY_URL) throw new Error('offline');
