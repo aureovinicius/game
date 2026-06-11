@@ -77,6 +77,90 @@
         "O árbitro engole o apito na sua cara aos {minuto}' e você fica espumando.",
         "Aos {minuto}', o marcador solta uma piadinha no seu ouvido só pra te tirar do sério."
       ]
+    },
+    "inicio": {
+      "realista": [
+        "Antes do apito contra o {advTime}, você define como o time entra em campo.",
+        "Túnel, prancheta na mão: como o time deve encarar o {advTime}?"
+      ],
+      "epico": [
+        "O estádio ferve. Da beira, você decide o tom da batalha contra o {advTime}.",
+        "Tudo começa agora contra o {advTime} — a primeira ordem é sua."
+      ],
+      "comico": [
+        "O apito tá quase. Você encara a prancheta tipo quem escolhe o lanche: vai de quê contra o {advTime}?",
+        "O {advTime} do outro lado. Hora de fingir que o plano vai dar certo."
+      ]
+    },
+    "sofreu": {
+      "realista": [
+        "Aos {minuto}', {placar}: tomou o gol. Reage agora ou guarda pro intervalo?",
+        "O {advTime} abriu o placar aos {minuto}'. Decisão de banco."
+      ],
+      "epico": [
+        "Aos {minuto}', o gol do {advTime} cai como um soco. Da beira, você precisa responder.",
+        "O placar dói aos {minuto}' ({placar}). É hora de o comandante agir."
+      ],
+      "comico": [
+        "Aos {minuto}', {placar}. Tomou gol e a torcida já xinga o seu nome. E aí, gênio?",
+        "O {advTime} fez aos {minuto}'. Você respira fundo e finge que está tudo sob controle."
+      ]
+    },
+    "fez": {
+      "realista": [
+        "Aos {minuto}', {placar}: seu time marcou. Administra ou vai pra cima?",
+        "Saiu o gol aos {minuto}'. Como o time deve seguir daqui?"
+      ],
+      "epico": [
+        "Aos {minuto}', o gol incendeia a torcida ({placar}). Você decide o próximo passo da saga.",
+        "A vantagem chega aos {minuto}'. Segurar a história ou ampliá-la?"
+      ],
+      "comico": [
+        "Aos {minuto}', {placar}! Você comemora e já pensa: seguro essa magrela ou peço mais?",
+        "Saiu o gol aos {minuto}'. Não dá pra relaxar — time brasileiro adora um susto."
+      ]
+    },
+    "intervalo": {
+      "realista": [
+        "Intervalo, {placar} contra o {advTime}. Hora do ajuste no vestiário.",
+        "Primeiro tempo encerrado ({placar}). O que muda pra etapa final?"
+      ],
+      "epico": [
+        "No vestiário, {placar} contra o {advTime}: suas palavras agora valem o jogo.",
+        "Intervalo: o discurso certo pode virar a história contra o {advTime}."
+      ],
+      "comico": [
+        "Intervalo, {placar}. Você entra no vestiário ensaiando a bronca no espelho.",
+        "Meio tempo contra o {advTime} ({placar}). Hora do show de motivação (ou do desespero)."
+      ]
+    },
+    "reta": {
+      "realista": [
+        "Aos {minuto}', {placar}: reta final contra o {advTime}. Última cartada.",
+        "Faltam minutos contra o {advTime} ({placar}). Decisão decisiva."
+      ],
+      "epico": [
+        "Aos {minuto}', tudo se decide contra o {advTime} ({placar}). A última ordem é sua.",
+        "O relógio aperta aos {minuto}': é agora ou nunca contra o {advTime}."
+      ],
+      "comico": [
+        "Aos {minuto}', {placar}. Reta final e seu coração já está na boca — faz alguma coisa!",
+        "Últimos minutos contra o {advTime}. Você aposta tudo ou reza? (ou os dois)"
+      ]
+    },
+    "disc": {
+      "realista": [
+        "Aos {minuto}', uma marcação contra o seu time tira o banco do sério.",
+        "O quarto árbitro te olha torto aos {minuto}' — os ânimos esquentam na beira."
+      ],
+      "epico": [
+        "Aos {minuto}', a injustiça queima na beira do campo — o comandante precisa se conter.",
+        "Aos {minuto}', o jogo ferve até no banco; sua reação pode custar caro."
+      ],
+      "comico": [
+        "Aos {minuto}', o bandeirinha erra feio e você quase engole a prancheta.",
+        "Aos {minuto}', dá vontade de invadir o campo — mas a arquibancada não te chama, né."
+      ]
     }
   },
   "cenas": {

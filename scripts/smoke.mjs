@@ -62,6 +62,32 @@ console.log(`  ${ex.meu.tla} ${ex.e.golsMeu}–${ex.e.golsAdv} ${ex.adv.tla} | s
 
 ok(golsCA > golsGK, `centroavantes marcam mais que goleiros (CA=${golsCA}, GK=${golsGK})`);
 
+// Técnico (modo manager): decide nos gatilhos e nunca marca gol próprio.
+let decTec = 0, partidasTec = 0;
+for (let s = 300; s <= 340; s++) {
+  const attrs = montarAtributos('tecnico', 'base');
+  const meu = teams[s % teams.length];
+  let adv = teams[(s * 7 + 3) % teams.length];
+  if (adv.id === meu.id) adv = teams[(s + 1) % teams.length];
+  const eng = criarPartida({ meuTime: meu, advTime: adv, classeId: 'tecnico', attrs, fase: 'semi', mataMata: true, mando: 'neutro', semente: s });
+  const rng = criarRng(s + 7);
+  let g = 0;
+  while (!eng.estado.encerrada && g++ < 80) {
+    const passo = eng.avancar();
+    if (passo.tipo === 'lance') {
+      const ops = eng.opcoesPadrao();
+      const op = ops[Math.floor(rng() * ops.length)];
+      eng.resolverLance(op, rolar(modificador(attrs[op.stat]), op.cd, { rng }));
+    }
+  }
+  const e = eng.estado;
+  ok(e.encerrada && e.minuto === 90, 'técnico: partida encerra em 90');
+  ok(e.golsJogador === 0, `técnico não marca gol próprio (foi ${e.golsJogador})`);
+  ok(eng.notaJogador() >= 3 && eng.notaJogador() <= 10, 'técnico: nota 3..10');
+  decTec += e.lancesUsados; partidasTec++;
+}
+ok(decTec / partidasTec >= 3, `técnico decide em média >= 3 vezes (média ${(decTec / partidasTec).toFixed(1)})`);
+
 // conquistas: primeiro gol dispara quando há gol
 const ctx = { classe: 'centroavante', carreira: { gols: 1, assist: 0, jogos: 1, vitorias: 1, golsSofridos: 0, cleanSheets: 0, maiorGoleada: 1, hatTricks: 0, zebras: 0, fase: 'grupos', campeao: false, vice: false }, ultimaPartida: {} };
 const novas = novasConquistas(ctx, []);

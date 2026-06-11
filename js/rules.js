@@ -56,6 +56,12 @@ export const CLASSES = [
     base: { TEC: 14, FIS: 12, VIS: 11, MEN: 14, CAR: 11, SOR: 10 },
     exito: 'Artilharia — a Chuteira de Ouro.',
   },
+  {
+    id: 'tecnico', nome: 'Técnico', arquetipo: 'O Comandante', emoji: '🎙️',
+    principal: 'CAR', secundario: 'VIS', modo: 'tecnico',
+    base: { TEC: 8, FIS: 8, VIS: 15, MEN: 14, CAR: 16, SOR: 11 },
+    exito: 'Gestão e leitura: viradas, jogos sem sofrer gol e títulos.',
+  },
 ];
 
 // Origens (background): pequenos ajustes + gancho narrativo para o Mestre.

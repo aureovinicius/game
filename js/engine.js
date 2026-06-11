@@ -74,12 +74,15 @@ export function criarPartida(cfg) {
   const lamMeuBase = clamp(1.35 + diff / 300, 0.35, 3.2);
   const lamAdvBase = clamp(1.35 - diff / 300, 0.35, 3.2);
 
-  // Quantidade de lances (4–8): jogos equilibrados e mata-matas rendem mais.
+  const modoTecnico = cfg.classeId === 'tecnico';
+  // Quantidade de lances/decisões e quando ocorrem.
   const intensidade = clamp(1 - Math.abs(diff) / 320, 0, 1);
   const variacao = Math.floor(rng() * 3) - 1; // -1..+1
-  const alvoLances = clamp(Math.round(4 + intensidade * 3) + (cfg.mataMata ? 1 : 0) + variacao, 4, 8);
-  const agenda = sortearAgenda(rng, alvoLances);
+  const alvoLances = modoTecnico ? 5 : clamp(Math.round(4 + intensidade * 3) + (cfg.mataMata ? 1 : 0) + variacao, 4, 8);
+  // Campo: agenda por pressão. Técnico: gatilhos (início, intervalo, reta) + eventos de gol.
+  const agenda = modoTecnico ? [] : sortearAgenda(rng, alvoLances);
   const agendaSet = new Set(agenda);
+  const agendaTecSet = modoTecnico ? new Set([1, 45, 76 + Math.floor(rng() * 8)]) : null;
 
   const estado = {
     meuTime: cfg.meuTime,
@@ -108,6 +111,13 @@ export function criarPartida(cfg) {
     multAdv: 1,
     exposto: 0,         // "deixou espaço"; aumenta a chance adversária e decai
     advUmAMenos: false, // adversário já expulso (evita 2 vermelhos no mesmo time)
+    // técnico (modo manager)
+    janelasRestantes: 3,
+    subsRestantes: 5,
+    fadiga: 0,
+    tecnicoExpulso: false,
+    _gatEvt: null,      // gatilho de decisão agendado após um gol
+    _beatUsado: false,
   };
 
   function fatorMomentum(sinal) {
@@ -130,7 +140,8 @@ export function criarPartida(cfg) {
     bump(14);
     const po = PESO_OFENSIVO[estado.classeId] ?? 0.5;
     let fezGol;
-    if (modo === 'jogador') fezGol = true;
+    if (estado.classeId === 'tecnico') fezGol = false; // técnico não marca
+    else if (modo === 'jogador') fezGol = true;
     else if (modo === 'time') fezGol = false;
     else fezGol = rng() < po * 0.6;
 
@@ -140,7 +151,7 @@ export function criarPartida(cfg) {
       texto = `⚽ GOL DE ${estado.meuTime.tla}! Você marca! (${estado.golsMeu}–${estado.golsAdv})`;
     } else {
       let assistTxt = '';
-      if (modo === 'fluxo' && rng() < 0.5) { estado.assistJogador++; assistTxt = ' Assistência sua!'; }
+      if (estado.classeId !== 'tecnico' && modo === 'fluxo' && rng() < 0.5) { estado.assistJogador++; assistTxt = ' Assistência sua!'; }
       texto = `⚽ GOL DE ${estado.meuTime.tla}!${assistTxt} (${estado.golsMeu}–${estado.golsAdv})`;
     }
     reg(estado.minuto, texto, 'gol-meu');
@@ -213,18 +224,45 @@ export function criarPartida(cfg) {
     const eventos = [];
     while (estado.minuto < 90) {
       estado.minuto++;
-      if (agendaSet.has(estado.minuto) && estado.lancesRestantes > 0) {
+
+      if (modoTecnico) {
+        if (estado.lancesUsados < 7) {
+          if (estado._gatEvt && estado.minuto >= estado._gatEvt.min) {
+            const g = estado._gatEvt.tipo; estado._gatEvt = null;
+            estado.pendingLance = { minuto: estado.minuto, zona: g };
+            return { tipo: 'lance', minuto: estado.minuto, eventos };
+          }
+          if (agendaTecSet.has(estado.minuto)) {
+            const g = estado.minuto <= 1 ? 'inicio' : estado.minuto === 45 ? 'intervalo' : 'reta';
+            estado.pendingLance = { minuto: estado.minuto, zona: g };
+            return { tipo: 'lance', minuto: estado.minuto, eventos };
+          }
+          if (!estado._beatUsado && estado.minuto > 25 && estado.minuto < 78 && rng() < 0.03) {
+            estado._beatUsado = true;
+            estado.pendingLance = { minuto: estado.minuto, zona: 'disc' };
+            return { tipo: 'lance', minuto: estado.minuto, eventos };
+          }
+        }
+      } else if (agendaSet.has(estado.minuto) && estado.lancesRestantes > 0) {
         const disc = estado.lancesUsados > 0 && rng() < 0.08;
         estado.pendingLance = { minuto: estado.minuto, zona: disc ? 'disciplina' : zonaDoLance() };
         return { tipo: 'lance', minuto: estado.minuto, eventos };
       }
+
       if (rng() < 0.05) flavor(eventos);
 
+      const antesMeu = estado.golsMeu, antesAdv = estado.golsAdv;
       const pMeu = (lamMeuBase / 90) * fatorMomentum(+1) * estado.multMeu;
       const pAdv = (lamAdvBase / 90) * fatorMomentum(-1) * estado.multAdv * (1 + 0.12 * estado.exposto);
       const r = rng();
       if (r < pMeu) golMeu(eventos, 'fluxo');
       else if (r < pMeu + pAdv) golAdv(eventos);
+
+      // técnico: um gol (seu ou sofrido) agenda uma decisão de reação logo em seguida
+      if (modoTecnico && !estado._gatEvt && estado.lancesUsados < 7 && estado.minuto < 88) {
+        if (estado.golsMeu > antesMeu) estado._gatEvt = { min: estado.minuto + 1, tipo: 'fez' };
+        else if (estado.golsAdv > antesAdv) estado._gatEvt = { min: estado.minuto + 1, tipo: 'sofreu' };
+      }
 
       estado.momentum *= 0.985;
       estado.exposto *= 0.7;
@@ -336,6 +374,11 @@ export function criarPartida(cfg) {
         break;
       }
       case 'provocar': {
+        if (estado.classeId === 'tecnico') {
+          if (sucesso) { eventos.push(efx(minuto, '🗣️ Você pressiona o árbitro da beira e impõe respeito.')); bump(4); }
+          else { estado.tecnicoExpulso = true; bump(-6); eventos.push(efx(minuto, '🟥 Expulso da área técnica! Você vai pra arquibancada e a leitura do jogo piora.')); }
+          break;
+        }
         if (sucesso) {
           eventos.push(efx(minuto, '😤 O marcador cai na provocação e se complica.'));
           estado.cartoes.amareloAdv++;
@@ -346,8 +389,52 @@ export function criarPartida(cfg) {
         break;
       }
       case 'mental': {
-        if (sucesso) { eventos.push(efx(minuto, '🧘 Você segura a cabeça e mantém o foco.')); bump(6); }
+        if (estado.classeId === 'tecnico') {
+          if (sucesso) { eventos.push(efx(minuto, '🧠 Você mantém a calma e orienta o time da beira.')); bump(6); }
+          else { eventos.push(efx(minuto, '😤 A irritação contagia o banco; a concentração cai.')); bump(-3); }
+        } else if (sucesso) { eventos.push(efx(minuto, '🧘 Você segura a cabeça e mantém o foco.')); bump(6); }
         else { cartaoJogador(eventos, ef.cartaoRisco === 'amarelo' ? 'amarelo' : 'vermelho', ef.cartaoRisco === 'amarelo' ? 'reclamação' : 'revide'); }
+        break;
+      }
+      case 'postura': {
+        const t = ef.tilt;
+        if (sucesso) {
+          if (t === 'ofensivo') { estado.multMeu *= 1.08; eventos.push(efx(minuto, '📋 O time entra ligado, buscando o jogo.')); }
+          else if (t === 'cauteloso') { estado.multAdv *= 0.92; eventos.push(efx(minuto, '📋 O time entra fechado e bem postado.')); }
+          else { bump(6); eventos.push(efx(minuto, '📋 O time entra equilibrado, sentindo o adversário.')); }
+        } else { eventos.push(efx(minuto, '📋 O time não entra como o planejado.')); bump(-4); }
+        break;
+      }
+      case 'substituir': {
+        if (!ef.intervalo && estado.janelasRestantes <= 0) { eventos.push(efx(minuto, '🔁 Sem janelas de substituição — ajuste só na orientação.')); break; }
+        if (!ef.intervalo) estado.janelasRestantes--;
+        estado.subsRestantes = Math.max(0, estado.subsRestantes - 1);
+        estado.fadiga = Math.max(0, estado.fadiga - 2);
+        if (sucesso) {
+          if (ef.alvo === 'ofensivo') { estado.multMeu *= 1.12; bump(8); eventos.push(efx(minuto, '🔁 Sangue novo no ataque — o time cresce de produção.')); }
+          else { estado.multAdv *= 0.88; bump(4); eventos.push(efx(minuto, '🔁 Reforço defensivo entra e fecha o time.')); }
+        } else { bump(-4); eventos.push(efx(minuto, '🔁 A mexida não pega bem e o time se desorganiza um pouco.')); }
+        break;
+      }
+      case 'pressing': {
+        if (sucesso) { estado.multMeu *= 1.10; estado.exposto = Math.max(estado.exposto, ef.exporContra || 1); estado.fadiga += 2; bump(8); eventos.push(efx(minuto, '⏫ Pressão na saída deles — o time sufoca o adversário.')); }
+        else { estado.exposto = Math.max(estado.exposto, ef.exporContra || 1); estado.fadiga += 2; bump(-6); eventos.push(efx(minuto, '⏫ A pressão não funciona e deixa espaços nas costas.')); }
+        break;
+      }
+      case 'recuar': {
+        if (sucesso) { estado.multAdv *= 0.85; bump(-2); eventos.push(efx(minuto, '⏬ O time recua organizado e fecha os espaços.')); }
+        else { estado.multAdv *= 0.96; bump(-6); eventos.push(efx(minuto, '⏬ O recuo sai mal feito e convida a pressão adversária.')); }
+        break;
+      }
+      case 'esquema': {
+        const perdendo = estado.golsMeu < estado.golsAdv;
+        if (sucesso) { if (perdendo) estado.multMeu *= 1.08; else estado.multAdv *= 0.92; bump(6); eventos.push(efx(minuto, '♟️ A mudança de esquema pega o adversário de surpresa.')); }
+        else { bump(-6); eventos.push(efx(minuto, '♟️ O time se perde por alguns minutos com a mudança.')); }
+        break;
+      }
+      case 'conversa': {
+        if (sucesso) { bump(18); estado.multMeu *= 1.05; eventos.push(efx(minuto, '🗣️ A conversa pega: o time volta inteiro pro segundo tempo.')); }
+        else { bump(2); eventos.push(efx(minuto, '🗣️ A fala não muda muito o ânimo do grupo.')); }
         break;
       }
       default: {
@@ -362,10 +449,25 @@ export function criarPartida(cfg) {
 
   // Opções do Lance pendente, conforme classe + zona, com o rigor do árbitro
   // aplicado aos lances de "se dar bem" (simular/provocar/reclamar).
+  // "Encaixe": escolher a alavanca certa pro estado do jogo baixa a CD; errar a
+  // leitura sobe a CD. -2 = ótimo encaixe, +3 = leitura ruim.
+  function fitDeltaTec(o, e) {
+    const ef = o.efeitos || {};
+    const perdendo = e.golsMeu < e.golsAdv, ganhando = e.golsMeu > e.golsAdv, fim = e.minuto >= 70;
+    const ofensivo = o.tipo === 'pressing' || (o.tipo === 'substituir' && ef.alvo === 'ofensivo') || (o.tipo === 'postura' && ef.tilt === 'ofensivo') || (o.tipo === 'esquema' && perdendo);
+    const defensivo = o.tipo === 'recuar' || (o.tipo === 'substituir' && ef.alvo === 'defensivo') || (o.tipo === 'postura' && ef.tilt === 'cauteloso');
+    if (ofensivo) return (perdendo || e.momentum >= 20) ? -2 : (ganhando && fim ? 3 : 0);
+    if (defensivo) return (ganhando || e.momentum <= -20) ? -2 : (perdendo && fim ? 3 : 0);
+    return 0;
+  }
+
   function opcoesPadrao() {
-    const zona = (estado.pendingLance && estado.pendingLance.zona) || zonaDoLance();
+    const zona = (estado.pendingLance && estado.pendingLance.zona) || (estado.classeId === 'tecnico' ? 'inicio' : zonaDoLance());
     const conjuntos = conjuntosDeLance(estado.classeId, zona);
     const set = conjuntos[Math.floor(rng() * conjuntos.length)] || conjuntos[0];
+    if (estado.classeId === 'tecnico') {
+      return set.map((o) => ({ ...o, cd: o.cd + fitDeltaTec(o, estado) + (estado.tecnicoExpulso ? 1 : 0), efeitos: o.efeitos || {} }));
+    }
     return set.map((o) => {
       const ajuste = (o.tipo === 'simular' || o.tipo === 'provocar' || (o.tipo === 'mental' && (o.efeitos || {}).cartaoRisco)) ? estado.arbitro.rigor : 0;
       return { ...o, cd: o.cd + ajuste, efeitos: o.efeitos || {} };
@@ -374,6 +476,16 @@ export function criarPartida(cfg) {
 
   // Nota do jogador na partida (6.0 base + contribuições).
   function notaJogador() {
+    if (estado.classeId === 'tecnico') {
+      const ganhou = estado.golsMeu > estado.golsAdv || estado.resultadoPenaltis === 'venci';
+      const empate = estado.golsMeu === estado.golsAdv && !estado.resultadoPenaltis;
+      let n = 6.0;
+      if (ganhou) n += 2.0; else if (empate) n += 0.3; else n -= 1.0;
+      if (estado.golsAdv === 0 && (ganhou || empate)) n += 0.8;
+      if (estado.golsMeu >= 3) n += 0.5;
+      if (estado.tecnicoExpulso) n -= 0.5;
+      return clamp(Math.round(n * 10) / 10, 3.0, 10.0);
+    }
     let nota = 6.0;
     nota += estado.golsJogador * 1.1;
     nota += estado.assistJogador * 0.7;

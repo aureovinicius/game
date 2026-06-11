@@ -128,6 +128,39 @@ export const MECANICAS = {
        O('B', 'Segurar a referência no ataque', 'seguro', 'MEN', 11, { exporContra: 0 })],
     ],
   },
+  // Técnico: decisões macro do banco, por gatilho. tipos próprios
+  // (postura/substituir/pressing/recuar/esquema/conversa) + beats (mental/provocar).
+  tecnico: {
+    inicio: [
+      [O('A', 'Entrar pra cima, postura ofensiva', 'postura', 'CAR', 13, { tilt: 'ofensivo' }),
+       O('B', 'Equilíbrio: sentir o jogo primeiro', 'postura', 'VIS', 11, { tilt: 'equilibrio' }),
+       O('C', 'Entrar cauteloso e fechar os espaços', 'postura', 'MEN', 13, { tilt: 'cauteloso' })],
+    ],
+    sofreu: [
+      [O('A', 'Mexer já: sangue novo no ataque', 'substituir', 'VIS', 15, { alvo: 'ofensivo' }),
+       O('B', 'Manter e ajustar na orientação', 'seguro', 'MEN', 10),
+       O('C', 'Mandar pressionar a saída deles', 'pressing', 'CAR', 14, { exporContra: 1 })],
+    ],
+    fez: [
+      [O('A', 'Administrar a vantagem', 'recuar', 'MEN', 12),
+       O('B', 'Ir pra cima e ampliar', 'pressing', 'CAR', 14, { exporContra: 1 }),
+       O('C', 'Segurar a posse e baixar o ritmo', 'seguro', 'VIS', 11)],
+    ],
+    intervalo: [
+      [O('A', 'Trocar e assumir o jogo (sangue novo)', 'substituir', 'VIS', 14, { alvo: 'ofensivo', intervalo: true }),
+       O('B', 'Reforçar o meio e segurar', 'recuar', 'MEN', 13, { intervalo: true }),
+       O('C', 'Bronca e ajuste motivacional', 'conversa', 'CAR', 13)],
+    ],
+    reta: [
+      [O('A', 'All-in: tudo no ataque', 'pressing', 'CAR', 15, { exporContra: 2 }),
+       O('B', 'Trancar e segurar o resultado', 'recuar', 'MEN', 12),
+       O('C', 'Mudar o esquema pra surpreender', 'esquema', 'VIS', 15)],
+    ],
+    disc: [
+      [O('A', 'Segurar a cabeça e orientar da beira', 'mental', 'MEN', 12),
+       O('B', 'Encarar o árbitro pela marcação', 'provocar', 'CAR', 16, { cartaoRisco: 'amarelo' })],
+    ],
+  },
 };
 
 // Lances de disciplina/cabeça — podem surgir em qualquer posição, em momentos quentes.
