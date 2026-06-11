@@ -18,7 +18,7 @@ function salvarPrefs() {
 }
 
 // --- Grafo de áudio ---------------------------------------------------------
-let _ctx = null, _master = null, _wet = null, _conv = null, _bgmGain = null;
+let _ctx = null, _master = null, _wet = null, _conv = null, _bgmGain = null, _comp = null, _out = null;
 
 function ctx() {
   if (_ctx) return _ctx;
@@ -26,16 +26,25 @@ function ctx() {
   if (!AC) return null;
   _ctx = new AC();
 
+  // Limiter + ganho de compensação no fim da cadeia: sobe o volume percebido
+  // sem estourar (essencial no celular, onde o alto-falante é fraco).
+  _comp = _ctx.createDynamicsCompressor();
+  _comp.threshold.value = -18; _comp.knee.value = 6; _comp.ratio.value = 8;
+  _comp.attack.value = 0.003; _comp.release.value = 0.25;
+  _out = _ctx.createGain();
+  _out.gain.value = 1.9; // makeup
+  _comp.connect(_out); _out.connect(_ctx.destination);
+
   _master = _ctx.createGain();
-  _master.gain.value = prefs.som ? prefs.volume : 0;
-  _master.connect(_ctx.destination);
+  _master.gain.value = prefs.som ? 1 : 0;
+  _master.connect(_comp);
 
   // reverb em paralelo (deixa tudo mais espacial/natural)
   _conv = _ctx.createConvolver();
   _conv.buffer = impulso(1.7, 2.6);
   _wet = _ctx.createGain();
   _wet.gain.value = 0.22;
-  _master.connect(_conv); _conv.connect(_wet); _wet.connect(_ctx.destination);
+  _master.connect(_conv); _conv.connect(_wet); _wet.connect(_comp);
 
   // barramento da trilha (mais baixo que os SFX)
   _bgmGain = _ctx.createGain();
@@ -271,7 +280,7 @@ export function pararNarracao() {
 // --- Preferências + controles flutuantes ------------------------------------
 export function setSom(v) {
   prefs.som = !!v; salvarPrefs();
-  if (_master) _master.gain.value = prefs.som ? prefs.volume : 0;
+  if (_master) _master.gain.value = prefs.som ? 1 : 0;
   atualizarControles();
 }
 export function setNarracao(v) {
