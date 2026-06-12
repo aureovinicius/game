@@ -1,7 +1,7 @@
 // Service worker — cache do app shell para jogar offline.
 // Estratégia: cache-first para os arquivos do jogo; rede para o resto
 // (ex.: chamadas ao Worker do Mestre nunca são cacheadas).
-const CACHE = 'cronicas-copa-v20';
+const CACHE = 'cronicas-copa-v21';
 const ASSETS = [
   './',
   'index.html',
@@ -25,10 +25,6 @@ const ASSETS = [
   'js/flags.js',
   'js/perks.js',
   'js/rules.js',
-  'flags/RFA.svg',
-  'flags/TCH.svg',
-  'flags/URS.svg',
-  'flags/YUG.svg',
   'js/state.js',
   'js/achievements.js',
   'js/mestre.js',
@@ -36,6 +32,21 @@ const ASSETS = [
   'js/ui/screens.js',
   'js/ui/dice-anim.js',
   'icons/icon.svg',
+  // bandeiras (todas locais p/ funcionar offline)
+  'flags/ALG.svg', 'flags/ARG.svg', 'flags/AUS.svg', 'flags/AUT.svg', 'flags/BEL.svg',
+  'flags/BIH.svg', 'flags/BRA.svg', 'flags/BUL.svg', 'flags/CAN.svg', 'flags/CHN.svg',
+  'flags/CIV.svg', 'flags/CMR.svg', 'flags/COD.svg', 'flags/COL.svg', 'flags/CPV.svg',
+  'flags/CRC.svg', 'flags/CRO.svg', 'flags/CUW.svg', 'flags/CZE.svg', 'flags/DEN.svg',
+  'flags/ECU.svg', 'flags/EGY.svg', 'flags/ENG.svg', 'flags/ESP.svg', 'flags/FRA.svg',
+  'flags/GER.svg', 'flags/GHA.svg', 'flags/HAI.svg', 'flags/HUN.svg', 'flags/IRL.svg',
+  'flags/IRN.svg', 'flags/IRQ.svg', 'flags/ISR.svg', 'flags/ITA.svg', 'flags/JOR.svg',
+  'flags/JPN.svg', 'flags/KOR.svg', 'flags/KSA.svg', 'flags/MAR.svg', 'flags/MEX.svg',
+  'flags/NED.svg', 'flags/NGA.svg', 'flags/NOR.svg', 'flags/NZL.svg', 'flags/PAN.svg',
+  'flags/PAR.svg', 'flags/PER.svg', 'flags/POL.svg', 'flags/POR.svg', 'flags/QAT.svg',
+  'flags/RFA.svg', 'flags/ROU.svg', 'flags/RSA.svg', 'flags/RUS.svg', 'flags/SCO.svg',
+  'flags/SEN.svg', 'flags/SLV.svg', 'flags/SUI.svg', 'flags/SVN.svg', 'flags/SWE.svg',
+  'flags/TCH.svg', 'flags/TUN.svg', 'flags/TUR.svg', 'flags/URS.svg', 'flags/URU.svg',
+  'flags/URY.svg', 'flags/USA.svg', 'flags/UZB.svg', 'flags/YUG.svg',
 ];
 
 self.addEventListener('install', (e) => {
