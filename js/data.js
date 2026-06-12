@@ -5,6 +5,20 @@ import { IDIOMA } from './config.js';
 
 let _cache = null;
 
+// Artigo/gênero do país em pt-BR: 'o' (o Brasil), 'a' (a Itália),
+// 'os' (os Estados Unidos) ou '' (Portugal, sem artigo). Heurística + exceções.
+const ART_SEM = new Set(['Portugal', 'Cabo Verde', 'Israel', 'El Salvador', 'Curaçao']);
+const ART_PLURAL = new Set(['Estados Unidos', 'Países Baixos', 'Camarões']);
+const ART_FEM = new Set(['Coreia do Sul', 'África do Sul', 'Costa do Marfim', 'Alemanha Ocidental']);
+const ART_MASC = new Set(['Gana']);
+export function artigoPais(nome) {
+  if (ART_SEM.has(nome)) return '';
+  if (ART_PLURAL.has(nome)) return 'os';
+  if (ART_FEM.has(nome)) return 'a';
+  if (ART_MASC.has(nome)) return 'o';
+  return /a$/.test(nome) ? 'a' : 'o'; // termina em 'a' (sem acento) → feminino
+}
+
 export async function carregarSelecoes() {
   if (_cache) return _cache;
   const [resp, respI18n] = await Promise.all([
@@ -18,6 +32,7 @@ export async function carregarSelecoes() {
   let loc = null;
   try { loc = respI18n && respI18n.ok ? (await respI18n.json())[IDIOMA] : null; } catch { loc = null; }
   if (loc) for (const t of teams) { if (loc[t.tla]) { t.nameEn = t.name; t.name = loc[t.tla]; } }
+  for (const t of teams) t.art = artigoPais(t.name);
   const porId = new Map(teams.map((t) => [t.id, t]));
   const porGrupo = {};
   for (const t of teams) {
@@ -82,6 +97,7 @@ export async function dadosDaEra(eraId) {
     return { ...base, formato: era.formato, era };
   }
   const teams = era.teams;
+  for (const t of teams) { if (!t.art) t.art = artigoPais(t.name); }
   const porId = new Map(teams.map((t) => [t.id, t]));
   const porGrupo = {};
   for (const t of teams) { (porGrupo[t.group || '—'] ||= []).push(t); }

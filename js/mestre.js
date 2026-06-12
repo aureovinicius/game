@@ -54,6 +54,7 @@ export async function gerarLance({ contexto, tom, classe, opcoesPadrao, usarIA }
     minuto: contexto.minuto, placar: contexto.placar,
     meuTime: contexto.meuTime, advTime: contexto.advTime,
     meuTimeId: contexto.meuTimeId, advTimeId: contexto.advTimeId,
+    meuTimeArt: contexto.meuTimeArt, advTimeArt: contexto.advTimeArt,
     meuTla: contexto.meuTla, advTla: contexto.advTla,
   };
   const narrativa = situacao({ zona: contexto.zona || 'meio', tom, ctx });
@@ -77,6 +78,7 @@ export async function gerarCena({ tipo, contexto, tom, personagem, usarIA }) {
   const ctx = {
     nome: personagem?.nome || 'você',
     meuTime: contexto.meuTime, advTime: contexto.advTime,
+    meuTimeArt: contexto.meuTimeArt, advTimeArt: contexto.advTimeArt,
     placar: contexto.placar, fase: contexto.fase,
   };
   return { texto: cena({ tipo, tom, resultado, ctx }), fonte: 'offline' };

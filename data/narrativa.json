@@ -3,35 +3,35 @@
   "situacoes": {
     "def": {
       "realista": [
-        "Aos {minuto}', o {advTime} chega com perigo e a bola sobra na sua área. Tem que resolver ({placar}).",
-        "Contra-ataque do {advTime} aos {minuto}': a defesa fica mal posicionada e o lance é seu.",
-        "Escanteio do {advTime} aos {minuto}'. A bola sobe na pequena área, no meio dos corpos.",
+        "Aos {minuto}', {oAdv} chega com perigo e a bola sobra na sua área. Tem que resolver ({placar}).",
+        "Contra-ataque {doAdv} aos {minuto}': a defesa fica mal posicionada e o lance é seu.",
+        "Escanteio {doAdv} aos {minuto}'. A bola sobe na pequena área, no meio dos corpos.",
         "Aos {minuto}', o atacante adversário recebe nas costas da marcação e fica de frente pro gol.",
-        "Cruzamento perigoso do {advTime} aos {minuto}' busca a cabeça do atacante na sua área.",
+        "Cruzamento perigoso {doAdv} aos {minuto}' busca a cabeça do atacante na sua área.",
         "Aos {minuto}', o craque adversário encara você no mano a mano.",
-        "Lançamento por cima da defesa aos {minuto}': o atacante do {advTime} desce nas suas costas.",
+        "Lançamento por cima da defesa aos {minuto}': o atacante {doAdv} desce nas suas costas.",
         "Aos {minuto}', {advJogador} arranca em velocidade e cai pra cima de você.",
         "Aos {minuto}', {advJogador} recebe entre a marcação e arma o perigo."
       ],
       "epico": [
-        "Aos {minuto}', o {advTime} se atira ao ataque e o estádio prende o ar — a defesa, e você, contra a tempestade ({placar}).",
+        "Aos {minuto}', {oAdv} se atira ao ataque e o estádio prende o ar — a defesa, e você, contra a tempestade ({placar}).",
         "O perigo ronda a sua área aos {minuto}'. É a hora de segurar o que já parecia perdido.",
         "Aos {minuto}', a bola viva na sua área parece em câmera lenta: tudo depende do que você fizer agora.",
         "O atacante adversário fica de frente pra você aos {minuto}' — é você contra ele, e mais ninguém.",
-        "Aos {minuto}', toda a pressão do {advTime} desaba sobre os seus ombros.",
+        "Aos {minuto}', toda a pressão {doAdv} desaba sobre os seus ombros.",
         "A bola cruza a sua área aos {minuto}' e o gol parece a um passo — a menos que você impeça.",
-        "Aos {minuto}', a muralha é você: o {advTime} vem, e atrás de você, só o gol.",
+        "Aos {minuto}', a muralha é você: {oAdv} vem, e atrás de você, só o gol.",
         "Aos {minuto}', {advJogador} avança como uma sombra — o perigo é iminente.",
         "Aos {minuto}', {advJogador} encara você no mano a mano, e o estádio prende o ar."
       ],
       "comico": [
-        "Aos {minuto}', o {advTime} vem com tudo e a bola fica saltando na sua área que nem pipoca na panela.",
+        "Aos {minuto}', {oAdv} vem com tudo e a bola fica saltando na sua área que nem pipoca na panela.",
         "O atacante adversário escapa sozinho aos {minuto}' — e tinha que sobrar logo pra você resolver, né.",
-        "Escanteio do {advTime} aos {minuto}': um monte de zagueirão se empurrando na pequena área.",
+        "Escanteio {doAdv} aos {minuto}': um monte de zagueirão se empurrando na pequena área.",
         "Aos {minuto}', a zaga se enrola toda e a bola fica de bobeira esperando alguém tomar vergonha.",
-        "Aos {minuto}', o craque do {advTime} vem pra cima de você fazendo embaixadinha. Aí complica.",
+        "Aos {minuto}', o craque {doAdv} vem pra cima de você fazendo embaixadinha. Aí complica.",
         "Cruzamento na sua área aos {minuto}' e você reza pra bola não sobrar pro atacante adversário.",
-        "Aos {minuto}', o atacante do {advTime} corre sozinho e a torcida já tampa os olhos.",
+        "Aos {minuto}', o atacante {doAdv} corre sozinho e a torcida já tampa os olhos.",
         "Aos {minuto}', {advJogador} vem driblando e te encara com um sorrisinho.",
         "Aos {minuto}', {advJogador} escapa sozinho e você pensa: 'logo agora?'"
       ]
@@ -47,7 +47,7 @@
         "Aos {minuto}', a bola dividida sobra no meião e o lance é seu."
       ],
       "epico": [
-        "Aos {minuto}', o jogo passa pelos seus pés — o {meuTime} respira no seu ritmo ({placar}).",
+        "Aos {minuto}', o jogo passa pelos seus pés — {oMeu} respira no seu ritmo ({placar}).",
         "A bola é sua no meio aos {minuto}', e com ela o rumo da partida.",
         "Aos {minuto}', o estádio silencia esperando o que você vai inventar.",
         "O tempo parece parar aos {minuto}' quando a bola chega na sua medida.",
@@ -67,7 +67,7 @@
     },
     "atk": {
       "realista": [
-        "Aos {minuto}', a jogada chega na entrada da área do {advTime} e a chance é sua ({placar}).",
+        "Aos {minuto}', a jogada chega na entrada da área {doAdv} e a chance é sua ({placar}).",
         "Aos {minuto}', a bola sobra na área depois que a zaga adversária afasta mal o cruzamento.",
         "Você fica de frente pro goleiro adversário aos {minuto}', com a defesa subindo atrasada.",
         "Aos {minuto}', o cruzamento da direita desce na pequena área e você aparece pra finalizar.",
@@ -80,7 +80,7 @@
       "epico": [
         "Aos {minuto}', a bola sobra viva na área e o estádio inteiro segura o ar — {meuTime} a um lance da glória ({placar}).",
         "É o momento que decide Copa, aos {minuto}', e cai no seu pé.",
-        "Aos {minuto}', o gol do {advTime} se abre na sua frente como um convite à história.",
+        "Aos {minuto}', o gol {doAdv} se abre na sua frente como um convite à história.",
         "O tempo pesa aos {minuto}': uma finalização separa você da lenda.",
         "Aos {minuto}', o goleiro adversário está só, e o mundo inteiro parece olhar pra você.",
         "O cruzamento desce aos {minuto}' e, por um instante, o estádio prende a respiração junto com você.",
@@ -122,42 +122,42 @@
     },
     "inicio": {
       "realista": [
-        "Antes do apito contra o {advTime}, você define como o time entra em campo.",
-        "Túnel, prancheta na mão: como o time deve encarar o {advTime}?",
-        "A escalação está definida; falta o ajuste fino antes de encarar o {advTime}.",
-        "O time perfila no túnel. Sua última instrução antes de a bola rolar contra o {advTime}."
+        "Antes do apito contra {oAdv}, você define como o time entra em campo.",
+        "Túnel, prancheta na mão: como o time deve encarar {oAdv}?",
+        "A escalação está definida; falta o ajuste fino antes de encarar {oAdv}.",
+        "O time perfila no túnel. Sua última instrução antes de a bola rolar contra {oAdv}."
       ],
       "epico": [
-        "O estádio ferve. Da beira, você decide o tom da batalha contra o {advTime}.",
-        "Tudo começa agora contra o {advTime} — a primeira ordem é sua.",
-        "Onze jogadores olham pra você antes de enfrentar o {advTime}: a primeira palavra é sua.",
-        "O apito se aproxima e o plano contra o {advTime} mora na sua cabeça."
+        "O estádio ferve. Da beira, você decide o tom da batalha contra {oAdv}.",
+        "Tudo começa agora contra {oAdv} — a primeira ordem é sua.",
+        "Onze jogadores olham pra você antes de enfrentar {oAdv}: a primeira palavra é sua.",
+        "O apito se aproxima e o plano contra {oAdv} mora na sua cabeça."
       ],
       "comico": [
-        "O apito está quase. Você encara a prancheta tipo quem escolhe o lanche: vai de quê contra o {advTime}?",
-        "O {advTime} do outro lado. Hora de fingir que o plano vai dar certo.",
-        "Você ajeita o paletó, encara o {advTime} e torce pra prancheta não te desmentir.",
-        "Hora de parecer que você sabe exatamente o que está fazendo contra o {advTime}."
+        "O apito está quase. Você encara a prancheta tipo quem escolhe o lanche: vai de quê contra {oAdv}?",
+        "{OAdv} do outro lado. Hora de fingir que o plano vai dar certo.",
+        "Você ajeita o paletó, encara {oAdv} e torce pra prancheta não te desmentir.",
+        "Hora de parecer que você sabe exatamente o que está fazendo contra {oAdv}."
       ]
     },
     "sofreu": {
       "realista": [
         "Aos {minuto}', {placar}: tomou o gol. Reage agora ou guarda pro intervalo?",
-        "O {advTime} abriu o placar aos {minuto}'. Decisão de banco.",
-        "Aos {minuto}', o {advTime} fez e o jogo virou. O que ajusta?",
+        "{OAdv} abriu o placar aos {minuto}'. Decisão de banco.",
+        "Aos {minuto}', {oAdv} fez e o jogo virou. O que ajusta?",
         "Gol sofrido aos {minuto}' ({placar}): a partida pede uma resposta sua."
       ],
       "epico": [
-        "Aos {minuto}', o gol do {advTime} cai como um soco. Da beira, você precisa responder.",
+        "Aos {minuto}', o gol {doAdv} cai como um soco. Da beira, você precisa responder.",
         "O placar dói aos {minuto}' ({placar}). É hora de o comandante agir.",
-        "Aos {minuto}', o silêncio da torcida cobra de você uma reação contra o {advTime}.",
-        "O gol do {advTime} aos {minuto}' testa a sua coragem: recuar ou ir à luta?"
+        "Aos {minuto}', o silêncio da torcida cobra de você uma reação contra {oAdv}.",
+        "O gol {doAdv} aos {minuto}' testa a sua coragem: recuar ou ir à luta?"
       ],
       "comico": [
         "Aos {minuto}', {placar}. Tomou gol e a torcida já xinga o seu nome. E aí, gênio?",
-        "O {advTime} fez aos {minuto}'. Você respira fundo e finge que está tudo sob controle.",
+        "{OAdv} fez aos {minuto}'. Você respira fundo e finge que está tudo sob controle.",
         "Aos {minuto}', {placar}. O gol entrou e o seu cabelo embranqueceu mais um pouco.",
-        "Tomou do {advTime} aos {minuto}'. Hora de mexer antes que a diretoria mexa em você."
+        "Tomou {doAdv} aos {minuto}'. Hora de mexer antes que a diretoria mexa em você."
       ]
     },
     "fez": {
@@ -165,59 +165,59 @@
         "Aos {minuto}', {placar}: seu time marcou. Administra ou vai pra cima?",
         "Saiu o gol aos {minuto}'. Como o time deve seguir daqui?",
         "Aos {minuto}', a vantagem chega ({placar}). Qual o próximo passo?",
-        "Gol do {meuTime} aos {minuto}': segura o ritmo ou aperta o {advTime}?"
+        "Gol {doMeu} aos {minuto}': segura o ritmo ou aperta {oAdv}?"
       ],
       "epico": [
         "Aos {minuto}', o gol incendeia a torcida ({placar}). Você decide o próximo passo da saga.",
         "A vantagem chega aos {minuto}'. Segurar a história ou ampliá-la?",
-        "Aos {minuto}', a torcida canta e o {advTime} cambaleia: hora de decidir o golpe seguinte.",
-        "O gol aos {minuto}' abre uma fenda no {advTime} — e você escolhe se cava mais fundo."
+        "Aos {minuto}', a torcida canta e {oAdv} cambaleia: hora de decidir o golpe seguinte.",
+        "O gol aos {minuto}' abre uma fenda n{oAdv} — e você escolhe se cava mais fundo."
       ],
       "comico": [
         "Aos {minuto}', {placar}! Você comemora e já pensa: seguro essa magrela ou peço mais?",
         "Saiu o gol aos {minuto}'. Não dá pra relaxar — time brasileiro adora um susto.",
         "Aos {minuto}', {placar}. Você comemora discreto pra não dar azar, e já planeja o resto.",
-        "Gol aos {minuto}'! Agora é segurar o coração (e a vantagem) contra o {advTime}."
+        "Gol aos {minuto}'! Agora é segurar o coração (e a vantagem) contra {oAdv}."
       ]
     },
     "intervalo": {
       "realista": [
-        "Intervalo, {placar} contra o {advTime}. Hora do ajuste no vestiário.",
+        "Intervalo, {placar} contra {oAdv}. Hora do ajuste no vestiário.",
         "Primeiro tempo encerrado ({placar}). O que muda pra etapa final?",
-        "No vestiário, {placar}: você desenha o segundo tempo contra o {advTime}.",
-        "Intervalo contra o {advTime} ({placar}). É a hora de corrigir a rota."
+        "No vestiário, {placar}: você desenha o segundo tempo contra {oAdv}.",
+        "Intervalo contra {oAdv} ({placar}). É a hora de corrigir a rota."
       ],
       "epico": [
-        "No vestiário, {placar} contra o {advTime}: suas palavras agora valem o jogo.",
-        "Intervalo: o discurso certo pode virar a história contra o {advTime}.",
-        "Aos pés do grupo, {placar} contra o {advTime}, você tem 15 minutos pra mudar o destino.",
-        "O vestiário se cala e olha pra você: o segundo tempo contra o {advTime} nasce dessa fala."
+        "No vestiário, {placar} contra {oAdv}: suas palavras agora valem o jogo.",
+        "Intervalo: o discurso certo pode virar a história contra {oAdv}.",
+        "Aos pés do grupo, {placar} contra {oAdv}, você tem 15 minutos pra mudar o destino.",
+        "O vestiário se cala e olha pra você: o segundo tempo contra {oAdv} nasce dessa fala."
       ],
       "comico": [
         "Intervalo, {placar}. Você entra no vestiário ensaiando a bronca no espelho.",
-        "Meio tempo contra o {advTime} ({placar}). Hora do show de motivação (ou do desespero).",
+        "Meio tempo contra {oAdv} ({placar}). Hora do show de motivação (ou do desespero).",
         "Intervalo: {placar}. Você junta o time e tenta lembrar do discurso que viu em filme.",
-        "No vestiário contra o {advTime}, {placar}, você decide entre o sermão e o abraço."
+        "No vestiário contra {oAdv}, {placar}, você decide entre o sermão e o abraço."
       ]
     },
     "reta": {
       "realista": [
-        "Aos {minuto}', {placar}: reta final contra o {advTime}. Última cartada.",
-        "Faltam minutos contra o {advTime} ({placar}). Decisão decisiva.",
+        "Aos {minuto}', {placar}: reta final contra {oAdv}. Última cartada.",
+        "Faltam minutos contra {oAdv} ({placar}). Decisão decisiva.",
         "Aos {minuto}', o jogo entra na reta final ({placar}). O que você arrisca?",
-        "Reta final aos {minuto}' contra o {advTime}: cada escolha agora pesa o dobro."
+        "Reta final aos {minuto}' contra {oAdv}: cada escolha agora pesa o dobro."
       ],
       "epico": [
-        "Aos {minuto}', tudo se decide contra o {advTime} ({placar}). A última ordem é sua.",
-        "O relógio aperta aos {minuto}': é agora ou nunca contra o {advTime}.",
-        "Aos {minuto}', o estádio inteiro prende o ar — a sua última jogada de mestre contra o {advTime}.",
-        "Reta final aos {minuto}': a história contra o {advTime} cabe na sua próxima decisão."
+        "Aos {minuto}', tudo se decide contra {oAdv} ({placar}). A última ordem é sua.",
+        "O relógio aperta aos {minuto}': é agora ou nunca contra {oAdv}.",
+        "Aos {minuto}', o estádio inteiro prende o ar — a sua última jogada de mestre contra {oAdv}.",
+        "Reta final aos {minuto}': a história contra {oAdv} cabe na sua próxima decisão."
       ],
       "comico": [
         "Aos {minuto}', {placar}. Reta final e seu coração já está na boca — faz alguma coisa!",
-        "Últimos minutos contra o {advTime}. Você aposta tudo ou reza? (ou os dois)",
+        "Últimos minutos contra {oAdv}. Você aposta tudo ou reza? (ou os dois)",
         "Aos {minuto}', {placar}. Você olha o relógio, olha o banco, e olha pro alto pedindo ajuda.",
-        "Reta final contra o {advTime} aos {minuto}': é a hora da decisão que vira manchete amanhã."
+        "Reta final contra {oAdv} aos {minuto}': é a hora da decisão que vira manchete amanhã."
       ]
     },
     "disc": {
@@ -247,71 +247,71 @@
         "Vestiário concentrado. {nome} amarra a chuteira e revê os lances que treinou. Do outro lado, {advTime}. Hora de entrar.",
         "{nome} encara o gramado pelo túnel. {advTime} pela frente, e um plano claro na cabeça.",
         "O vestiário concentra o silêncio antes da batalha. {nome} respira fundo: {advTime} pela frente.",
-        "{nome} bate a chuteira no degrau, ergue a cabeça e caminha pro gramado. Contra o {advTime}, sem desculpas."
+        "{nome} bate a chuteira no degrau, ergue a cabeça e caminha pro gramado. Contra {oAdv}, sem desculpas."
       ],
       "epico": [
-        "O hino ecoa pelo estádio lotado e {nome} fecha os olhos: todo o caminho até aqui pesa nos ombros — e levanta junto. Contra {advTime}, vale a história.",
+        "O hino ecoa pelo estádio lotado e {nome} fecha os olhos: todo o caminho até aqui pesa nos ombros — e levanta junto. Contra {oAdv}, vale a história.",
         "No túnel, o rugido da torcida faz o chão tremer sob as chuteiras de {nome}. {advTime} do outro lado. É agora.",
-        "As arquibancadas cantam e {nome} sente o estádio inteiro empurrar. Diante do {advTime}, é hora de honrar a camisa.",
-        "{nome} ergue os olhos para o estádio fervendo. O {advTime} espera — e a história também."
+        "As arquibancadas cantam e {nome} sente o estádio inteiro empurrar. Diante {doAdv}, é hora de honrar a camisa.",
+        "{nome} ergue os olhos para o estádio fervendo. {OAdv} espera — e a história também."
       ],
       "comico": [
-        "No túnel, {nome} ajeita a chuteira que insiste em desamarrar na pior hora. O {advTime} do lado, sério feito quem saiu de um velório. 'Hoje tem', ele pensa.",
-        "{nome} dá uma encarada no pessoal do {advTime}, solta uma risada nervosa e benze a canela. Que comece a zoeira.",
-        "{nome} faz o sinal da cruz, ajeita a meia e encara o {advTime} tentando disfarçar o frio na barriga.",
-        "O técnico fala, fala, e {nome} só pensa no {advTime} e em como quer que isso comece logo."
+        "No túnel, {nome} ajeita a chuteira que insiste em desamarrar na pior hora. {OAdv} do lado, sério feito quem saiu de um velório. 'Hoje tem', ele pensa.",
+        "{nome} dá uma encarada no pessoal {doAdv}, solta uma risada nervosa e benze a canela. Que comece a zoeira.",
+        "{nome} faz o sinal da cruz, ajeita a meia e encara {oAdv} tentando disfarçar o frio na barriga.",
+        "O técnico fala, fala, e {nome} só pensa n{oAdv} e em como quer que isso comece logo."
       ]
     },
     "pos": {
       "vitoria": {
         "realista": [
-          "Apito final: {placar}. {nome} cumprimenta os adversários e respira fundo — trabalho feito contra o {advTime}.",
-          "Apito final: {placar}. Vitória madura sobre o {advTime}. {nome} sai de campo aplaudido.",
-          "Apito final: {placar}. Trabalho sólido diante do {advTime}; {nome} deixa o gramado com a sensação de dever cumprido."
+          "Apito final: {placar}. {nome} cumprimenta os adversários e respira fundo — trabalho feito contra {oAdv}.",
+          "Apito final: {placar}. Vitória madura sobre {oAdv}. {nome} sai de campo aplaudido.",
+          "Apito final: {placar}. Trabalho sólido diante {doAdv}; {nome} deixa o gramado com a sensação de dever cumprido."
         ],
         "epico": [
-          "Apito final: {placar}. {nome} cai de joelhos no gramado enquanto a torcida canta seu nome. Mais um capítulo na própria lenda, às custas do {advTime}.",
-          "Apito final: {placar}. O {advTime} caiu. {nome} ergue o punho ao céu — a história anota mais uma página dele.",
-          "Apito final: {placar}. O {advTime} sucumbe e {nome} ergue os braços enquanto a torcida transforma o nome dele em canto."
+          "Apito final: {placar}. {nome} cai de joelhos no gramado enquanto a torcida canta seu nome. Mais um capítulo na própria lenda, às custas {doAdv}.",
+          "Apito final: {placar}. {OAdv} caiu. {nome} ergue o punho ao céu — a história anota mais uma página dele.",
+          "Apito final: {placar}. {OAdv} sucumbe e {nome} ergue os braços enquanto a torcida transforma o nome dele em canto."
         ],
         "comico": [
-          "Apito final: {placar}. {nome} puxa o samba no meio do gramado enquanto o {advTime} olha sem entender. Zero modéstia.",
-          "Apito final: {placar}. {nome} já ensaia a dancinha pra coletiva. O {advTime} que se vire com a derrota.",
-          "Apito final: {placar}. {nome} sai dando autógrafo imaginário enquanto o {advTime}, cabisbaixo, nem olha."
+          "Apito final: {placar}. {nome} puxa o samba no meio do gramado enquanto {oAdv} olha sem entender. Zero modéstia.",
+          "Apito final: {placar}. {nome} já ensaia a dancinha pra coletiva. {OAdv} que se vire com a derrota.",
+          "Apito final: {placar}. {nome} sai dando autógrafo imaginário enquanto {oAdv}, cabisbaixo, nem olha."
         ]
       },
       "empate": {
         "realista": [
-          "Apito final: {placar}. Empate com o {advTime}. {nome} sai de cabeça erguida — a Copa continua.",
-          "Apito final: {placar}. Ponto dividido com o {advTime}; {nome} sabe que dá pra mais.",
-          "Apito final: {placar}. Divisão de pontos com o {advTime}; {nome} guarda o que faltou pra próxima."
+          "Apito final: {placar}. Empate com {oAdv}. {nome} sai de cabeça erguida — a Copa continua.",
+          "Apito final: {placar}. Ponto dividido com {oAdv}; {nome} sabe que dá pra mais.",
+          "Apito final: {placar}. Divisão de pontos com {oAdv}; {nome} guarda o que faltou pra próxima."
         ],
         "epico": [
-          "Apito final: {placar}. O empate com o {advTime} sabe a pouco, mas {nome} sabe: a saga ainda tem páginas em branco.",
-          "Apito final: {placar}. Nem glória, nem queda. {nome} encara o {advTime} já mirando o próximo round.",
-          "Apito final: {placar}. O empate com o {advTime} não encerra nada — apenas adia o desfecho da saga de {nome}."
+          "Apito final: {placar}. O empate com {oAdv} sabe a pouco, mas {nome} sabe: a saga ainda tem páginas em branco.",
+          "Apito final: {placar}. Nem glória, nem queda. {nome} encara {oAdv} já mirando o próximo round.",
+          "Apito final: {placar}. O empate com {oAdv} não encerra nada — apenas adia o desfecho da saga de {nome}."
         ],
         "comico": [
-          "Apito final: {placar}. Empatou com o {advTime}. {nome} encara o placar tipo quem esqueceu a senha do banco.",
-          "Apito final: {placar}. {nome} dá de ombros pro {advTime}: 'fica pra próxima, então'.",
-          "Apito final: {placar}. {nome} aperta a mão do {advTime} pensando 'quase' e segue resmungando sozinho."
+          "Apito final: {placar}. Empatou com {oAdv}. {nome} encara o placar tipo quem esqueceu a senha do banco.",
+          "Apito final: {placar}. {nome} dá de ombros pr{oAdv}: 'fica pra próxima, então'.",
+          "Apito final: {placar}. {nome} aperta a mão {doAdv} pensando 'quase' e segue resmungando sozinho."
         ]
       },
       "derrota": {
         "realista": [
-          "Apito final: {placar}. A derrota pro {advTime} dói. {nome} ergue a cabeça da grama — faz parte.",
-          "Apito final: {placar}. {nome} parabeniza o {advTime} e guarda a lição.",
-          "Apito final: {placar}. Derrota para o {advTime}; {nome} recolhe a lição e segue em frente."
+          "Apito final: {placar}. A derrota pr{oAdv} dói. {nome} ergue a cabeça da grama — faz parte.",
+          "Apito final: {placar}. {nome} parabeniza {oAdv} e guarda a lição.",
+          "Apito final: {placar}. Derrota para {oAdv}; {nome} recolhe a lição e segue em frente."
         ],
         "epico": [
-          "Apito final: {placar}. {nome} encara o gramado em silêncio. O {advTime} venceu hoje, mas lendas também se forjam na queda.",
-          "Apito final: {placar}. A dor é funda contra o {advTime}, mas o fogo de {nome} não se apaga aqui.",
-          "Apito final: {placar}. O {advTime} vence, mas o olhar de {nome} promete que essa história ainda não acabou."
+          "Apito final: {placar}. {nome} encara o gramado em silêncio. {OAdv} venceu hoje, mas lendas também se forjam na queda.",
+          "Apito final: {placar}. A dor é funda contra {oAdv}, mas o fogo de {nome} não se apaga aqui.",
+          "Apito final: {placar}. {OAdv} vence, mas o olhar de {nome} promete que essa história ainda não acabou."
         ],
         "comico": [
-          "Apito final: {placar}. {nome} olha pro céu pedindo explicação. O {advTime} comemora e ele já ensaia a desculpa.",
-          "Apito final: {placar}. Perdeu pro {advTime}. {nome} jura que o gramado estava torto.",
-          "Apito final: {placar}. {nome} jura que o juiz estava de óculos errado e que o {advTime} teve sorte."
+          "Apito final: {placar}. {nome} olha pro céu pedindo explicação. {OAdv} comemora e ele já ensaia a desculpa.",
+          "Apito final: {placar}. Perdeu pr{oAdv}. {nome} jura que o gramado estava torto.",
+          "Apito final: {placar}. {nome} jura que o juiz estava de óculos errado e que {oAdv} teve sorte."
         ]
       }
     },
@@ -338,269 +338,746 @@
   },
   "opcoes": {
     "finalizar_primeira": {
-      "realista": ["Bater de primeira", "Finalizar sem dominar"],
-      "epico": ["Bater de primeira, na fé", "Mandar de primeira pra história"],
-      "comico": ["Chutar de primeira e já gritar gol", "Bater de primeira e fechar o olho"]
+      "realista": [
+        "Bater de primeira",
+        "Finalizar sem dominar"
+      ],
+      "epico": [
+        "Bater de primeira, na fé",
+        "Mandar de primeira pra história"
+      ],
+      "comico": [
+        "Chutar de primeira e já gritar gol",
+        "Bater de primeira e fechar o olho"
+      ]
     },
     "girar_zagueiro": {
-      "realista": ["Girar sobre o zagueiro", "Girar e sair pra finalização"],
-      "epico": ["Girar sobre o zagueiro e encarar o gol", "Girar e desafiar o destino"],
-      "comico": ["Girar e deixar o zagueiro plantado", "Girar e sair pro abraço"]
+      "realista": [
+        "Girar sobre o zagueiro",
+        "Girar e sair pra finalização"
+      ],
+      "epico": [
+        "Girar sobre o zagueiro e encarar o gol",
+        "Girar e desafiar o destino"
+      ],
+      "comico": [
+        "Girar e deixar o zagueiro plantado",
+        "Girar e sair pro abraço"
+      ]
     },
     "tocar_companheiro": {
-      "realista": ["Tocar pro companheiro melhor posto", "Rolar pro time finalizar"],
-      "epico": ["Servir o companheiro pra glória", "Rolar pro parceiro decidir"],
-      "comico": ["Tocar e fingir que foi tática", "Passar a batata quente pro colega"]
+      "realista": [
+        "Tocar pro companheiro melhor posto",
+        "Rolar pro time finalizar"
+      ],
+      "epico": [
+        "Servir o companheiro pra glória",
+        "Rolar pro parceiro decidir"
+      ],
+      "comico": [
+        "Tocar e fingir que foi tática",
+        "Passar a batata quente pro colega"
+      ]
     },
     "cabecear": {
-      "realista": ["Cabecear pro gol", "Subir e testar firme"],
-      "epico": ["Subir mais alto que todos e cabecear", "Testar de cabeça pra eternidade"],
-      "comico": ["Cabecear e rezar", "Subir igual pipoca e testar"]
+      "realista": [
+        "Cabecear pro gol",
+        "Subir e testar firme"
+      ],
+      "epico": [
+        "Subir mais alto que todos e cabecear",
+        "Testar de cabeça pra eternidade"
+      ],
+      "comico": [
+        "Cabecear e rezar",
+        "Subir igual pipoca e testar"
+      ]
     },
     "chute_fora": {
-      "realista": ["Arriscar o chute de fora", "Bater de longe"],
-      "epico": ["Arriscar um chute de longe pra história", "Soltar a bomba de fora"],
-      "comico": ["Chutar de fora e torcer", "Soltar a perna e ver no que dá"]
+      "realista": [
+        "Arriscar o chute de fora",
+        "Bater de longe"
+      ],
+      "epico": [
+        "Arriscar um chute de longe pra história",
+        "Soltar a bomba de fora"
+      ],
+      "comico": [
+        "Chutar de fora e torcer",
+        "Soltar a perna e ver no que dá"
+      ]
     },
     "lancar_assistencia": {
-      "realista": ["Lançar nas costas da defesa", "Lançar na medida"],
-      "epico": ["Rasgar a defesa com um lançamento", "Lançar pra rasgar a zaga adversária"],
-      "comico": ["Lançar e gritar 'corre!'", "Mandar o lançamento e cruzar os dedos"]
+      "realista": [
+        "Lançar nas costas da defesa",
+        "Lançar na medida"
+      ],
+      "epico": [
+        "Rasgar a defesa com um lançamento",
+        "Lançar pra rasgar a zaga adversária"
+      ],
+      "comico": [
+        "Lançar e gritar 'corre!'",
+        "Mandar o lançamento e cruzar os dedos"
+      ]
     },
     "ultimo_passe": {
-      "realista": ["Achar o último passe", "Dar o passe decisivo"],
-      "epico": ["Encontrar o passe que decide tudo", "Servir o gol numa bandeja"],
-      "comico": ["Dar o passe e já pedir o crédito da assistência", "Achar o passe e comemorar antes"]
+      "realista": [
+        "Achar o último passe",
+        "Dar o passe decisivo"
+      ],
+      "epico": [
+        "Encontrar o passe que decide tudo",
+        "Servir o gol numa bandeja"
+      ],
+      "comico": [
+        "Dar o passe e já pedir o crédito da assistência",
+        "Achar o passe e comemorar antes"
+      ]
     },
     "conduzir": {
-      "realista": ["Conduzir e progredir", "Avançar com a bola dominada"],
-      "epico": ["Conduzir rumo ao ataque, sem medo", "Carregar a bola e a torcida junto"],
-      "comico": ["Conduzir tipo dono do campo", "Sair conduzindo e deixar a marcação pra trás"]
+      "realista": [
+        "Conduzir e progredir",
+        "Avançar com a bola dominada"
+      ],
+      "epico": [
+        "Conduzir rumo ao ataque, sem medo",
+        "Carregar a bola e a torcida junto"
+      ],
+      "comico": [
+        "Conduzir tipo dono do campo",
+        "Sair conduzindo e deixar a marcação pra trás"
+      ]
     },
     "driblar": {
-      "realista": ["Partir pra cima e driblar", "Encarar o marcador no drible"],
-      "epico": ["Encarar o marcador e driblar com ousadia", "Partir pra cima como nos velhos tempos"],
-      "comico": ["Tentar o drible e pagar de craque", "Driblar e torcer pra não cair"]
+      "realista": [
+        "Partir pra cima e driblar",
+        "Encarar o marcador no drible"
+      ],
+      "epico": [
+        "Encarar o marcador e driblar com ousadia",
+        "Partir pra cima como nos velhos tempos"
+      ],
+      "comico": [
+        "Tentar o drible e pagar de craque",
+        "Driblar e torcer pra não cair"
+      ]
     },
     "cruzar": {
-      "realista": ["Cruzar na área", "Cruzar rasteiro pro meio"],
-      "epico": ["Erguer o cruzamento na medida da glória", "Cruzar pra área e acender o estádio"],
-      "comico": ["Cruzar e rezar pra alguém pegar", "Jogar na área e gritar 'sobe!'"]
+      "realista": [
+        "Cruzar na área",
+        "Cruzar rasteiro pro meio"
+      ],
+      "epico": [
+        "Erguer o cruzamento na medida da glória",
+        "Cruzar pra área e acender o estádio"
+      ],
+      "comico": [
+        "Cruzar e rezar pra alguém pegar",
+        "Jogar na área e gritar 'sobe!'"
+      ]
     },
     "cortar_finalizar": {
-      "realista": ["Cortar pro meio e finalizar", "Cortar e bater no canto"],
-      "epico": ["Cortar pro meio e mirar a glória", "Cortar e soltar a finalização"],
-      "comico": ["Cortar pro meio igual nos vídeos", "Cortar e mandar ver"]
+      "realista": [
+        "Cortar pro meio e finalizar",
+        "Cortar e bater no canto"
+      ],
+      "epico": [
+        "Cortar pro meio e mirar a glória",
+        "Cortar e soltar a finalização"
+      ],
+      "comico": [
+        "Cortar pro meio igual nos vídeos",
+        "Cortar e mandar ver"
+      ]
     },
     "dividida": {
-      "realista": ["Dividir firme", "Ir firme na dividida"],
-      "epico": ["Dividir com a alma", "Entrar firme como uma muralha"],
-      "comico": ["Dividir e mostrar quem manda", "Ir pra cima sem dó"]
+      "realista": [
+        "Dividir firme",
+        "Ir firme na dividida"
+      ],
+      "epico": [
+        "Dividir com a alma",
+        "Entrar firme como uma muralha"
+      ],
+      "comico": [
+        "Dividir e mostrar quem manda",
+        "Ir pra cima sem dó"
+      ]
     },
     "bote": {
-      "realista": ["Dar o bote no tempo certo", "Botar o pé e roubar"],
-      "epico": ["Dar o bote no instante exato", "Roubar a bola na hora certa"],
-      "comico": ["Dar o bote tipo gato", "Roubar a bola e sair correndo"]
+      "realista": [
+        "Dar o bote no tempo certo",
+        "Botar o pé e roubar"
+      ],
+      "epico": [
+        "Dar o bote no instante exato",
+        "Roubar a bola na hora certa"
+      ],
+      "comico": [
+        "Dar o bote tipo gato",
+        "Roubar a bola e sair correndo"
+      ]
     },
     "falta_spa": {
-      "realista": ["Fazer a falta tática", "Cortar o lance na falta"],
-      "epico": ["Sacrificar-se na falta tática", "Parar o ataque a qualquer custo"],
-      "comico": ["Fazer a falta 'sem querer'", "Derrubar e pedir desculpa depois"]
+      "realista": [
+        "Fazer a falta tática",
+        "Cortar o lance na falta"
+      ],
+      "epico": [
+        "Sacrificar-se na falta tática",
+        "Parar o ataque a qualquer custo"
+      ],
+      "comico": [
+        "Fazer a falta 'sem querer'",
+        "Derrubar e pedir desculpa depois"
+      ]
     },
     "sair_jogando": {
-      "realista": ["Sair jogando curto", "Construir de trás"],
-      "epico": ["Sair jogando com personalidade", "Construir do fundo com coragem"],
-      "comico": ["Sair jogando e quase se complicar", "Tentar o toque de craque lá atrás"]
+      "realista": [
+        "Sair jogando curto",
+        "Construir de trás"
+      ],
+      "epico": [
+        "Sair jogando com personalidade",
+        "Construir do fundo com coragem"
+      ],
+      "comico": [
+        "Sair jogando e quase se complicar",
+        "Tentar o toque de craque lá atrás"
+      ]
     },
     "chutao": {
-      "realista": ["Dar o chutão e aliviar", "Mandar pra frente"],
-      "epico": ["Afastar o perigo com um chutão", "Espantar a ameaça pra longe"],
-      "comico": ["Dar o chutão pro espaço", "Mandar a bola pra bem longe"]
+      "realista": [
+        "Dar o chutão e aliviar",
+        "Mandar pra frente"
+      ],
+      "epico": [
+        "Afastar o perigo com um chutão",
+        "Espantar a ameaça pra longe"
+      ],
+      "comico": [
+        "Dar o chutão pro espaço",
+        "Mandar a bola pra bem longe"
+      ]
     },
     "gk_sair": {
-      "realista": ["Sair de cara e abafar", "Sair no tempo e fechar o ângulo"],
-      "epico": ["Sair de cara e desafiar o atacante", "Avançar e abraçar o perigo"],
-      "comico": ["Sair de cara e fechar o olho", "Voar pra cima e torcer"]
+      "realista": [
+        "Sair de cara e abafar",
+        "Sair no tempo e fechar o ângulo"
+      ],
+      "epico": [
+        "Sair de cara e desafiar o atacante",
+        "Avançar e abraçar o perigo"
+      ],
+      "comico": [
+        "Sair de cara e fechar o olho",
+        "Voar pra cima e torcer"
+      ]
     },
     "gk_ficar": {
-      "realista": ["Esperar na linha e ler o lance", "Ficar e confiar no reflexo"],
-      "epico": ["Esperar firme, olhos na bola", "Aguardar o momento e reagir"],
-      "comico": ["Ficar quieto e rezar", "Esperar e fingir frieza"]
+      "realista": [
+        "Esperar na linha e ler o lance",
+        "Ficar e confiar no reflexo"
+      ],
+      "epico": [
+        "Esperar firme, olhos na bola",
+        "Aguardar o momento e reagir"
+      ],
+      "comico": [
+        "Ficar quieto e rezar",
+        "Esperar e fingir frieza"
+      ]
     },
     "gk_espalmar": {
-      "realista": ["Espalmar pro escanteio", "Mandar pra fora"],
-      "epico": ["Espalmar com tudo pro escanteio", "Defender e jogar pra longe"],
-      "comico": ["Espalmar pra qualquer lugar", "Socar a bola pro alto"]
+      "realista": [
+        "Espalmar pro escanteio",
+        "Mandar pra fora"
+      ],
+      "epico": [
+        "Espalmar com tudo pro escanteio",
+        "Defender e jogar pra longe"
+      ],
+      "comico": [
+        "Espalmar pra qualquer lugar",
+        "Socar a bola pro alto"
+      ]
     },
     "segurar_posicao": {
-      "realista": ["Segurar a posição", "Manter o posicionamento"],
-      "epico": ["Manter a posição com disciplina", "Segurar firme o seu lugar"],
-      "comico": ["Ficar quietinho no lugar", "Não inventar e segurar a posição"]
+      "realista": [
+        "Segurar a posição",
+        "Manter o posicionamento"
+      ],
+      "epico": [
+        "Manter a posição com disciplina",
+        "Segurar firme o seu lugar"
+      ],
+      "comico": [
+        "Ficar quietinho no lugar",
+        "Não inventar e segurar a posição"
+      ]
     },
     "cavar_penalti": {
-      "realista": ["Cavar o pênalti", "Buscar o contato na área"],
-      "epico": ["Forçar o pênalti decisivo", "Buscar a penalidade que muda tudo"],
-      "comico": ["Cavar o pênalti com um teatro", "Se jogar e pedir pênalti"]
+      "realista": [
+        "Cavar o pênalti",
+        "Buscar o contato na área"
+      ],
+      "epico": [
+        "Forçar o pênalti decisivo",
+        "Buscar a penalidade que muda tudo"
+      ],
+      "comico": [
+        "Cavar o pênalti com um teatro",
+        "Se jogar e pedir pênalti"
+      ]
     },
     "cavar_falta": {
-      "realista": ["Cavar a falta na ponta", "Buscar a falta"],
-      "epico": ["Forçar a falta em posição perigosa", "Arrancar a falta no sacrifício"],
-      "comico": ["Cavar a falta com drama", "Se jogar e pedir falta"]
+      "realista": [
+        "Cavar a falta na ponta",
+        "Buscar a falta"
+      ],
+      "epico": [
+        "Forçar a falta em posição perigosa",
+        "Arrancar a falta no sacrifício"
+      ],
+      "comico": [
+        "Cavar a falta com drama",
+        "Se jogar e pedir falta"
+      ]
     },
     "pivo": {
-      "realista": ["Fazer o pivô e segurar", "Segurar de costas pro gol"],
-      "epico": ["Segurar a bola como um gladiador", "Fazer o pivô e esperar o time chegar"],
-      "comico": ["Fazer o pivô e aguentar o tranco", "Segurar a bola feito poste"]
+      "realista": [
+        "Fazer o pivô e segurar",
+        "Segurar de costas pro gol"
+      ],
+      "epico": [
+        "Segurar a bola como um gladiador",
+        "Fazer o pivô e esperar o time chegar"
+      ],
+      "comico": [
+        "Fazer o pivô e aguentar o tranco",
+        "Segurar a bola feito poste"
+      ]
     },
     "tabelar": {
-      "realista": ["Tabelar e tentar o passe", "Trocar passes na tabela"],
-      "epico": ["Tabelar com o parceiro rumo ao gol", "Construir na tabela com classe"],
-      "comico": ["Tabelar e fingir que ensaiou", "Tocar e correr pra receber de volta"]
+      "realista": [
+        "Tabelar e tentar o passe",
+        "Trocar passes na tabela"
+      ],
+      "epico": [
+        "Tabelar com o parceiro rumo ao gol",
+        "Construir na tabela com classe"
+      ],
+      "comico": [
+        "Tabelar e fingir que ensaiou",
+        "Tocar e correr pra receber de volta"
+      ]
     },
     "primeiro_passe": {
-      "realista": ["Primeiro passe pro ataque", "Sair com o passe pra frente"],
-      "epico": ["Lançar o primeiro passe da jogada decisiva", "Iniciar o ataque com precisão"],
-      "comico": ["Tocar pra frente e lavar as mãos", "Dar o passe e cobrar o resto do time"]
+      "realista": [
+        "Primeiro passe pro ataque",
+        "Sair com o passe pra frente"
+      ],
+      "epico": [
+        "Lançar o primeiro passe da jogada decisiva",
+        "Iniciar o ataque com precisão"
+      ],
+      "comico": [
+        "Tocar pra frente e lavar as mãos",
+        "Dar o passe e cobrar o resto do time"
+      ]
     },
     "pressionar_saida": {
-      "realista": ["Pressionar a saída de bola", "Marcar a saída adversária"],
-      "epico": ["Sufocar a saída do adversário", "Pressionar sem dar trégua"],
-      "comico": ["Grudar no zagueiro adversário", "Ir pra cima e atazanar a saída deles"]
+      "realista": [
+        "Pressionar a saída de bola",
+        "Marcar a saída adversária"
+      ],
+      "epico": [
+        "Sufocar a saída do adversário",
+        "Pressionar sem dar trégua"
+      ],
+      "comico": [
+        "Grudar no zagueiro adversário",
+        "Ir pra cima e atazanar a saída deles"
+      ]
     },
     "tec_ofensivo": {
-      "realista": ["Entrar pra cima, postura ofensiva", "Mandar o time pro ataque"],
-      "epico": ["Lançar o time à ofensiva", "Entrar pra dominar desde o apito"],
-      "comico": ["Mandar geral pra frente e ver no que dá", "Entrar pra cima e esquecer a defesa"]
+      "realista": [
+        "Entrar pra cima, postura ofensiva",
+        "Mandar o time pro ataque"
+      ],
+      "epico": [
+        "Lançar o time à ofensiva",
+        "Entrar pra dominar desde o apito"
+      ],
+      "comico": [
+        "Mandar geral pra frente e ver no que dá",
+        "Entrar pra cima e esquecer a defesa"
+      ]
     },
     "tec_cauteloso": {
-      "realista": ["Entrar cauteloso e fechar os espaços", "Começar seguro atrás"],
-      "epico": ["Erguer a muralha desde o início", "Entrar fechado e paciente"],
-      "comico": ["Entrar trancado igual cofre", "Pendurar o ônibus na frente do gol"]
+      "realista": [
+        "Entrar cauteloso e fechar os espaços",
+        "Começar seguro atrás"
+      ],
+      "epico": [
+        "Erguer a muralha desde o início",
+        "Entrar fechado e paciente"
+      ],
+      "comico": [
+        "Entrar trancado igual cofre",
+        "Pendurar o ônibus na frente do gol"
+      ]
     },
     "tec_equilibrio": {
-      "realista": ["Equilíbrio: sentir o jogo primeiro", "Começar equilibrado"],
-      "epico": ["Equilíbrio: ler o adversário antes de atacar", "Entrar firme e paciente"],
-      "comico": ["Entrar no 'deixa a vida me levar'", "Começar morno e ver no que dá"]
+      "realista": [
+        "Equilíbrio: sentir o jogo primeiro",
+        "Começar equilibrado"
+      ],
+      "epico": [
+        "Equilíbrio: ler o adversário antes de atacar",
+        "Entrar firme e paciente"
+      ],
+      "comico": [
+        "Entrar no 'deixa a vida me levar'",
+        "Começar morno e ver no que dá"
+      ]
     },
     "tec_pressing": {
-      "realista": ["Mandar pressionar a saída deles", "Subir a marcação"],
-      "epico": ["Sufocar a saída adversária", "Pressionar sem dar ar ao adversário"],
-      "comico": ["Mandar todo mundo grudar neles", "Pressionar tipo cobrador atrás de devedor"]
+      "realista": [
+        "Mandar pressionar a saída deles",
+        "Subir a marcação"
+      ],
+      "epico": [
+        "Sufocar a saída adversária",
+        "Pressionar sem dar ar ao adversário"
+      ],
+      "comico": [
+        "Mandar todo mundo grudar neles",
+        "Pressionar tipo cobrador atrás de devedor"
+      ]
     },
     "tec_sub_ofensivo": {
-      "realista": ["Sangue novo no ataque", "Trocar por um atacante"],
-      "epico": ["Lançar o reforço ofensivo decisivo", "Sacar o cansado e armar o ataque"],
-      "comico": ["Botar o matador e cruzar os dedos", "Trocar e fingir que era o plano"]
+      "realista": [
+        "Sangue novo no ataque",
+        "Trocar por um atacante"
+      ],
+      "epico": [
+        "Lançar o reforço ofensivo decisivo",
+        "Sacar o cansado e armar o ataque"
+      ],
+      "comico": [
+        "Botar o matador e cruzar os dedos",
+        "Trocar e fingir que era o plano"
+      ]
     },
     "tec_administrar": {
-      "realista": ["Administrar a vantagem", "Controlar o jogo"],
-      "epico": ["Administrar com sabedoria a vantagem", "Conduzir o jogo com frieza"],
-      "comico": ["Segurar a magrela com unhas e dentes", "Administrar e roer as unhas"]
+      "realista": [
+        "Administrar a vantagem",
+        "Controlar o jogo"
+      ],
+      "epico": [
+        "Administrar com sabedoria a vantagem",
+        "Conduzir o jogo com frieza"
+      ],
+      "comico": [
+        "Segurar a magrela com unhas e dentes",
+        "Administrar e roer as unhas"
+      ]
     },
     "tec_trancar": {
-      "realista": ["Trancar e segurar o resultado", "Fechar atrás"],
-      "epico": ["Erguer a muralha final", "Trancar com tudo o que tem"],
-      "comico": ["Pendurar o ônibus de vez", "Trancar e apelar pra fé"]
+      "realista": [
+        "Trancar e segurar o resultado",
+        "Fechar atrás"
+      ],
+      "epico": [
+        "Erguer a muralha final",
+        "Trancar com tudo o que tem"
+      ],
+      "comico": [
+        "Pendurar o ônibus de vez",
+        "Trancar e apelar pra fé"
+      ]
     },
     "tec_conversa": {
-      "realista": ["Bronca e ajuste no vestiário", "Conversar e corrigir"],
-      "epico": ["Inflamar o grupo com a fala certa", "Erguer a moral no discurso"],
-      "comico": ["Soltar a bronca do século", "Fazer o discurso de filme"]
+      "realista": [
+        "Bronca e ajuste no vestiário",
+        "Conversar e corrigir"
+      ],
+      "epico": [
+        "Inflamar o grupo com a fala certa",
+        "Erguer a moral no discurso"
+      ],
+      "comico": [
+        "Soltar a bronca do século",
+        "Fazer o discurso de filme"
+      ]
     },
     "tec_allin": {
-      "realista": ["All-in: tudo no ataque", "Jogar tudo pra frente"],
-      "epico": ["Apostar tudo no ataque final", "Lançar todas as fichas no ataque"],
-      "comico": ["Mandar até o goleiro pro ataque", "All-in tipo aposta de bar"]
+      "realista": [
+        "All-in: tudo no ataque",
+        "Jogar tudo pra frente"
+      ],
+      "epico": [
+        "Apostar tudo no ataque final",
+        "Lançar todas as fichas no ataque"
+      ],
+      "comico": [
+        "Mandar até o goleiro pro ataque",
+        "All-in tipo aposta de bar"
+      ]
     },
     "tec_esquema": {
-      "realista": ["Mudar o esquema", "Trocar a formação"],
-      "epico": ["Surpreender com uma nova formação", "Reinventar o time no tabuleiro"],
-      "comico": ["Mudar tudo e torcer", "Inventar moda no esquema"]
+      "realista": [
+        "Mudar o esquema",
+        "Trocar a formação"
+      ],
+      "epico": [
+        "Surpreender com uma nova formação",
+        "Reinventar o time no tabuleiro"
+      ],
+      "comico": [
+        "Mudar tudo e torcer",
+        "Inventar moda no esquema"
+      ]
     },
     "tec_encarar": {
-      "realista": ["Encarar o árbitro pela marcação", "Reclamar da arbitragem"],
-      "epico": ["Enfrentar o árbitro de cabeça erguida", "Cobrar justiça na beira do campo"],
-      "comico": ["Encarar o juiz e quase tomar vermelho", "Brigar com o árbitro e se arrepender"]
+      "realista": [
+        "Encarar o árbitro pela marcação",
+        "Reclamar da arbitragem"
+      ],
+      "epico": [
+        "Enfrentar o árbitro de cabeça erguida",
+        "Cobrar justiça na beira do campo"
+      ],
+      "comico": [
+        "Encarar o juiz e quase tomar vermelho",
+        "Brigar com o árbitro e se arrepender"
+      ]
     },
     "gk_driblar": {
-      "realista": ["Driblar o atacante na área", "Tentar passar pelo atacante"],
-      "epico": ["Encarar o atacante e driblar na própria área", "Desafiar o destino driblando na área"],
-      "comico": ["Driblar na área e quase ter um treco", "Driblar o atacante e apostar o coração"]
+      "realista": [
+        "Driblar o atacante na área",
+        "Tentar passar pelo atacante"
+      ],
+      "epico": [
+        "Encarar o atacante e driblar na própria área",
+        "Desafiar o destino driblando na área"
+      ],
+      "comico": [
+        "Driblar na área e quase ter um treco",
+        "Driblar o atacante e apostar o coração"
+      ]
     },
     "lancar_contra": {
-      "realista": ["Lançar rápido pro contra-ataque", "Lançar pra frente na saída"],
-      "epico": ["Disparar o contra-ataque com um lançamento", "Lançar e armar o golpe rápido"],
-      "comico": ["Lançar e gritar 'corre, corre!'", "Chutar pra frente e torcer pelo contra"]
+      "realista": [
+        "Lançar rápido pro contra-ataque",
+        "Lançar pra frente na saída"
+      ],
+      "epico": [
+        "Disparar o contra-ataque com um lançamento",
+        "Lançar e armar o golpe rápido"
+      ],
+      "comico": [
+        "Lançar e gritar 'corre, corre!'",
+        "Chutar pra frente e torcer pelo contra"
+      ]
     },
     "segurar": {
-      "realista": ["Segurar e reorganizar", "Acalmar o jogo"],
-      "epico": ["Segurar firme e reorganizar as linhas", "Respirar e retomar o controle"],
-      "comico": ["Segurar e respirar fundo", "Dar uma acalmada na zona"]
+      "realista": [
+        "Segurar e reorganizar",
+        "Acalmar o jogo"
+      ],
+      "epico": [
+        "Segurar firme e reorganizar as linhas",
+        "Respirar e retomar o controle"
+      ],
+      "comico": [
+        "Segurar e respirar fundo",
+        "Dar uma acalmada na zona"
+      ]
     },
     "falta_dogso": {
-      "realista": ["Segurar o atacante (último homem)", "Derrubar pra evitar o gol"],
-      "epico": ["Sacrificar-se: a falta do último homem", "Parar o gol custe o que custar"],
-      "comico": ["Agarrar o atacante e aceitar o vermelho", "Derrubar e já ir andando pro chuveiro"]
+      "realista": [
+        "Segurar o atacante (último homem)",
+        "Derrubar pra evitar o gol"
+      ],
+      "epico": [
+        "Sacrificar-se: a falta do último homem",
+        "Parar o gol custe o que custar"
+      ],
+      "comico": [
+        "Agarrar o atacante e aceitar o vermelho",
+        "Derrubar e já ir andando pro chuveiro"
+      ]
     },
     "recuar_posse": {
-      "realista": ["Tocar no goleiro e recomeçar", "Recuar e manter a posse"],
-      "epico": ["Recuar com calma e reconstruir", "Voltar a bola e recomeçar a trama"],
-      "comico": ["Devolver pro goleiro e respirar", "Recuar e fingir que é tática"]
+      "realista": [
+        "Tocar no goleiro e recomeçar",
+        "Recuar e manter a posse"
+      ],
+      "epico": [
+        "Recuar com calma e reconstruir",
+        "Voltar a bola e recomeçar a trama"
+      ],
+      "comico": [
+        "Devolver pro goleiro e respirar",
+        "Recuar e fingir que é tática"
+      ]
     },
     "apoiar_subir": {
-      "realista": ["Apoiar subindo (deixa espaço)", "Avançar pela lateral"],
-      "epico": ["Subir ao ataque e arriscar o flanco", "Lançar-se ao apoio, sem medo do contra"],
-      "comico": ["Subir e esquecer que tem que voltar", "Apoiar e rezar pra não levar contra"]
+      "realista": [
+        "Apoiar subindo (deixa espaço)",
+        "Avançar pela lateral"
+      ],
+      "epico": [
+        "Subir ao ataque e arriscar o flanco",
+        "Lançar-se ao apoio, sem medo do contra"
+      ],
+      "comico": [
+        "Subir e esquecer que tem que voltar",
+        "Apoiar e rezar pra não levar contra"
+      ]
     },
     "tocar_manter": {
-      "realista": ["Tocar de lado e manter", "Tocar curto e segurar a bola"],
-      "epico": ["Manter a posse com paciência", "Tocar com sabedoria e controlar"],
-      "comico": ["Tocar de lado e enrolar", "Ficar no toque toque pra ninguém reclamar"]
+      "realista": [
+        "Tocar de lado e manter",
+        "Tocar curto e segurar a bola"
+      ],
+      "epico": [
+        "Manter a posse com paciência",
+        "Tocar com sabedoria e controlar"
+      ],
+      "comico": [
+        "Tocar de lado e enrolar",
+        "Ficar no toque toque pra ninguém reclamar"
+      ]
     },
     "falta_cobranca": {
-      "realista": ["Cobrar a falta no ângulo", "Bater a falta no gol"],
-      "epico": ["Cobrar a falta mirando o ângulo da glória", "Soltar a falta rumo ao ângulo"],
-      "comico": ["Cobrar no ângulo e já comemorar", "Bater a falta e apelar pra mira"]
+      "realista": [
+        "Cobrar a falta no ângulo",
+        "Bater a falta no gol"
+      ],
+      "epico": [
+        "Cobrar a falta mirando o ângulo da glória",
+        "Soltar a falta rumo ao ângulo"
+      ],
+      "comico": [
+        "Cobrar no ângulo e já comemorar",
+        "Bater a falta e apelar pra mira"
+      ]
     },
     "ajudar_marcacao": {
-      "realista": ["Voltar e ajudar na marcação", "Recompor a defesa"],
-      "epico": ["Voltar e dobrar a marcação com raça", "Descer pra blindar a defesa"],
-      "comico": ["Voltar correndo igual quem perdeu o busão", "Descer pra ajudar e reclamar baixinho"]
+      "realista": [
+        "Voltar e ajudar na marcação",
+        "Recompor a defesa"
+      ],
+      "epico": [
+        "Voltar e dobrar a marcação com raça",
+        "Descer pra blindar a defesa"
+      ],
+      "comico": [
+        "Voltar correndo igual quem perdeu o busão",
+        "Descer pra ajudar e reclamar baixinho"
+      ]
     },
     "tec_manter": {
-      "realista": ["Manter e ajustar na orientação", "Não mexer ainda"],
-      "epico": ["Confiar no plano e ajustar de longe", "Manter a calma e orientar do banco"],
-      "comico": ["Não mexer e fingir confiança", "Deixar como tá pra ver como fica"]
+      "realista": [
+        "Manter e ajustar na orientação",
+        "Não mexer ainda"
+      ],
+      "epico": [
+        "Confiar no plano e ajustar de longe",
+        "Manter a calma e orientar do banco"
+      ],
+      "comico": [
+        "Não mexer e fingir confiança",
+        "Deixar como tá pra ver como fica"
+      ]
     },
     "tec_baixar_ritmo": {
-      "realista": ["Segurar a posse e baixar o ritmo", "Cadenciar o jogo"],
-      "epico": ["Cadenciar o jogo com maestria", "Baixar o ritmo e controlar o tempo"],
-      "comico": ["Amarrar o jogo de vez", "Mandar fazer cera com elegância"]
+      "realista": [
+        "Segurar a posse e baixar o ritmo",
+        "Cadenciar o jogo"
+      ],
+      "epico": [
+        "Cadenciar o jogo com maestria",
+        "Baixar o ritmo e controlar o tempo"
+      ],
+      "comico": [
+        "Amarrar o jogo de vez",
+        "Mandar fazer cera com elegância"
+      ]
     },
     "tec_reforcar": {
-      "realista": ["Reforçar o meio e segurar", "Botar um volante"],
-      "epico": ["Blindar o meio-campo", "Reforçar o miolo e segurar firme"],
-      "comico": ["Botar mais um cabeção no meio", "Lotar o meio de marcador"]
+      "realista": [
+        "Reforçar o meio e segurar",
+        "Botar um volante"
+      ],
+      "epico": [
+        "Blindar o meio-campo",
+        "Reforçar o miolo e segurar firme"
+      ],
+      "comico": [
+        "Botar mais um cabeção no meio",
+        "Lotar o meio de marcador"
+      ]
     },
     "tec_segurar": {
-      "realista": ["Segurar a cabeça e orientar da beira", "Manter a calma no banco"],
-      "epico": ["Manter a frieza na tempestade", "Conter-se e comandar com a cabeça fria"],
-      "comico": ["Respirar fundo e contar até dez", "Segurar a língua (tarefa difícil)"]
+      "realista": [
+        "Segurar a cabeça e orientar da beira",
+        "Manter a calma no banco"
+      ],
+      "epico": [
+        "Manter a frieza na tempestade",
+        "Conter-se e comandar com a cabeça fria"
+      ],
+      "comico": [
+        "Respirar fundo e contar até dez",
+        "Segurar a língua (tarefa difícil)"
+      ]
     },
     "segurar_cabeca": {
-      "realista": ["Segurar a cabeça e seguir o jogo", "Ignorar e focar na bola"],
-      "epico": ["Engolir a raiva e seguir firme", "Dominar o próprio sangue e jogar"],
-      "comico": ["Contar até dez e seguir", "Fingir que não ouviu e tocar a bola"]
+      "realista": [
+        "Segurar a cabeça e seguir o jogo",
+        "Ignorar e focar na bola"
+      ],
+      "epico": [
+        "Engolir a raiva e seguir firme",
+        "Dominar o próprio sangue e jogar"
+      ],
+      "comico": [
+        "Contar até dez e seguir",
+        "Fingir que não ouviu e tocar a bola"
+      ]
     },
     "provocar": {
-      "realista": ["Provocar o marcador pra tirá-lo do sério", "Cutucar o adversário"],
-      "epico": ["Provocar o rival e quebrar o sangue-frio dele", "Acender o pavio do adversário"],
-      "comico": ["Provocar o marcador com uma risadinha", "Cutucar a onça com vara curta"]
+      "realista": [
+        "Provocar o marcador pra tirá-lo do sério",
+        "Cutucar o adversário"
+      ],
+      "epico": [
+        "Provocar o rival e quebrar o sangue-frio dele",
+        "Acender o pavio do adversário"
+      ],
+      "comico": [
+        "Provocar o marcador com uma risadinha",
+        "Cutucar a onça com vara curta"
+      ]
     },
     "reclamar": {
-      "realista": ["Ir reclamar com o árbitro", "Reclamar da marcação"],
-      "epico": ["Confrontar o árbitro pela injustiça", "Cobrar o árbitro de cabeça erguida"],
-      "comico": ["Ir tirar satisfação e quase tomar amarelo", "Reclamar e fingir indignação"]
+      "realista": [
+        "Ir reclamar com o árbitro",
+        "Reclamar da marcação"
+      ],
+      "epico": [
+        "Confrontar o árbitro pela injustiça",
+        "Cobrar o árbitro de cabeça erguida"
+      ],
+      "comico": [
+        "Ir tirar satisfação e quase tomar amarelo",
+        "Reclamar e fingir indignação"
+      ]
     }
   }
 }

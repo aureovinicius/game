@@ -9,7 +9,7 @@ import { criarPartida } from './engine.js';
 import { rolar, modificador } from './dice.js';
 import { novasConquistas, conquistaPorId } from './achievements.js';
 import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
-import { carregarNarrativa, carregarNomes } from './narrador.js';
+import { carregarNarrativa, carregarNomes, deNome } from './narrador.js';
 import * as Audio from './audio.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
 import { animarDado } from './ui/dice-anim.js';
@@ -66,7 +66,7 @@ const app = {
     const meu = this.dados.porId.get(this.save.selecaoId);
     cronicar(this.save, {
       tipo: 'inicio', titulo: 'O começo',
-      texto: `${this.save.nome} veste a camisa de ${meu.name} e parte para a ${era.nome}. Que história será essa?`,
+      texto: `${this.save.nome} veste a camisa ${deNome(meu)} e parte para a ${era.nome}. Que história será essa?`,
     });
     definirProximoAdversario(this.dados, this.save);
     salvar(this.save);
@@ -114,7 +114,7 @@ const app = {
     const usarIA = mestreOnline() && this.iaUsada < MAX_IA_POR_PARTIDA;
     const pre = await gerarCena({
       tipo: 'pre', tom: save.tom, personagem: { nome: save.nome },
-      contexto: { meuTime: meu.name, advTime: adv.name, fase: nomeFase(save.campanha.fase) },
+      contexto: { meuTime: meu.name, advTime: adv.name, meuTimeArt: meu.art, advTimeArt: adv.art, fase: nomeFase(save.campanha.fase) },
       usarIA,
     });
     if (pre.fonte === 'ia') this.iaUsada++;
@@ -259,7 +259,7 @@ const app = {
     const usarIA = mestreOnline() && this.iaUsada < MAX_IA_POR_PARTIDA;
     const pos = await gerarCena({
       tipo: 'pos', tom: save.tom, personagem: { nome: save.nome },
-      contexto: { placar: `${e.golsMeu}–${e.golsAdv}`, ganhou, empate, advTime: adv.name },
+      contexto: { placar: `${e.golsMeu}–${e.golsAdv}`, ganhou, empate, advTime: adv.name, advTimeArt: adv.art },
       usarIA,
     });
     Audio.narrar(pos.texto, { tom: save.tom });

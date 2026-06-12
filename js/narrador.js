@@ -37,6 +37,30 @@ function nomeDoTime(id) {
   return lista[Math.floor(Math.random() * lista.length)];
 }
 
+// Concordância de artigo/gênero do país (art: 'o'|'a'|'os'|'as'|'').
+const DE = { o: 'do', a: 'da', os: 'dos', as: 'das' };
+function comArtigo(nome, art) { return nome ? (art ? `${art} ${nome}` : nome) : ''; }
+function comDe(nome, art) { return nome ? (art ? `${DE[art]} ${nome}` : `de ${nome}`) : ''; }
+function capitalizar(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+export function artNome(time) { return time ? comArtigo(time.name, time.art) : ''; }
+export function deNome(time) { return time ? comDe(time.name, time.art) : ''; }
+
+// Enriquece o ctx com nomes de jogadores e os slots de seleção com artigo
+// ({oAdv}/{doAdv}/{oMeu}/{doMeu}), preservando o que já vier preenchido.
+function enriquecer(ctx) {
+  const c = { ...ctx };
+  if (c.companheiro == null) c.companheiro = nomeDoTime(c.meuTimeId) || 'um companheiro';
+  if (c.advJogador == null) c.advJogador = nomeDoTime(c.advTimeId) || 'um adversário';
+  if (c.oAdv == null) c.oAdv = comArtigo(c.advTime, c.advTimeArt);
+  if (c.doAdv == null) c.doAdv = comDe(c.advTime, c.advTimeArt);
+  if (c.oMeu == null) c.oMeu = comArtigo(c.meuTime, c.meuTimeArt);
+  if (c.doMeu == null) c.doMeu = comDe(c.meuTime, c.meuTimeArt);
+  // Versões capitalizadas para início de frase ("A Áustria espera...").
+  if (c.OAdv == null) c.OAdv = capitalizar(c.oAdv);
+  if (c.OMeu == null) c.OMeu = capitalizar(c.oMeu);
+  return c;
+}
+
 // Sorteio com anti-repetição: evita devolver o mesmo molde da mesma célula
 // duas vezes seguidas (memória por chave), pra a variedade do corpus render.
 const _recente = new Map();
@@ -67,11 +91,7 @@ export function situacao({ zona = 'meio', tom = 'realista', ctx = {} } = {}) {
   const lista = grupo ? (grupo[tom] || grupo.realista) : null;
   const tpl = pick(lista, `s:${zona}:${tom}`);
   if (!tpl) return fallbackSituacao(ctx);
-  // nomes citados no lance: companheiro (seu time) e adversário
-  const ctx2 = { ...ctx };
-  if (ctx2.companheiro == null) ctx2.companheiro = nomeDoTime(ctx2.meuTimeId) || 'um companheiro';
-  if (ctx2.advJogador == null) ctx2.advJogador = nomeDoTime(ctx2.advTimeId) || 'um adversário';
-  return preencher(tpl, ctx2);
+  return preencher(tpl, enriquecer(ctx));
 }
 
 // Texto da opção de um lance, variado por tom, ligado pelo slug `acao`.
@@ -96,7 +116,7 @@ export function cena({ tipo = 'pre', tom = 'realista', resultado = 'vitoria', ct
   }
   const tpl = pick(lista, `c:${tipo}:${tom}:${tipo === 'pos' ? resultado : ''}`);
   if (!tpl) return fallbackCena(tipo, ctx);
-  return preencher(tpl, ctx);
+  return preencher(tpl, enriquecer(ctx));
 }
 
 // Fallbacks mínimos caso o corpus não tenha carregado (rede off no 1º acesso).

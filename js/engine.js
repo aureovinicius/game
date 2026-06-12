@@ -518,6 +518,7 @@ export function criarPartida(cfg) {
       return {
         meuTime: estado.meuTime.name, advTime: estado.advTime.name,
         meuTimeId: estado.meuTime.id, advTimeId: estado.advTime.id,
+        meuTimeArt: estado.meuTime.art, advTimeArt: estado.advTime.art,
         placar: `${estado.golsMeu}–${estado.golsAdv}`,
         minuto: estado.minuto, momentum: Math.round(estado.momentum),
         fase: estado.fase, classe: estado.classeId,
