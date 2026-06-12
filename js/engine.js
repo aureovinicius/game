@@ -19,6 +19,7 @@
 //   - Eventos intermediários (trave, finalização perigosa, cartões de outros).
 import { criarRng } from './dice.js';
 import { conjuntosDeLance } from './mecanicas.js';
+import { eloDosPerks } from './perks.js';
 
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
@@ -66,7 +67,8 @@ export function criarPartida(cfg) {
   //        mataMata, semente }
   const rng = criarRng(cfg.semente);
   const suspenso = !!cfg.suspenso; // jogador/técnico cumprindo suspensão: não atua
-  const bonus = suspenso ? 0 : bonusEloJogador(cfg.classeId, cfg.attrs);
+  const perks = cfg.perks || []; // traços passivos (ver perks.js)
+  const bonus = suspenso ? 0 : bonusEloJogador(cfg.classeId, cfg.attrs) + eloDosPerks(perks, cfg.attrs, cfg.classeId);
   const mando = cfg.mando === 'casa' ? 35 : cfg.mando === 'fora' ? -20 : 0;
   const meuElo = cfg.meuTime.elo + bonus + mando;
   const advElo = cfg.advTime.elo;
@@ -122,6 +124,16 @@ export function criarPartida(cfg) {
     _gatEvt: null,      // gatilho de decisão agendado após um gol
     _beatUsado: false,
   };
+
+  // Perks: efeitos de início (multiplicadores) aplicados uma única vez.
+  if (!suspenso) for (const p of perks) { if (p.init) p.init(estado); }
+  // Delta de CD vindo dos perks passivos para uma opção, no estado atual.
+  function cdDosPerks(opcao) {
+    if (suspenso) return 0;
+    let d = 0;
+    for (const p of perks) { if (p.cd) d += p.cd(opcao, estado) || 0; }
+    return d;
+  }
 
   function fatorMomentum(sinal) {
     return clamp(1 + (sinal * estado.momentum) / 250, 0.6, 1.5);
@@ -474,12 +486,18 @@ export function criarPartida(cfg) {
     const conjuntos = conjuntosDeLance(estado.classeId, zona);
     const set = conjuntos[Math.floor(rng() * conjuntos.length)] || conjuntos[0];
     if (estado.classeId === 'tecnico') {
-      return set.map((o) => ({ ...o, cd: o.cd + fitDeltaTec(o, estado) + (estado.tecnicoExpulso ? 1 : 0), efeitos: o.efeitos || {} }));
+      return set.map((o) => ({ ...o, cd: o.cd + fitDeltaTec(o, estado) + cdDosPerks(o) + (estado.tecnicoExpulso ? 1 : 0), efeitos: o.efeitos || {} }));
     }
     return set.map((o) => {
       const ajuste = (o.tipo === 'simular' || o.tipo === 'provocar' || (o.tipo === 'mental' && (o.efeitos || {}).cartaoRisco)) ? estado.arbitro.rigor : 0;
-      return { ...o, cd: o.cd + ajuste, efeitos: o.efeitos || {} };
+      return { ...o, cd: o.cd + ajuste + cdDosPerks(o), efeitos: o.efeitos || {} };
     });
+  }
+
+  // Bônus de nota vindo dos perks passivos (ex.: Artilheiro nato).
+  function notaDosPerks() {
+    if (suspenso) return 0;
+    return perks.reduce((s, p) => s + (p.nota ? p.nota(estado) || 0 : 0), 0);
   }
 
   // Nota do jogador na partida (6.0 base + contribuições).
@@ -492,7 +510,7 @@ export function criarPartida(cfg) {
       if (estado.golsAdv === 0 && (ganhou || empate)) n += 0.8;
       if (estado.golsMeu >= 3) n += 0.5;
       if (estado.tecnicoExpulso) n -= 0.5;
-      return clamp(Math.round(n * 10) / 10, 3.0, 10.0);
+      return clamp(Math.round((n + notaDosPerks()) * 10) / 10, 3.0, 10.0);
     }
     let nota = 6.0;
     nota += estado.golsJogador * 1.1;
@@ -504,7 +522,7 @@ export function criarPartida(cfg) {
     }
     nota -= estado.cartoes.amareloJog * 0.2;
     if (estado.cartoes.vermelhoJog) nota -= 0.8;
-    return clamp(Math.round(nota * 10) / 10, 3.0, 10.0);
+    return clamp(Math.round((nota + notaDosPerks()) * 10) / 10, 3.0, 10.0);
   }
 
   return {

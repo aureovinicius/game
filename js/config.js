@@ -22,7 +22,7 @@ export const MAX_IA_POR_PARTIDA = 6;
 export const ANIMACAO_DADO = true;
 
 // Versão do save. Se mudar o formato do personagem, suba este número.
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'cronicas-da-copa:save:v1';
 
 // Idioma da narrativa pedida ao Mestre.

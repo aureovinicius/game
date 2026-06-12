@@ -10,6 +10,7 @@ import { rolar, modificador } from './dice.js';
 import { novasConquistas, conquistaPorId } from './achievements.js';
 import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
 import { carregarNarrativa, carregarNomes, deNome } from './narrador.js';
+import { resolverPerks, perksDisponiveis } from './perks.js';
 import * as Audio from './audio.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
 import { animarDado } from './ui/dice-anim.js';
@@ -45,10 +46,29 @@ const app = {
 
   irHub() {
     Audio.bgmMenu(true);
-    const camp = this.save.campanha;
-    if (!camp.concluida && !camp.proximoAdvId) definirProximoAdversario(this.dados, this.save);
+    const save = this.save;
+    // Tem ponto de perk pra gastar e ainda há traço disponível? Mostra o seletor.
+    if ((save.pontosPerks || 0) > 0 && perksDisponiveis(save.classeId, save.perks).length > 0) {
+      return Screens.renderPerks(this);
+    }
+    const camp = save.campanha;
+    if (!camp.concluida && !camp.proximoAdvId) definirProximoAdversario(this.dados, save);
     this.advAtual = this.dados.porId.get(camp.proximoAdvId);
     Screens.renderHub(this, this.dados);
+  },
+
+  // Gasta 1 ponto de perk no traço escolhido e volta ao fluxo (que reabre o
+  // seletor enquanto houver pontos sobrando).
+  escolherPerk(id) {
+    const save = this.save;
+    if ((save.pontosPerks || 0) <= 0) return this.irHub();
+    if (!save.perks.includes(id) && perksDisponiveis(save.classeId, save.perks).some((p) => p.id === id)) {
+      save.perks.push(id);
+      save.pontosPerks = Math.max(0, save.pontosPerks - 1);
+      salvar(save);
+    }
+    Audio.vitoria();
+    this.irHub();
   },
 
   apagarCarreira(direto = false) {
@@ -93,6 +113,7 @@ const app = {
       mataMata: save.campanha.fase !== 'grupos',
       mando: 'neutro',
       suspenso,
+      perks: resolverPerks(save.perks),
       semente: (save.campanha.semente + save.carreira.jogos * 7919) | 0,
     });
 

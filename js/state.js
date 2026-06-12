@@ -3,6 +3,7 @@
 import { SAVE_KEY, SAVE_VERSION } from './config.js';
 import { montarAtributos } from './rules.js';
 import { adversariosDoGrupo, adversarioMataMata, expectativaElo } from './data.js';
+import { resolverPerks, xpMultDosPerks } from './perks.js';
 
 export const FASES = ['grupos', 'R32', 'R16', 'quartas', 'semi', 'final', 'fim'];
 const NOME_FASE = {
@@ -31,6 +32,8 @@ export function novoPersonagem({ nome, selecaoId, classeId, origemId, tom, eraId
     attrs,
     nivel: 1,
     xp: 0,
+    perks: [],            // ids dos traços escolhidos (ver perks.js)
+    pontosPerks: 0,       // pontos de perk não gastos (1 por nível ganho)
     carreira: {
       gols: 0, assist: 0, jogos: 0, vitorias: 0, empates: 0, derrotas: 0,
       golsSofridos: 0, cleanSheets: 0, maiorGoleada: 0, hatTricks: 0, zebras: 0,
@@ -116,10 +119,16 @@ export function aplicarPartida(save, eng, advTime) {
   if (ganhou) c.vitorias++; else if (empate) c.empates++; else c.derrotas++;
   c.melhorNota = Math.max(c.melhorNota, nota);
 
-  // XP simples
-  const xp = 40 + e.golsJogador * 30 + e.assistJogador * 20 + (ganhou ? 40 : empate ? 15 : 5);
+  // XP simples (perks podem multiplicar, ex.: Faro de veterano +15%).
+  const xpBase = 40 + e.golsJogador * 30 + e.assistJogador * 20 + (ganhou ? 40 : empate ? 15 : 5);
+  const xp = Math.round(xpBase * xpMultDosPerks(resolverPerks(save.perks)));
   save.xp += xp;
-  while (save.xp >= proximoNivel(save.nivel)) { save.xp -= proximoNivel(save.nivel); save.nivel++; }
+  // Cada nível ganho rende 1 ponto de perk para gastar na ficha.
+  while (save.xp >= proximoNivel(save.nivel)) {
+    save.xp -= proximoNivel(save.nivel);
+    save.nivel++;
+    save.pontosPerks = (save.pontosPerks || 0) + 1;
+  }
 
   // Expulsão (vermelho direto, 2 amarelos no jogo, ou técnico) => suspenso no próximo jogo.
   save.suspensoProximo = !!(e.cartoes && (e.cartoes.vermelhoJog || e.tecnicoExpulso));

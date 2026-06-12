@@ -4,6 +4,7 @@ import { CLASSES, ORIGENS, TONS, ATRIBUTOS, montarAtributos } from '../rules.js'
 import { CONQUISTAS, conquistaPorId } from '../achievements.js';
 import { modificador } from '../dice.js';
 import { nomeFase, proximoNivel } from '../state.js';
+import { perkPorId, perksDisponiveis } from '../perks.js';
 
 const $app = () => document.getElementById('app');
 export function setScreen(html) {
@@ -20,6 +21,17 @@ function escudo(time, cls = 'crest') {
   return `<span class="${cls}" style="display:inline-flex;align-items:center;justify-content:center;font-size:${fs}">⚽</span>`;
 }
 function modTxt(v) { const m = modificador(v); return (m >= 0 ? '+' : '') + m; }
+
+// Bloco de traços (perks) na ficha — lista os ganhos e avisa de pontos a gastar.
+function fichaPerks(save) {
+  const tidos = (save.perks || []).map((id) => perkPorId(id)).filter(Boolean);
+  const pend = (save.pontosPerks || 0) > 0
+    ? `<p class="perks-pend">⭐ ${save.pontosPerks} ponto${save.pontosPerks > 1 ? 's' : ''} de traço a gastar — volte ao hub.</p>` : '';
+  const lista = tidos.length
+    ? tidos.map((p) => `<div class="perk-mini" title="${p.desc}"><span>${p.emoji}</span> <b>${p.nome}</b><small>${p.desc}</small></div>`).join('')
+    : '<p class="muted">Nenhum traço ainda. Suba de nível para escolher.</p>';
+  return `<div class="bloco"><h3>Traços</h3>${pend}<div class="perks-lista">${lista}</div></div>`;
+}
 
 // --- HOME -------------------------------------------------------------------
 export function renderHome(app) {
@@ -236,6 +248,30 @@ export function renderHub(app, dados) {
   document.getElementById('b-home').onclick = () => app.irHome();
 }
 
+// --- PERKS (escolha de traço ao subir de nível) -----------------------------
+export function renderPerks(app) {
+  const save = app.save;
+  const classe = CLASSES.find((c) => c.id === save.classeId);
+  const disp = perksDisponiveis(save.classeId, save.perks);
+  const tidos = (save.perks || []).map((id) => perkPorId(id)).filter(Boolean);
+  const cards = disp.map((p) => `
+    <button class="perk-card" data-perk="${p.id}">
+      <div class="perk-cab"><span class="perk-emoji">${p.emoji}</span><b>${p.nome}</b>
+        ${p.classe === 'geral' ? '<small class="perk-tag">universal</small>' : ''}</div>
+      <p>${p.desc}</p>
+    </button>`).join('');
+  setScreen(`
+    <section class="tela tela-lista tela-perks">
+      <header class="topo"><h2>⭐ Subiu de nível!</h2></header>
+      <p class="perks-intro">N${save.nivel} · ${classe.emoji} ${classe.nome} — escolha um traço${save.pontosPerks > 1 ? ` <b>(${save.pontosPerks} pontos)</b>` : ''}.</p>
+      ${tidos.length ? `<p class="perks-tidos">Seus traços: ${tidos.map((p) => `${p.emoji} ${p.nome}`).join(' · ')}</p>` : ''}
+      <div class="perks-grade">${cards}</div>
+    </section>`);
+  for (const btn of document.querySelectorAll('[data-perk]')) {
+    btn.onclick = () => app.escolherPerk(btn.dataset.perk);
+  }
+}
+
 // --- CRÔNICA ----------------------------------------------------------------
 export function renderCronica(app) {
   const save = app.save;
@@ -273,6 +309,7 @@ export function renderFicha(app, dados) {
         <p>${classe.emoji} ${classe.nome} — ${classe.arquetipo}</p>
         <p class="muted">${origem.emoji} ${origem.nome} · ${meu.name}</p></div></div>
       <div class="bloco"><h3>Atributos</h3><div class="attrs">${attrs}</div></div>
+      ${fichaPerks(save)}
       <div class="bloco"><h3>Carreira</h3>
         <div class="ficha-stats">
           <div><b>${c.gols}</b><span>gols</span></div>
