@@ -24,7 +24,7 @@ jobs:
       - name: Montar _site (só os arquivos do jogo)
         run: |
           mkdir -p _site
-          cp -r index.html manifest.webmanifest sw.js css js data icons _site/
+          cp -r index.html manifest.webmanifest sw.js css js data icons flags _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
