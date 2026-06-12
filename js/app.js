@@ -11,6 +11,8 @@ import { novasConquistas, conquistaPorId } from './achievements.js';
 import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
 import { carregarNarrativa, carregarNomes, deNome } from './narrador.js';
 import { resolverPerks, perksDisponiveis } from './perks.js';
+import { carregarKits, resolverCores } from './kits.js';
+import * as Pitch from './pitch.js';
 import * as Audio from './audio.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
 import { animarDado } from './ui/dice-anim.js';
@@ -24,7 +26,7 @@ const app = {
   iaUsada: 0,
 
   async iniciar() {
-    await Promise.all([carregarEras(), carregarNarrativa(), carregarNomes()]);
+    await Promise.all([carregarEras(), carregarNarrativa(), carregarNomes(), carregarKits()]);
     this.save = carregar();
     if (this.save) this.dados = await dadosDaEra((this.save.campanha && this.save.campanha.eraId) || '2026');
     Audio.init();
@@ -156,11 +158,34 @@ const app = {
             <small id="mh-min">0'</small></div>
           <div class="mh-time">${this._crest(adv)}<span>${adv.tla}</span></div>
         </header>
-        <div class="match-meta"><span id="mh-lances"></span><span id="mh-mom"></span></div>
+        <div class="match-meta"><span id="mh-lances"></span><span id="mh-mom"></span>
+          <button class="campo-toggle" id="b-campo" title="Mostrar/ocultar o campo">🗺️</button></div>
+        <div class="match-pitch" id="match-pitch"></div>
         <div class="match-log" id="match-log"></div>
         <div class="match-ctrl" id="match-ctrl"></div>
       </section>`;
     this._refreshHead();
+    this._montarCampo(meu, adv);
+    document.getElementById('b-campo').onclick = () => this._toggleCampo();
+  },
+
+  // Liga o radar (caminho B cosmético) se a preferência estiver ativa.
+  _montarCampo(meu, adv) {
+    const host = document.getElementById('match-pitch');
+    if (!host) return;
+    const mostrar = localStorage.getItem('cronicas:campo') !== '0';
+    host.style.display = mostrar ? '' : 'none';
+    if (!mostrar) { Pitch.destruir(); return; }
+    const cores = resolverCores(meu.tla, adv.tla);
+    Pitch.montar(host, { cores });
+  },
+
+  _toggleCampo() {
+    const host = document.getElementById('match-pitch');
+    const mostrar = localStorage.getItem('cronicas:campo') === '0'; // vai inverter
+    localStorage.setItem('cronicas:campo', mostrar ? '1' : '0');
+    if (mostrar) { this._montarCampo(this.dados.porId.get(this.save.selecaoId), this.advAtual); }
+    else { Pitch.destruir(); if (host) host.style.display = 'none'; }
   },
 
   _crest(t) { return t.crest ? `<img class="crest" src="${t.crest}" alt="" onerror="this.style.display='none'">` : `<span class="crest" style="display:inline-flex;align-items:center;justify-content:center;font-size:18px">⚽</span>`; },
@@ -195,6 +220,7 @@ const app = {
     for (const ev of eventos) {
       this._logLinha(ev);
       this._refreshHead();
+      if (Pitch.montado()) Pitch.evento(ev, this.eng.estado);
       if (ev.tipo === 'gol-meu') Audio.gol();
       else if (ev.tipo === 'gol-adv') Audio.golAdv();
       if (typeof ev.texto === 'string' && /🟨|🟥/.test(ev.texto)) Audio.apitoCurto();
@@ -272,6 +298,7 @@ const app = {
     Audio.apito();
     Audio.ambiente(false);
     Audio.bgmMenu(true);
+    Pitch.destruir(); // para o rAF do radar ao encerrar a partida
 
     // cena de pós-jogo
     const e = this.eng.estado;
@@ -351,3 +378,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // expõe para depuração no console
 window.__app = app;
+window.__pitch = Pitch;
