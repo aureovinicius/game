@@ -5,6 +5,7 @@ import { CONQUISTAS, conquistaPorId } from '../achievements.js';
 import { modificador } from '../dice.js';
 import { nomeFase, proximoNivel } from '../state.js';
 import { perkPorId, perksDaClasse, galhosDaClasse, estadoPerk } from '../perks.js';
+import { bandeira } from '../flags.js';
 
 const $app = () => document.getElementById('app');
 export function setScreen(html) {
@@ -17,6 +18,8 @@ export function setScreen(html) {
 function escudo(time, cls = 'crest') {
   if (!time) return '';
   if (time.crest) return `<img class="${cls}" src="${time.crest}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+  const flag = bandeira(time); // seleções sem escudo (copas antigas) usam a bandeira SVG
+  if (flag) return `<img class="${cls} flag" src="${flag}" alt="" loading="lazy" onerror="this.style.display='none'">`;
   const fs = cls.includes('grande') ? '30px' : '18px';
   return `<span class="${cls}" style="display:inline-flex;align-items:center;justify-content:center;font-size:${fs}">⚽</span>`;
 }

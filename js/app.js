@@ -12,6 +12,7 @@ import { gerarLance, gerarCena, mestreOnline } from './mestre.js';
 import { carregarNarrativa, carregarNomes, deNome } from './narrador.js';
 import { resolverPerks, perksDisponiveis } from './perks.js';
 import { carregarKits, resolverCores } from './kits.js';
+import { bandeira } from './flags.js';
 import * as Pitch from './pitch.js';
 import * as Audio from './audio.js';
 import { MAX_IA_POR_PARTIDA, LANCES_POR_PARTIDA } from './config.js';
@@ -188,7 +189,12 @@ const app = {
     else { Pitch.destruir(); if (host) host.style.display = 'none'; }
   },
 
-  _crest(t) { return t.crest ? `<img class="crest" src="${t.crest}" alt="" onerror="this.style.display='none'">` : `<span class="crest" style="display:inline-flex;align-items:center;justify-content:center;font-size:18px">⚽</span>`; },
+  _crest(t) {
+    if (t && t.crest) return `<img class="crest" src="${t.crest}" alt="" onerror="this.style.display='none'">`;
+    const flag = bandeira(t);
+    if (flag) return `<img class="crest flag" src="${flag}" alt="" onerror="this.style.display='none'">`;
+    return `<span class="crest" style="display:inline-flex;align-items:center;justify-content:center;font-size:18px">⚽</span>`;
+  },
 
   _refreshHead() {
     const e = this.eng.estado;
