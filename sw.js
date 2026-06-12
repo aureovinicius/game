@@ -1,7 +1,7 @@
 // Service worker — cache do app shell para jogar offline.
 // Estratégia: cache-first para os arquivos do jogo; rede para o resto
 // (ex.: chamadas ao Worker do Mestre nunca são cacheadas).
-const CACHE = 'cronicas-copa-v21';
+const CACHE = 'cronicas-copa-v22';
 const ASSETS = [
   './',
   'index.html',
@@ -50,7 +50,13 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // Cacheia item a item e tolera falhas: um único 404 não derruba mais todo o
+  // cache (addAll é atômico; allSettled não é).
+  e.waitUntil((async () => {
+    const c = await caches.open(CACHE);
+    await Promise.allSettled(ASSETS.map((u) => c.add(u)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (e) => {
@@ -66,9 +72,11 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
   e.respondWith(
     caches.match(e.request).then((hit) => hit || fetch(e.request).then((resp) => {
-      const copy = resp.clone();
-      caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
-      return resp;
-    }).catch(() => caches.match('index.html')))
+      if (resp.ok) { const copy = resp.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {}); }
+      return resp; // não cacheia 404/erro
+    }).catch(() =>
+      // fallback de HTML só para navegação; asset que falha falha como asset
+      e.request.mode === 'navigate' ? caches.match('index.html') : Response.error()
+    ))
   );
 });
