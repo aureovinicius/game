@@ -225,22 +225,39 @@ p { margin: 0 0 .6em; }
 .tela-legado .ficha-stats { margin: 16px 0; }
 .tela-legado .btn { margin-top: 8px; }
 
-/* --- PERKS (traços) --- */
+/* --- PERKS (árvore de traços) --- */
 .tela-perks .topo h2 { color: var(--ouro); }
-.perks-intro { color: var(--txt); margin: 4px 0 8px; }
-.perks-tidos { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
-.perks-grade { display: flex; flex-direction: column; gap: 10px; }
-.perk-card { background: var(--card); border: 1px solid var(--linha); border-radius: 12px; padding: 13px 15px; text-align: left; color: var(--txt); cursor: pointer; transition: border-color .15s, transform .1s; }
-.perk-card:hover, .perk-card:focus { border-color: var(--ouro); transform: translateY(-1px); outline: none; }
+.perks-intro { color: var(--txt); margin: 4px 0 14px; }
 .perk-cab { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.perk-emoji { font-size: 20px; }
-.perk-cab b { font-size: 16px; }
-.perk-tag { margin-left: auto; font-size: 11px; color: var(--ouro); border: 1px solid var(--ouro); border-radius: 6px; padding: 1px 6px; text-transform: uppercase; letter-spacing: .4px; }
-.perk-card p { margin: 0; color: var(--muted); font-size: 14px; }
+.perk-emoji { font-size: 19px; }
+.perk-cab b { font-size: 15px; }
+.perk-tag { margin-left: auto; font-size: 10px; color: var(--ouro); border: 1px solid var(--ouro); border-radius: 6px; padding: 1px 6px; text-transform: uppercase; letter-spacing: .4px; }
+
+.perk-galho { margin-bottom: 18px; }
+.galho-tit { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin: 0 0 8px; }
+.galho-nos { display: flex; flex-direction: column; gap: 8px; position: relative; }
+/* conector vertical entre os níveis do galho */
+.galho-nos .perk-no:not(:last-child)::after { content: ''; position: absolute; left: 19px; width: 2px; height: 8px; margin-top: 1px; background: var(--linha); }
+
+.perk-no { position: relative; background: var(--card); border: 1px solid var(--linha); border-radius: 12px; padding: 11px 14px; text-align: left; color: var(--txt); display: block; width: 100%; }
+.perk-no p { margin: 0; color: var(--muted); font-size: 13px; }
+.perk-no.disp { cursor: pointer; border-color: var(--ouro); transition: transform .1s, box-shadow .15s; }
+.perk-no.disp:hover, .perk-no.disp:focus { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(242,193,78,.18); outline: none; }
+.perk-no.tido { border-color: var(--verde-esc); background: rgba(46,204,113,.07); }
+.perk-no.bloq { opacity: .5; }
+.perk-no.perk-cap { border-style: dashed; }
+.perk-no.perk-cap.disp { border-style: solid; }
+.perk-check { margin-left: auto; color: var(--verde); font-weight: 700; }
+.perk-lock { margin-left: auto; font-size: 11px; color: var(--muted); }
+.perk-galho.universais { padding-bottom: 6px; border-bottom: 1px solid var(--linha); }
+
+/* na ficha: lista compacta dos traços tidos */
 .perks-pend { color: var(--ouro); font-size: 13px; margin: 0 0 8px; }
 .perks-lista { display: flex; flex-direction: column; gap: 8px; }
 .perk-mini { background: var(--card); border: 1px solid var(--linha); border-radius: 10px; padding: 8px 12px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .perk-mini b { font-size: 14px; }
 .perk-mini small { color: var(--muted); font-size: 12px; flex: 1 1 100%; }
+
+@media (min-width: 560px) { .perk-arvore { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; } }
 
 @media (min-width: 480px) { .titulo { font-size: 46px; } }

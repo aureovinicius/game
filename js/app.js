@@ -48,7 +48,7 @@ const app = {
     Audio.bgmMenu(true);
     const save = this.save;
     // Tem ponto de perk pra gastar e ainda há traço disponível? Mostra o seletor.
-    if ((save.pontosPerks || 0) > 0 && perksDisponiveis(save.classeId, save.perks).length > 0) {
+    if ((save.pontosPerks || 0) > 0 && perksDisponiveis(save.classeId, save.perks, save.nivel).length > 0) {
       return Screens.renderPerks(this);
     }
     const camp = save.campanha;
@@ -62,7 +62,7 @@ const app = {
   escolherPerk(id) {
     const save = this.save;
     if ((save.pontosPerks || 0) <= 0) return this.irHub();
-    if (!save.perks.includes(id) && perksDisponiveis(save.classeId, save.perks).some((p) => p.id === id)) {
+    if (!save.perks.includes(id) && perksDisponiveis(save.classeId, save.perks, save.nivel).some((p) => p.id === id)) {
       save.perks.push(id);
       save.pontosPerks = Math.max(0, save.pontosPerks - 1);
       salvar(save);

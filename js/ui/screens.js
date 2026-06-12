@@ -4,7 +4,7 @@ import { CLASSES, ORIGENS, TONS, ATRIBUTOS, montarAtributos } from '../rules.js'
 import { CONQUISTAS, conquistaPorId } from '../achievements.js';
 import { modificador } from '../dice.js';
 import { nomeFase, proximoNivel } from '../state.js';
-import { perkPorId, perksDisponiveis } from '../perks.js';
+import { perkPorId, perksDaClasse, galhosDaClasse, estadoPerk } from '../perks.js';
 
 const $app = () => document.getElementById('app');
 export function setScreen(html) {
@@ -248,24 +248,41 @@ export function renderHub(app, dados) {
   document.getElementById('b-home').onclick = () => app.irHome();
 }
 
-// --- PERKS (escolha de traço ao subir de nível) -----------------------------
+// --- PERKS (árvore de traços; escolha ao subir de nível) --------------------
+// Monta um "nó" da árvore com seu estado (tido/disponível/bloqueado).
+function perkNo(p, save) {
+  const st = estadoPerk(p, save.perks, save.nivel);
+  const cap = p.tier === 3 ? ' perk-cap' : '';
+  if (st.estado === 'tido') {
+    return `<div class="perk-no tido${cap}"><div class="perk-cab"><span class="perk-emoji">${p.emoji}</span><b>${p.nome}</b><span class="perk-check">✓</span></div><p>${p.desc}</p></div>`;
+  }
+  if (st.estado === 'bloqueado') {
+    const motivo = st.motivo === 'nivel' ? `🔒 nível ${st.alvo}` : `🔒 requer ${perkPorId(st.alvo)?.nome || ''}`;
+    return `<div class="perk-no bloq${cap}"><div class="perk-cab"><span class="perk-emoji">${p.emoji}</span><b>${p.nome}</b><small class="perk-lock">${motivo}</small></div><p>${p.desc}</p></div>`;
+  }
+  return `<button class="perk-no disp${cap}" data-perk="${p.id}"><div class="perk-cab"><span class="perk-emoji">${p.emoji}</span><b>${p.nome}</b>${p.tier === 3 ? '<small class="perk-tag">capstone</small>' : ''}</div><p>${p.desc}</p></button>`;
+}
+
 export function renderPerks(app) {
   const save = app.save;
   const classe = CLASSES.find((c) => c.id === save.classeId);
-  const disp = perksDisponiveis(save.classeId, save.perks);
-  const tidos = (save.perks || []).map((id) => perkPorId(id)).filter(Boolean);
-  const cards = disp.map((p) => `
-    <button class="perk-card" data-perk="${p.id}">
-      <div class="perk-cab"><span class="perk-emoji">${p.emoji}</span><b>${p.nome}</b>
-        ${p.classe === 'geral' ? '<small class="perk-tag">universal</small>' : ''}</div>
-      <p>${p.desc}</p>
-    </button>`).join('');
+  const universais = perksDaClasse(save.classeId).filter((p) => p.classe === 'geral');
+  const galhos = galhosDaClasse(save.classeId);
+  const universaisHtml = universais.map((p) => perkNo(p, save)).join('');
+  const galhosHtml = galhos.map((g) => `
+    <div class="perk-galho">
+      <h3 class="galho-tit">${g.emoji} ${g.nome}</h3>
+      <div class="galho-nos">${g.perks.map((p) => perkNo(p, save)).join('')}</div>
+    </div>`).join('');
   setScreen(`
     <section class="tela tela-lista tela-perks">
       <header class="topo"><h2>⭐ Subiu de nível!</h2></header>
       <p class="perks-intro">N${save.nivel} · ${classe.emoji} ${classe.nome} — escolha um traço${save.pontosPerks > 1 ? ` <b>(${save.pontosPerks} pontos)</b>` : ''}.</p>
-      ${tidos.length ? `<p class="perks-tidos">Seus traços: ${tidos.map((p) => `${p.emoji} ${p.nome}`).join(' · ')}</p>` : ''}
-      <div class="perks-grade">${cards}</div>
+      <div class="perk-galho universais">
+        <h3 class="galho-tit">🌐 Universais</h3>
+        <div class="galho-nos">${universaisHtml}</div>
+      </div>
+      <div class="perk-arvore">${galhosHtml}</div>
     </section>`);
   for (const btn of document.querySelectorAll('[data-perk]')) {
     btn.onclick = () => app.escolherPerk(btn.dataset.perk);
